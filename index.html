@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Fundadores — Bienvenida</title>
+    <meta name="description" content="Plataforma de Fundadores: Tu legado, nuestra historia." />
+    <!-- Reduce problemas de caché en desarrollo -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+
+    <!-- Typography: Griffon for headings (self-host placeholder), Montserrat for body -->
+    <link rel="preconnect" href="https://use.typekit.net" crossorigin />
+    <link rel="preconnect" href="https://p.typekit.net" crossorigin />
+    <link rel="stylesheet" href="https://use.typekit.net/hbg7fdl.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+    <link rel="stylesheet" href="styles.css?v=26" />
+  </head>
+  <body>
+    <main class="hero" aria-label="Banner de bienvenida con carrusel de imágenes">
+      <div class="slides" aria-hidden="true">
+        <div class="slide is-active" style="background-image: url('assets/SLIDE 1.png');"></div>
+        <div class="slide" style="background-image: url('assets/SLIDE 2.png');"></div>
+        <div class="slide" style="background-image: url('assets/SLIDE 3.jpg');"></div>
+        <div class="slide" style="background-image: url('assets/SLIDE 4.png');"></div>
+        <div class="slide" style="background-image: url('assets/SLIDE 5.png');"></div>
+        <div class="slide" style="background-image: url('assets/SLIDE 6.png');"></div>
+        <div class="slide" style="background-image: url('assets/SLIDE 7.jpg');"></div>
+        <div class="slide" style="background-image: url('assets/SLIDE 8.jpg');"></div>
+        <div class="slide" style="background-image: url('assets/SLIDE 9.jpg');"></div>
+        <div class="slide" style="background-image: url('assets/SLIDE 10.png');"></div>
+      </div>
+
+      <!-- Overlay para legibilidad sobre las imágenes -->
+      <div class="scrim" aria-hidden="true"></div>
+
+      <!-- Marca superior dentro del hero -->
+      <img
+        class="brand-top"
+        src="assets/FUNDADORES - BLANCO.svg"
+        alt="Logo Fundadores"
+        width="220"
+        height="auto"
+        loading="eager"
+        decoding="async"
+      />
+
+      <!-- Contenido principal -->
+      <section class="content" role="region" aria-label="Mensaje principal">
+        <h1 class="main-heading">Tu legado, nuestra historia.</h1>
+        <h3>Fundadores no es solo un club. Es una comunidad que comparte una visión de excelencia, familia y futuro.</h3>
+        <button class="cta" type="button" aria-label="Continuar a la siguiente sección" data-next>
+          Queremos conocer más de tu legado
+        </button>
+      </section>
+
+      <!-- Footer stack: logo + ticker (alineado al fondo) -->
+      <div class="footer-stack" aria-hidden="true">
+        <img
+          class="brand-mark"
+          src="assets/LOGO BERGANTIN.svg"
+          alt="Logo Bergantini"
+          width="220"
+          height="auto"
+          loading="lazy"
+          decoding="async"
+        />
+
+        <div class="ticker" aria-label="Lista de miembros" role="region">
+          <div class="ticker-inner">
+            <div class="ticker-track">
+              <span>ALONSO</span><span class="sep">•</span><span>VALENTINA</span><span class="sep">•</span><span>MATEO</span><span class="sep">•</span><span>ISABELLA</span><span class="sep">•</span><span>EMILIANO</span><span class="sep">•</span><span>SOFÍA</span><span class="sep">•</span><span>SEBASTIÁN</span><span class="sep">•</span><span>REGINA</span><span class="sep">•</span>
+            </div><div class="ticker-track" aria-hidden="true">
+              <span>ALONSO</span><span class="sep">•</span><span>VALENTINA</span><span class="sep">•</span><span>MATEO</span><span class="sep">•</span><span>ISABELLA</span><span class="sep">•</span><span>EMILIANO</span><span class="sep">•</span><span>SOFÍA</span><span class="sep">•</span><span>SEBASTIÁN</span><span class="sep">•</span><span>REGINA</span><span class="sep">•</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Overlay blanco para fade-in a página en blanco con flecha de back -->
+    <div id="fadeScreen" class="fade-screen" aria-hidden="true">
+      <button id="backBtn" class="back-btn" type="button" aria-label="Volver">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <div class="screen screen-1" aria-label="Pantalla 1">
+        <div class="blank-message" role="status" aria-live="polite">“Queremos conocerte mejor para ofrecerte <strong>Experiencia a tu medida</strong>.”</div>
+
+        <!-- Formulario inicial -->
+        <hr class="light-blue-divider" />
+        <form id="founders-form" class="blank-form" novalidate>
+          <div class="fields" style="background: none; border: 0; padding: 0;">
+            <div class="field">
+              <label for="fullName">Nombre completo</label>
+              <input id="fullName" name="fullName" type="text" placeholder="Nombre y apellido" required />
+            </div>
+            <div class="field">
+              <label for="email">Correo electrónico</label>
+              <input id="email" name="email" type="email" placeholder="correo@ejemplo.com" required />
+            </div>
+            <div class="field">
+              <label for="phone">Teléfono</label>
+              <input id="phone" name="phone" type="tel" inputmode="tel" placeholder="+1 (000) 000-0000" required />
+            </div>
+            <div class="field">
+              <label for="nationality">Nacionalidad</label>
+              <div class="select-wrap" data-enhance-select>
+                <select id="nationality" name="nationality" required>
+                  <option value="" disabled selected>Seleccione…</option>
+                  <option>Afganistán</option>
+                  <option>Albania</option>
+                  <option>Alemania</option>
+                  <option>Andorra</option>
+                  <option>Angola</option>
+                  <option>Antigua y Barbuda</option>
+                  <option>Arabia Saudita</option>
+                  <option>Argelia</option>
+                  <option>Argentina</option>
+                  <option>Armenia</option>
+                  <option>Australia</option>
+                  <option>Austria</option>
+                  <option>Azerbaiyán</option>
+                  <option>Bahamas</option>
+                  <option>Bangladés</option>
+                  <option>Barbados</option>
+                  <option>Baréin</option>
+                  <option>Bélgica</option>
+                  <option>Belice</option>
+                  <option>Benín</option>
+                  <option>Bielorrusia</option>
+                  <option>Birmania</option>
+                  <option>Bolivia</option>
+                  <option>Bosnia y Herzegovina</option>
+                  <option>Botsuana</option>
+                  <option>Brasil</option>
+                  <option>Brunéi</option>
+                  <option>Bulgaria</option>
+                  <option>Burkina Faso</option>
+                  <option>Burundi</option>
+                  <option>Bután</option>
+                  <option>Cabo Verde</option>
+                  <option>Camboya</option>
+                  <option>Camerún</option>
+                  <option>Canadá</option>
+                  <option>Catar</option>
+                  <option>Chad</option>
+                  <option>Chile</option>
+                  <option>China</option>
+                  <option>Chipre</option>
+                  <option>Colombia</option>
+                  <option>Comoras</option>
+                  <option>Corea del Norte</option>
+                  <option>Corea del Sur</option>
+                  <option>Costa de Marfil</option>
+                  <option>Costa Rica</option>
+                  <option>Croacia</option>
+                  <option>Cuba</option>
+                  <option>Dinamarca</option>
+                  <option>Dominica</option>
+                  <option>Ecuador</option>
+                  <option>Egipto</option>
+                  <option>El Salvador</option>
+                  <option>Emiratos Árabes Unidos</option>
+                  <option>Eritrea</option>
+                  <option>Eslovaquia</option>
+                  <option>Eslovenia</option>
+                  <option>España</option>
+                  <option>Estados Unidos</option>
+                  <option>Estonia</option>
+                  <option>Esuatini</option>
+                  <option>Etiopía</option>
+                  <option>Filipinas</option>
+                  <option>Finlandia</option>
+                  <option>Fiyi</option>
+                  <option>Francia</option>
+                  <option>Gabón</option>
+                  <option>Gambia</option>
+                  <option>Georgia</option>
+                  <option>Ghana</option>
+                  <option>Granada</option>
+                  <option>Grecia</option>
+                  <option>Guatemala</option>
+                  <option>Guinea</option>
+                  <option>Guinea-Bisáu</option>
+                  <option>Guinea Ecuatorial</option>
+                  <option>Guyana</option>
+                  <option>Haití</option>
+                  <option>Honduras</option>
+                  <option>Hungría</option>
+                  <option>India</option>
+                  <option>Indonesia</option>
+                  <option>Irak</option>
+                  <option>Irán</option>
+                  <option>Irlanda</option>
+                  <option>Islandia</option>
+                  <option>Islas Marshall</option>
+                  <option>Islas Salomón</option>
+                  <option>Israel</option>
+                  <option>Italia</option>
+                  <option>Jamaica</option>
+                  <option>Japón</option>
+                  <option>Jordania</option>
+                  <option>Kazajistán</option>
+                  <option>Kenia</option>
+                  <option>Kirguistán</option>
+                  <option>Kiribati</option>
+                  <option>Kuwait</option>
+                  <option>Laos</option>
+                  <option>Lesoto</option>
+                  <option>Letonia</option>
+                  <option>Líbano</option>
+                  <option>Liberia</option>
+                  <option>Libia</option>
+                  <option>Liechtenstein</option>
+                  <option>Lituania</option>
+                  <option>Luxemburgo</option>
+                  <option>Madagascar</option>
+                  <option>Malasia</option>
+                  <option>Malaui</option>
+                  <option>Maldivas</option>
+                  <option>Malí</option>
+                  <option>Malta</option>
+                  <option>Marruecos</option>
+                  <option>Islas Marshall</option>
+                  <option>Mauricio</option>
+                  <option>Mauritania</option>
+                  <option>México</option>
+                  <option>Micronesia</option>
+                  <option>Moldavia</option>
+                  <option>Mónaco</option>
+                  <option>Mongolia</option>
+                  <option>Montenegro</option>
+                  <option>Mozambique</option>
+                  <option>Namibia</option>
+                  <option>Nauru</option>
+                  <option>Nepal</option>
+                  <option>Nicaragua</option>
+                  <option>Níger</option>
+                  <option>Nigeria</option>
+                  <option>Noruega</option>
+                  <option>Nueva Zelanda</option>
+                  <option>Omán</option>
+                  <option>Países Bajos</option>
+                  <option>Pakistán</option>
+                  <option>Palaos</option>
+                  <option>Panamá</option>
+                  <option>Papúa Nueva Guinea</option>
+                  <option>Paraguay</option>
+                  <option>Perú</option>
+                  <option>Polonia</option>
+                  <option>Portugal</option>
+                  <option>Reino Unido</option>
+                  <option>República Centroafricana</option>
+                  <option>República Checa</option>
+                  <option>República del Congo</option>
+                  <option>República Democrática del Congo</option>
+                  <option>República Dominicana</option>
+                  <option>Ruanda</option>
+                  <option>Rumanía</option>
+                  <option>Rusia</option>
+                  <option>Samoa</option>
+                  <option>San Cristóbal y Nieves</option>
+                  <option>San Marino</option>
+                  <option>San Vicente y las Granadinas</option>
+                  <option>Santa Lucía</option>
+                  <option>Santo Tomé y Príncipe</option>
+                  <option>Senegal</option>
+                  <option>Serbia</option>
+                  <option>Seychelles</option>
+                  <option>Sierra Leona</option>
+                  <option>Singapur</option>
+                  <option>Siria</option>
+                  <option>Somalia</option>
+                  <option>Sri Lanka</option>
+                  <option>Sudáfrica</option>
+                  <option>Sudán</option>
+                  <option>Sudán del Sur</option>
+                  <option>Suecia</option>
+                  <option>Suiza</option>
+                  <option>Surinam</option>
+                  <option>Tailandia</option>
+                  <option>Tanzania</option>
+                  <option>Tayikistán</option>
+                  <option>Timor Oriental</option>
+                  <option>Togo</option>
+                  <option>Tonga</option>
+                  <option>Trinidad y Tobago</option>
+                  <option>Túnez</option>
+                  <option>Turkmenistán</option>
+                  <option>Turquía</option>
+                  <option>Tuvalu</option>
+                  <option>Ucrania</option>
+                  <option>Uganda</option>
+                  <option>Uruguay</option>
+                  <option>Uzbekistán</option>
+                  <option>Vanuatu</option>
+                  <option>Ciudad del Vaticano</option>
+                  <option>Venezuela</option>
+                  <option>Vietnam</option>
+                  <option>Yemen</option>
+                  <option>Yibuti</option>
+                  <option>Zambia</option>
+                  <option>Zimbabue</option>
+                </select>
+                <span class="select-chevron" aria-hidden="true">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+                  </svg>
+                </span>
+              </div>
+            </div>
+            <div class="field">
+              <label for="residence">Residencia actual</label>
+              <input id="residence" name="residence" type="text" placeholder="Ciudad, país" required />
+            </div>
+          </div>
+        </form>
+
+        <!-- Botón Next (similar a back) -->
+        <button id="nextBtn" class="next-btn" type="button" aria-label="Continuar">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="screen screen-2" aria-label="Pantalla 2" aria-hidden="true">
+        <div class="blank-message" role="status" aria-live="polite">"Fundadores es una familia. <strong>Cuéntanos sobre la tuya."</strong></div>
+        <hr class="light-blue-divider" />
+        <form id="family-form" class="blank-form" novalidate>
+          <div class="fields">
+            <div class="field">
+              <label for="maritalStatus">Estado civil</label>
+              <div class="select-wrap" data-enhance-select>
+                <select id="maritalStatus" name="maritalStatus" required>
+                  <option value="" disabled selected>Seleccione…</option>
+                  <option>Soltero/a</option>
+                  <option>Casado/a</option>
+                  <option>Unión libre</option>
+                  <option>Divorciado/a</option>
+                  <option>Viudo/a</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field" id="partnerField" hidden>
+              <label for="partnerName">Nombre de pareja</label>
+              <input id="partnerName" name="partnerName" type="text" placeholder="Camila Córcega" />
+            </div>
+
+            <div class="field repeatable" data-name="children" data-placeholder="Mateo (8), Emma (6)" data-add-label="Agregar hijo">
+              <label>Hijos (nombres y edades)</label>
+              <div class="items"></div>
+              <button type="button" class="add">Agregar hijo</button>
+            </div>
+
+            <div class="field repeatable" data-name="pets" data-placeholder="Perro – Golden Retriever" data-add-label="Agregar mascota">
+              <label>Mascotas</label>
+              <div class="items"></div>
+              <button type="button" class="add">Agregar mascota</button>
+            </div>
+
+            <div class="field">
+              <label for="importantPeople">Personas importantes</label>
+              <textarea id="importantPeople" name="importantPeople" rows="3" placeholder="Hermano, mejor amigo"></textarea>
+            </div>
+          </div>
+        </form>
+        <button id="nextBtn2" class="next-btn" type="button" aria-label="Continuar">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+      <!-- Pantalla 3: en blanco para cierre/transición final -->
+      <div class="screen screen-3" aria-label="Pantalla 3" aria-hidden="true">
+        <div class="blank-message" role="status" aria-live="polite">"Selecciona las experiencias <strong>que más disfrutas."</strong></div>
+      </div>
+
+      <!-- Pantalla 4: réplica de la pantalla 3 -->
+      <div class="screen screen-4" aria-label="Pantalla 4" aria-hidden="true">
+        <div class="blank-message" role="status" aria-live="polite">"Selecciona las experiencias <strong>que más disfrutas."</strong></div>
+      </div>
+
+      <!-- Pantalla 5: réplica de la pantalla 4 -->
+      <div class="screen screen-5" aria-label="Pantalla 5" aria-hidden="true">
+        <div class="blank-message" role="status" aria-live="polite">"Selecciona las experiencias <strong>que más disfrutas."</strong></div>
+      </div>
+
+      <!-- Pantalla 6: réplica de la pantalla 5 -->
+      <div class="screen screen-6" aria-label="Pantalla 6" aria-hidden="true">
+        <div class="blank-message" role="status" aria-live="polite">"Selecciona las experiencias <strong>que más disfrutas."</strong></div>
+      </div>
+
+      <!-- Pantalla 7: réplica de la pantalla 6 -->
+      <div class="screen screen-7" aria-label="Pantalla 7" aria-hidden="true">
+        <div class="blank-message" role="status" aria-live="polite">"Selecciona las experiencias <strong>que más disfrutas."</strong></div>
+      </div>
+    </div>
+
+    <script src="script.js?v=3"></script>
+    <script>
+      // Fallback: ensure CTA opens overlay if prior JS was altered
+      (function(){
+        var cta = document.querySelector('[data-next]');
+        var fade = document.getElementById('fadeScreen');
+        if (!cta || !fade) return;
+        var handler = function(e){
+          e && e.preventDefault();
+          if (!fade.classList.contains('active')) {
+            fade.classList.add('active');
+            document.documentElement.style.backgroundColor = '#fff';
+            document.documentElement.classList.add('blank-mode');
+            var onDone = function(ev){ if (ev && ev.target !== fade) return; fade.classList.add('done'); document.documentElement.classList.add('names-in'); fade.setAttribute('aria-hidden','false'); };
+            fade.addEventListener('transitionend', onDone, { once: true });
+            setTimeout(onDone, 1200);
+          }
+        };
+        cta.addEventListener('click', handler);
+      })();
+    </script>
+  </body>
+  </html>

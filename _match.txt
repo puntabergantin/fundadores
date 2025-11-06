@@ -1,0 +1,2 @@
+<div class="screen screen-3" aria-label="Pantalla 3" aria-hidden="true">
+        <div class="blank-message" role="status" aria-live="polite">"Selecciona las experiencias <strong>que más disfrutas."</strong></div>

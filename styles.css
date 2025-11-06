@@ -1,0 +1,1163 @@
+/* Color palette */
+:root {
+  --primary: #039aa2; /* teal */
+  --ink: #253645;     /* deep slate */
+  --white: #ffffff;
+  --shadow: rgba(0,0,0,0.35);
+  --danger: #d93025;  /* error red */
+}
+
+/* Light-blue divider used between intro text and form */
+.light-blue-divider {
+  width: 35%;
+  height: 2px;
+  background-color: #08c9d4; /* requested light blue */
+  border: 0;
+  margin: 12px 0;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+/* Reveal divider with the form */
+.fade-screen.done .light-blue-divider { opacity: 1; }
+
+/* Griffon is loaded via Adobe Fonts kit link in index.html */
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: 'Montserrat', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color: var(--white);
+  background: var(--ink);
+}
+
+/* Prevent overflow by making padding part of width/height calculations */
+*, *::before, *::after { box-sizing: border-box; }
+
+.brand-top {
+  position: absolute; /* dentro del hero */
+  top: calc(50px + env(safe-area-inset-top, 0px));
+  left: 50%;
+  transform: translateX(-50%);
+  width: clamp(140px, 36vw, 300px); /* más grande */
+  height: auto;
+  z-index: 2; /* sobre scrim (1), bajo overlays si hubiera (3) */
+  opacity: 0.98;
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.35));
+  pointer-events: none; /* evitar interacciones accidentales */
+}
+
+.hero {
+  position: relative;
+  height: 100dvh;
+  width: 100%;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+}
+
+.slides {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  background-position: center;
+  background-size: cover;
+  opacity: 0;
+  transition: opacity 800ms ease-in-out;
+}
+
+.slide.is-active {
+  opacity: 1;
+}
+
+.scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.50) 40%, rgba(0,0,0,0.70) 100%);
+  z-index: 1;
+}
+
+.content {
+  position: relative;
+  z-index: 2;
+  max-width: min(92vw, 720px);
+  padding-inline: 20px;
+  padding-top: 150px; /* margen superior del contenido */
+  /* Espacio moderado respecto al logo inferior */
+  padding-bottom: calc(140px + env(safe-area-inset-bottom, 0px));
+  text-align: center;
+}
+
+.content h1 {
+  margin: 0 0 12px;
+  font-family: 'Griffon', Georgia, 'Times New Roman', serif;
+  font-size: 55px;
+  line-height: 0.85;
+  letter-spacing: 0.2px;
+  text-shadow: 0 2px 18px var(--shadow);
+}
+
+
+.content h3 {
+  margin: 0 auto 28px;
+  font-weight: 400;
+  opacity: 0.95;
+  font-size: 18px;
+  line-height: 1.2;
+  text-shadow: 0 1px 12px var(--shadow);
+}
+
+.cta {
+  appearance: none;
+  border: none;
+  border-radius: 999px;
+  padding: 14px 22px;
+  /* Glass/blur base (not blue fill) */
+  background: rgba(255, 255, 255, 0.10);
+  color: var(--white);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 16px;
+  cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.22);
+  backdrop-filter: blur(10px) saturate(140%);
+  -webkit-backdrop-filter: blur(10px) saturate(140%);
+  /* Default glow: white */
+  box-shadow: 0 6px 24px rgba(255,255,255,0.28), inset 0 1px 0 rgba(255,255,255,0.25);
+  transition: transform 120ms ease, box-shadow 200ms ease, background-color 200ms ease, border-color 200ms ease;
+}
+
+.cta:hover {
+  transform: translateY(-1px);
+  /* Turn blue on hover */
+  background: var(--primary);
+  border-color: color-mix(in oklab, var(--primary) 70%, white 30%);
+  /* Hover glow: blue */
+  box-shadow: 0 10px 28px rgba(3,154,162,0.45), inset 0 1px 0 rgba(255,255,255,0.25);
+}
+
+.cta:active {
+  transform: translateY(0);
+  box-shadow: 0 6px 20px rgba(3,154,162,0.35) inset;
+}
+
+/* Footer stack: agrupa logo inferior y ticker con separación y margen inferior */
+.footer-stack {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: env(safe-area-inset-bottom, 0px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 35px; /* más margen superior del ticker respecto al logo */
+  padding-bottom: 25px; /* 25px de margen inferior total */
+  z-index: 3;
+  pointer-events: none; /* evita capturar clics */
+}
+
+.brand-mark {
+  display: inline-block;
+  margin-top: 0;
+  width: clamp(90px, 30vw, 160px);
+  height: auto;
+  opacity: 0.95;
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.35));
+}
+
+/* Infinite ticker below bottom logo */
+.ticker {
+  position: relative;
+  width: 100%; /* avoid 100vw overflow on desktop */
+  max-width: 1100px;
+}
+
+.ticker-inner {
+  overflow: hidden;
+  white-space: nowrap;
+  mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
+  font-size: 0; /* elimina espacio entre inline-blocks */
+}
+
+.ticker-track {
+  display: inline-block;
+  padding-inline: 0;
+  animation: ticker-move 28s linear infinite;
+  font-size: 1rem; /* restaura tamaño de texto para hijos */
+}
+
+.ticker-track span {
+  display: inline-block;
+  margin: 0 10px;
+  font-family: 'Griffon', Georgia, 'Times New Roman', serif;
+  /* Tamaño fijo igual a mobile */
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--white);
+  opacity: 0.95;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.45);
+}
+
+.ticker-track span.sep { color: var(--primary); }
+
+@keyframes ticker-move {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-100%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ticker-track { animation: none; }
+}
+
+/* Layout refinements for larger screens */
+@media (min-width: 768px) {
+  /* Más ancho en tablet para permitir H1 en ~2 líneas */
+  .content { max-width: min(90vw, 960px); }
+  .content h3 { max-width: 64ch; }
+  /* Mantener tamaño de mobile */
+  .content h1 { font-size: 55px; }
+  .content h3 { font-size: 18px; }
+}
+
+@media (min-width: 1200px) {
+  /* Aún más ancho en desktop amplio, manteniendo márgenes responsivos */
+  .content { max-width: min(84vw, 1100px); }
+  /* Mantener tamaño de mobile */
+  .content h1 { font-size: 55px; }
+  .content h3 { font-size: 18px; }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .slide { transition: none; }
+}
+
+/* Mobile layout: place content lower, above bottom safe area */
+@media (max-width: 600px) {
+  .hero { place-items: end center; }
+  .content {
+    /* Un poco menos espacio en móvil */
+    padding-bottom: calc(12dvh + 140px + env(safe-area-inset-bottom, 0px));
+  }
+  .content h3 { margin-bottom: 22px; }
+}
+
+/* ========== Wizard (formulario por etapas) ========== */
+.wizard-overlay[aria-hidden="false"] { display: grid; }
+.wizard-overlay {
+  position: fixed;
+  inset: 0;
+  display: none;
+  place-items: center;
+  background: rgba(0,0,0,0.35);
+  z-index: 10;
+  padding: 16px;
+}
+
+.wizard-card {
+  width: min(100%, 960px);
+  max-height: 90dvh;
+  overflow: hidden;
+  background: rgba(37,54,69,0.92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  color: var(--white);
+  margin: 0 auto;
+  /* Sugerir tema oscuro a controles nativos (select, date, etc.) */
+  color-scheme: dark;
+}
+
+.wizard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+}
+.wizard-header h2 { font-family: 'Griffon', Georgia, serif; margin: 0; font-size: 24px; }
+.wizard-close { background: none; border: none; color: var(--white); font-size: 28px; cursor: pointer; }
+
+.wizard-progress { position: relative; padding: 8px 20px 0; }
+.wizard-progress .bar { height: 4px; background: rgba(255,255,255,0.15); border-radius: 2px; overflow: hidden; }
+.wizard-progress .bar::after { content: ''; display: block; height: 100%; width: var(--wizard-progress, 14%); background: var(--primary); transition: width 240ms ease; }
+.wizard-progress .steps { display: flex; gap: 4px; padding-top: 6px; font-size: 12px; opacity: 0.7; }
+.wizard-progress .steps {
+  gap: 8px;
+  padding-top: 8px;
+  flex-wrap: wrap;
+  opacity: 1;
+}
+.wizard-progress .steps span {
+  min-width: 36px;
+  height: 28px;
+  padding: 0 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.22);
+  background: rgba(255,255,255,0.08);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.2);
+  font-weight: 700;
+}
+.wizard-progress .steps span.is-active {
+  background: linear-gradient(180deg, #08c9d4 0%, #039aa2 100%);
+  border-color: color-mix(in oklab, var(--primary) 60%, white 40%);
+  color: #fff;
+  box-shadow: 0 6px 18px rgba(3,154,162,0.45), inset 0 1px 0 rgba(255,255,255,0.35);
+}
+.wizard-progress .steps span.is-done { background: rgba(255,255,255,0.14); }
+
+#founders-form { overflow: auto; overflow-x: hidden; padding: 14px 20px 0; }
+.wizard-step { display: block; }
+.wizard-step[hidden] { display: none; }
+.step-title { font-family: 'Griffon', Georgia, serif; font-size: 20px; margin: 6px 0 4px; }
+.step-sub { margin: 0 0 12px; font-size: 14px; opacity: 0.85; }
+
+.fields { display: grid; gap: 14px; }
+.fields.two-col { grid-template-columns: 1fr; }
+.fields.one-col { grid-template-columns: 1fr; }
+@media (min-width: 720px) { .fields.two-col { grid-template-columns: 1fr 1fr; } }
+
+.field, fieldset, .wizard-header, .wizard-progress, .fields, .wizard-step { min-width: 0; }
+.field { overflow: hidden; }
+
+.field span, .field legend { display: block; font-size: 13px; opacity: 0.85; margin-bottom: 6px; }
+.field input[type="text"],
+.field input[type="email"],
+.field input[type="tel"],
+.field input[type="date"],
+.field textarea,
+.field select {
+  width: 100%;
+  padding: 12px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.06);
+  color: var(--white);
+  transition: border-color 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
+}
+
+/* Icono y apariencia solo para selects */
+.field select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23FFFFFF' d='M10.59.59 6 5.17 1.41.59 0 2l6 6 6-6z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 12px 8px;
+  padding-right: 36px; /* espacio para el ícono */
+}
+
+/* Quitar flecha heredada en algunos navegadores */
+select::-ms-expand { display: none; }
+
+/* Menú del select en navegadores que respetan estilos de option */
+.field select option {
+  background-color: rgba(37,54,69,0.98);
+  color: var(--white);
+}
+.field textarea { resize: vertical; }
+.field input::placeholder, .field textarea::placeholder { color: rgba(255,255,255,0.6); }
+.field input:focus, .field textarea:focus, .field select:focus {
+  outline: none;
+  border-color: color-mix(in oklab, var(--primary) 85%, white 15%);
+  box-shadow: 0 0 0 2px rgba(3,154,162,0.35);
+}
+
+/* Use focus-visible for keyboard navigation accessibility */
+.field input:focus-visible, .field textarea:focus-visible, .field select:focus-visible {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(3,154,162,0.45);
+}
+
+.repeatable .items { display: grid; gap: 10px; }
+.repeatable .add { margin-top: 6px; align-self: start; background: none; border: 1px dashed rgba(255,255,255,0.35); color: var(--white); border-radius: 8px; padding: 8px 10px; cursor: pointer; transition: background-color 180ms ease, border-color 180ms ease, color 180ms ease; }
+.repeatable .add:hover, .repeatable .add:focus-visible { border-color: var(--primary); background: rgba(8,201,212,0.18); color: #fff; }
+
+.rating .stars { display: inline-flex; gap: 4px; font-size: 20px; }
+.rating .stars button { background: none; border: none; color: rgba(255,255,255,0.6); cursor: pointer; }
+.rating .stars button.is-on { color: #ffd76a; }
+
+.wizard-actions { display: flex; justify-content: space-between; gap: 10px; padding: 14px 20px 16px; border-top: 1px solid rgba(255,255,255,0.1); }
+.btn { background: var(--primary); color: #fff; border: none; border-radius: 999px; padding: 10px 16px; cursor: pointer; font-weight: 600; }
+.btn.ghost { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.24); }
+.btn.primary { background: var(--primary); }
+
+/* ===== Wizard: iOS-like refinements (overrides) ===== */
+/* Card glassier and softer */
+.wizard-card {
+  /* Glass: claro y translúcido como iOS */
+  background: linear-gradient(180deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.06) 100%);
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  border: 1px solid rgba(255,255,255,0.28);
+  border-radius: 22px;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.25);
+}
+
+/* Titles centered like the mockups */
+.wizard-header h2 { text-align: center; flex: 1; text-transform: uppercase; letter-spacing: 0.04em; }
+.step-title { text-align: center; font-size: 22px; text-transform: uppercase; letter-spacing: 0.04em; }
+.step-sub { text-align: center; margin-bottom: 14px; }
+
+/* Field groups as soft panels */
+.fields { padding: 12px; border-radius: 16px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); }
+
+/* Inputs as rounded pills with subtle inset */
+.field input[type="text"],
+.field input[type="email"],
+.field input[type="tel"],
+.field input[type="date"],
+.field textarea,
+.field select {
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.12);
+  border-color: rgba(255,255,255,0.28);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.12);
+}
+.field input:focus, .field textarea:focus, .field select:focus { box-shadow: 0 0 0 2px rgba(3,154,162,0.40), inset 0 1px 0 rgba(255,255,255,0.12); }
+.field input:focus-visible, .field textarea:focus-visible, .field select:focus-visible { box-shadow: 0 0 0 3px rgba(3,154,162,0.50), inset 0 1px 0 rgba(255,255,255,0.12); }
+
+/* Action bar pinned with frosted effect */
+.wizard-actions {
+  position: sticky;
+  bottom: 0;
+  background: transparent; /* sin parche detrás del botón */
+  border-top: none;
+  padding: 14px 20px calc(16px + env(safe-area-inset-bottom, 0px));
+}
+
+/* Stronger pill buttons */
+.btn {
+  padding: 12px 18px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  background: linear-gradient(180deg, #08c9d4 0%, #039aa2 100%);
+  box-shadow: 0 10px 26px rgba(3,154,162,0.45), inset 0 1px 0 rgba(255,255,255,0.30);
+}
+.btn:hover { filter: brightness(1.05); }
+.btn:active { box-shadow: 0 4px 16px rgba(3,154,162,0.35) inset; }
+.btn.ghost { background: rgba(255,255,255,0.10); border: 1px solid rgba(255,255,255,0.22); box-shadow: none; }
+
+/* Mobile spacing to avoid overlap with sticky actions */
+@media (max-width: 600px) {
+  #founders-form { padding-bottom: 96px; }
+  .wizard-card { border-radius: 26px; }
+  .step-title { font-size: 24px; }
+}
+
+/* Header centering + close button as circular icon */
+.wizard-header { position: relative; }
+.wizard-header h2 { position: absolute; left: 50%; transform: translateX(-50%); }
+.wizard-close {
+  background: rgba(255,255,255,0.10);
+  border: 1px solid rgba(255,255,255,0.22);
+  width: 36px; height: 36px; border-radius: 50%;
+  display: inline-grid; place-items: center; font-size: 20px;
+}
+
+/* Wizard width: tuned by breakpoints (mobile good, tablet/PC wider) */
+.wizard-card { width: min(100%, 520px); }
+@media (min-width: 640px) { .wizard-card { width: min(92vw, 600px); } }
+@media (min-width: 900px) { .wizard-card { width: min(88vw, 680px); } }
+@media (min-width: 1280px) { .wizard-card { width: min(84vw, 720px); } }
+
+/* Revert to standard wizard (no cards stack) */
+.wizard-progress { display: block; }
+#founders-form { padding-top: 14px; padding-bottom: 0; }
+.wizard-step { background: none; border: 0; border-radius: 0; box-shadow: none; padding: 0; margin: 0; }
+.wizard-step .step-title::after { content: none; }
+.wizard-step.is-collapsed .step-sub, .wizard-step.is-collapsed .fields { display: initial; }
+.wizard-step.is-open { outline: none; }
+
+/* ===== Selects como filas de opción (chevron circular a la derecha) ===== */
+.field:has(select) { position: relative; }
+.field select { background-image: none !important; padding-right: 56px; }
+.field:has(select)::after {
+  content: '';
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.30) 0%, rgba(255,255,255,0.14) 100%);
+  border: 1px solid rgba(255,255,255,0.34);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.28);
+  pointer-events: none;
+  background-image: url("data:image/svg+xml;utf8,\
+    <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24'>\
+      <path fill='%23FFFFFF' d='M9 6l6 6-6 6'/>\
+    </svg>");
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.field:has(select):focus-within::after { background: linear-gradient(180deg, #08c9d4 0%, #039aa2 100%); border-color: color-mix(in oklab, var(--primary) 65%, white 35%); }
+/* ========== Fade a blanco (overlay) ========== */
+.fade-screen {
+  position: fixed;
+  inset: 0;
+  background: #fff;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 1s ease;
+  z-index: 9999;
+  pointer-events: none;
+  display: grid;
+  /* Centrado vertical del bloque (mensaje + formulario) */
+  align-content: center;
+  /* Alinear a la izquierda horizontalmente */
+  justify-content: start;
+  justify-items: start;
+  padding: clamp(16px, 5vw, 48px);
+  row-gap: 18px;
+}
+
+.fade-screen.active {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fade-screen { transition: none; }
+}
+
+/* ========== Modo "blanco" con ticker visible ========== */
+.blank-mode .footer-stack { z-index: 10000; }
+.blank-mode .ticker-track span { color: color-mix(in oklab, var(--primary) 35%, black 65%); opacity: 0; transition: opacity 1s ease; }
+.blank-mode .ticker-track span.sep { color: var(--primary); }
+.blank-mode .ticker-track span,
+.blank-mode .ticker-track span.sep { text-shadow: none; }
+.blank-mode .brand-mark { display: none; }
+
+/* Al activar la animación de nombres */
+.blank-mode.names-in .ticker-track span { opacity: 1; }
+
+/* Opciones de select legibles en modo blanco */
+.blank-mode .field select option,
+.blank-form .field select option { background-color: #fff; color: var(--ink); }
+
+/* Chevron para select en el formulario blanco (simple, sin sombras) */
+.blank-form .field { position: relative; }
+.blank-form .field:has(select)::after { content: none; }
+
+/* Botón de back arriba */
+.back-btn {
+  position: absolute;
+  top: calc(16px + env(safe-area-inset-top, 0px));
+  left: 16px;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  /* Borde: azul oscuro de marca */
+  border: 1px solid color-mix(in oklab, var(--primary) 35%, black 65%);
+  background: transparent; /* sin relleno */
+  /* Flecha: azul claro de marca */
+  color: var(--primary);
+  display: inline-grid;
+  place-items: center;
+  /* Sin sombras */
+  box-shadow: none;
+  cursor: pointer;
+  opacity: 0; /* inicia oculta para fade */
+  transition: opacity 1s ease, background-color 180ms ease, color 180ms ease, border-color 180ms ease;
+}
+
+.fade-screen.active .back-btn { opacity: 1; }
+
+/* Mensaje central en modo blanco */
+.blank-message {
+  font-family: 'Griffon', Georgia, 'Times New Roman', serif;
+  color: color-mix(in oklab, var(--primary) 35%, black 65%);
+  text-align: left;
+  font-size: 20px;
+  line-height: 1.25;
+  letter-spacing: 0.2px;
+  max-width: 800px;
+  width: 100%; /* alinear con ancho del formulario */
+  justify-self: start; /* pega el bloque al lado izquierdo */
+  opacity: 0;
+  transition: opacity 1s ease; /* sin delay; se activa tras overlay */
+}
+.fade-screen.done .blank-message { opacity: 1; }
+
+.blank-message strong { font-weight: 700; }
+
+@media (min-width: 768px) {
+  .blank-message { font-size: 24px; }
+  /* Centrar contenedor en tablet */
+  .fade-screen { justify-content: center; justify-items: center; }
+  .blank-message, .blank-form { justify-self: center; max-width: 680px; }
+}
+@media (min-width: 1200px) {
+  .blank-message { font-size: 26px; }
+  /* Ligeramente más ancho en desktop grande */
+  .blank-message, .blank-form { max-width: 720px; }
+}
+
+/* Botón Next bajo el formulario (estilo similar al back) */
+.next-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in oklab, var(--primary) 35%, black 65%); /* azul oscuro */
+  background: transparent; /* sin relleno */
+  color: var(--primary); /* flecha azul claro */
+  display: inline-grid;
+  place-items: center;
+  box-shadow: none;
+  cursor: pointer;
+  justify-self: end; /* alineado a la derecha del contenedor */
+  opacity: 0;
+  transition: opacity 1s ease, background-color 180ms ease, color 180ms ease, border-color 180ms ease;
+}
+.next-btn:hover {
+  background: transparent;
+  color: color-mix(in oklab, var(--primary) 35%, black 65%); /* flecha azul oscuro */
+  border-color: var(--primary); /* borde azul claro */
+}
+.next-btn:active { transform: none; box-shadow: none; }
+.fade-screen.done .next-btn { opacity: 1; }
+
+/* ===== Formulario en modo blanco ===== */
+.blank-form {
+    width: 100%;
+    max-width: 800px;
+    justify-self: start;
+    margin-top: 0;
+    opacity: 0;
+    transition: opacity 1s ease;
+}
+.fade-screen.done .blank-form { opacity: 1; }
+
+/* Alinear exactamente con el texto y anular padding heredado del wizard */
+.blank-mode #founders-form,
+.blank-form {
+  padding: 0 !important;
+  overflow: visible;
+}
+
+.blank-form .field { display: grid; gap: 6px; margin-bottom: 0; overflow: visible; }
+.blank-form .fields { gap: 8px; }
+.blank-form .select-wrap { position: relative; }
+.blank-form .select-wrap select { display: block; width: 100%; }
+/* Ensure hidden attribute actually hides even with grid rules */
+.blank-form [hidden] { display: none !important; }
+
+/* Smooth show/hide for conditional fields (screen 2) */
+#partnerField {
+  overflow: hidden;
+  transition: opacity 200ms ease, max-height 220ms ease, margin 200ms ease;
+}
+#partnerField.is-hidden {
+  opacity: 0;
+  max-height: 0 !important;
+  margin: 0 !important;
+  pointer-events: none;
+}
+#partnerField.is-visible {
+  opacity: 1;
+  max-height: 200px; /* suficiente para etiqueta + input */
+}
+
+/* ===== Custom select (Nacionalidad) ===== */
+/* Oculta visualmente el select nativo pero permite envío del formulario */
+.blank-form .select-wrap select.enhanced-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0 0 0 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+.blank-form .custom-select-trigger {
+  width: 100%;
+  min-height: 44px;
+  text-align: left;
+  background: #fff;
+  color: var(--ink);
+  border: 1px solid rgba(37,54,69,0.40);
+  border-radius: 16px;
+  padding: 10px 42px 10px 14px; /* deja espacio para flecha */
+  cursor: pointer;
+}
+.blank-form .custom-select-trigger:focus,
+.blank-form .custom-select-trigger:focus-visible,
+.blank-form .custom-select-trigger:active {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: none;
+}
+.blank-form .field .custom-select-trigger.is-error { border-color: var(--danger) !important; }
+.blank-form .field.is-error .custom-select-trigger:focus,
+.blank-form .field.is-error .custom-select-trigger:focus-visible,
+.blank-form .field.is-error .custom-select-trigger:active { border-color: var(--danger); }
+
+.blank-form .custom-select-list {
+  position: absolute;
+  left: 0; right: 0;
+  top: calc(100% + 6px);
+  background: #fff;
+  border: 1px solid rgba(37,54,69,0.40);
+  border-radius: 12px;
+  max-height: 220px;
+  overflow: auto;
+  padding: 6px 0;
+  z-index: 10001; /* sobre ticker y dentro del overlay */
+  display: none;
+  /* Ocultar scrollbar nativo (mostraremos uno custom) */
+  scrollbar-width: none; /* Firefox: sin barra */
+}
+
+/* WebKit: esconder scrollbar nativo completamente */
+.blank-form .custom-select-list::-webkit-scrollbar { width: 0 !important; height: 0 !important; }
+.blank-form .custom-select-list::-webkit-scrollbar-thumb { display: none; }
+.blank-form .custom-select-list::-webkit-scrollbar-track { background: transparent; }
+.blank-form .custom-select-list::-webkit-scrollbar-button { display: none; width: 0; height: 0; }
+
+/* Scrollbar custom superpuesto (solo thumb visible) */
+/* Scrollbar overlay fijo (no se desplaza con la lista) */
+.blank-form .select-wrap .select-scrollbar {
+  position: absolute;
+  right: 2px;
+  width: 6px;
+  border-radius: 3px;
+  background: transparent;
+  pointer-events: none; /* el track no captura, solo el thumb */
+}
+.blank-form .select-wrap .select-scrollbar-thumb {
+  position: absolute;
+  right: 0;
+  width: 6px;
+  min-height: 24px;
+  border-radius: 3px;
+  background: rgba(37,54,69,0.45);
+  pointer-events: auto; /* permite drag */
+}
+.blank-form .select-wrap.is-open .custom-select-list { display: block; }
+
+.blank-form .custom-select-option {
+  padding: 10px 14px;
+  color: var(--ink);
+  cursor: pointer;
+}
+.blank-form .custom-select-option:hover,
+.blank-form .custom-select-option.is-active { background: rgba(3,154,162,0.08); }
+.blank-form .custom-select-option[aria-selected="true"] { background: rgba(3,154,162,0.12); }
+.blank-form .select-wrap { position: relative; }
+.blank-form label { font-weight: 600; color: color-mix(in oklab, var(--primary) 35%, black 65%); }
+.blank-form .field input,
+.blank-form .field select,
+.blank-form .field textarea {
+  color: var(--ink);
+  background: #fff;
+  border: 1px solid rgba(37,54,69,0.40); /* más visible sobre blanco */
+  border-radius: 16px;
+  padding: 12px 14px;
+  box-shadow: none; /* evitar sombras heredadas */
+}
+.blank-form .field input::placeholder,
+.blank-form .field textarea::placeholder { color: rgba(37,54,69,0.55); }
+.blank-form .field select {
+    appearance: none;
+    -webkit-appearance: none;
+    background-color: #fff;
+    background-image: none; /* chevron se renderiza como elemento */
+    padding-right: 42px; /* espacio para el chevron */
+    min-height: 44px; /* altura consistente como los inputs */
+    line-height: 1.2;
+    cursor: pointer;
+}
+  /* Chevron superpuesto como elemento dentro del contenedor del select */
+  .blank-form .select-chevron {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    display: inline-grid;
+    place-items: center;
+    color: var(--primary);
+    pointer-events: none;
+  }
+.blank-form .field input:focus,
+.blank-form .field select:focus,
+.blank-form .field textarea:focus,
+.blank-form .field input:focus-visible,
+.blank-form .field select:focus-visible,
+.blank-form .field textarea:focus-visible,
+  .blank-form .field input:active,
+  .blank-form .field select:active,
+  .blank-form .field textarea:active {
+    outline: none;
+    border-color: var(--primary); /* solo cambia el borde */
+    box-shadow: none !important; /* sin glow */
+  }
+  .blank-form .field.is-error input,
+  .blank-form .field.is-error select,
+  .blank-form .field.is-error textarea { border-color: var(--danger) !important; }
+  .blank-form .field.is-error label { color: var(--danger); }
+  .blank-form .field.is-error input:focus,
+  .blank-form .field.is-error select:focus,
+  .blank-form .field.is-error textarea:focus,
+  .blank-form .field.is-error input:focus-visible,
+  .blank-form .field.is-error select:focus-visible,
+  .blank-form .field.is-error textarea:focus-visible,
+  .blank-form .field.is-error input:active,
+  .blank-form .field.is-error select:active,
+  .blank-form .field.is-error textarea:active { border-color: var(--danger); }
+
+/* Screen 2: Personas importantes (no redimensionable) */
+.screen-2 #importantPeople { resize: none; }
+
+/* Repeatable groups (screen-2) */
+.blank-form .repeatable .items { display: grid; gap: 8px; }
+.blank-form .repeatable .item { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center; }
+.blank-form .repeatable .remove { background: none; border: 0; color: var(--danger); cursor: pointer; font-size: 13px; padding: 6px 8px; }
+.blank-form .repeatable .add { margin-top: 4px; align-self: start; background: none; border: 1px dashed rgba(37,54,69,0.40); color: var(--ink); border-radius: 8px; padding: 8px 10px; cursor: pointer; transition: background-color 180ms ease, border-color 180ms ease, color 180ms ease; }
+
+.blank-form .repeatable .add:hover,
+.blank-form .repeatable .add:focus-visible { border-color: var(--primary); background: rgba(8,201,212,0.10); color: color-mix(in oklab, var(--primary) 45%, black 55%); }
+
+/* Checkbox chips for experiences (screen 3) */
+.blank-form .checkbox-group { display: flex; flex-wrap: wrap; gap: 8px; }
+.blank-form .check { display: inline-block; position: relative; }
+.blank-form .check input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.blank-form .check span {
+  display: inline-block; padding: 8px 12px; border-radius: 999px;
+  border: 1px solid rgba(37,54,69,0.40); background: #fff; color: var(--ink);
+  transition: background-color 180ms ease, border-color 180ms ease, color 180ms ease, transform 140ms ease, box-shadow 140ms ease;
+  will-change: transform;
+  position: relative;
+}
+.blank-form .check:hover span { transform: scale(1.04); border-color: var(--primary); }
+.blank-form .check input:focus + span { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(3,154,162,0.20); }
+.blank-form .check input:checked + span {
+  background: var(--primary); color: #fff; border-color: var(--primary);
+  transform: scale(1.06);
+  box-shadow: 0 6px 16px rgba(3,154,162,0.25);
+  font-weight: 600;
+}
+.blank-form .check input:checked:hover + span { transform: scale(1.08); }
+@media (prefers-reduced-motion: reduce) {
+  .blank-form .check span { transition: background-color 1ms linear, border-color 1ms linear, color 1ms linear; }
+  .blank-form .check:hover span,
+  .blank-form .check input:checked + span,
+  .blank-form .check input:checked:hover + span { transform: none; box-shadow: none; }
+}
+
+/* Screen 3/4/5/6/7 override: selected chips outlined (no fill), text + check azul */
+.screen-3 .checkbox-group, .screen-4 .checkbox-group, .screen-5 .checkbox-group, .screen-6 .checkbox-group, .screen-7 .checkbox-group { gap: 10px; }
+.screen-3 .blank-form .check span, .screen-4 .blank-form .check span, .screen-5 .blank-form .check span, .screen-6 .blank-form .check span, .screen-7 .blank-form .check span { padding: 10px 14px; border-width: 1px; }
+.screen-3 .blank-form .check:hover span, .screen-4 .blank-form .check:hover span, .screen-5 .blank-form .check:hover span, .screen-6 .blank-form .check:hover span, .screen-7 .blank-form .check:hover span { border-color: var(--primary); }
+.screen-3 .blank-form .check input:checked + span, .screen-4 .blank-form .check input:checked + span, .screen-5 .blank-form .check input:checked + span, .screen-6 .blank-form .check input:checked + span, .screen-7 .blank-form .check input:checked + span {
+  background: #fff;
+  color: var(--primary);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(3,154,162,0.20);
+  transform: scale(1.06);
+  padding-left: 34px; /* espacio para check */
+}
+.screen-3 .blank-form .check input:checked + span::before,
+.screen-4 .blank-form .check input:checked + span::before,
+.screen-5 .blank-form .check input:checked + span::before,
+.screen-6 .blank-form .check input:checked + span::before,
+.screen-7 .blank-form .check input:checked + span::before {
+  content: '';
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  width: 16px; height: 16px;
+  transform: translateY(-50%);
+  background-repeat: no-repeat;
+  background-size: 16px 16px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24'%3E%3Cpath d='M20 6 9 17l-5-5' fill='none' stroke='%23039aa2' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+.back-btn:hover {
+  background: transparent; /* sin relleno */
+  /* Flecha: azul oscuro */
+  color: color-mix(in oklab, var(--primary) 35%, black 65%);
+  /* Borde: azul claro */
+  border-color: var(--primary);
+}
+.back-btn:active { transform: none; box-shadow: none; }
+
+/* Screens dentro del overlay para transiciones suaves */
+.fade-screen .screen { transition: opacity 400ms ease; }
+/* Ocultar de layout la pantalla 2 hasta activarla */
+.screen-2 { opacity: 0; visibility: hidden; pointer-events: none; }
+.fade-screen .screen-2 { display: none; }
+.fade-screen.step-2 .screen-2 { display: grid; }
+.fade-screen.step-2 .screen-1 { opacity: 0; visibility: hidden; pointer-events: none; display: none; }
+.fade-screen.step-2 .screen-2 { opacity: 1; visibility: visible; pointer-events: auto; }
+/* Screen 3 (blank) visibility rules */
+.screen-3 { opacity: 0; visibility: hidden; pointer-events: none; }
+.fade-screen .screen-3 { display: none; }
+.fade-screen.step-3 .screen-3 { display: grid; }
+.fade-screen.step-3 .screen-2 { opacity: 0; visibility: hidden; pointer-events: none; display: none; }
+.fade-screen.step-3 .screen-3 { opacity: 1; visibility: visible; pointer-events: auto; }
+
+/* Screen 4 (replica de screen 3) visibility rules */
+.screen-4 { opacity: 0; visibility: hidden; pointer-events: none; }
+.fade-screen .screen-4 { display: none; }
+.fade-screen.step-4 .screen-4 { display: grid; }
+.fade-screen.step-4 .screen-3 { opacity: 0; visibility: hidden; pointer-events: none; display: none; }
+.fade-screen.step-4 .screen-4 { opacity: 1; visibility: visible; pointer-events: auto; }
+
+/* Screen 5 (replica de screen 4) visibility rules */
+.screen-5 { opacity: 0; visibility: hidden; pointer-events: none; }
+.fade-screen .screen-5 { display: none; }
+.fade-screen.step-5 .screen-5 { display: grid; }
+.fade-screen.step-5 .screen-4 { opacity: 0; visibility: hidden; pointer-events: none; display: none; }
+.fade-screen.step-5 .screen-5 { opacity: 1; visibility: visible; pointer-events: auto; }
+/* Screen 6 visibility */
+.screen-6 { opacity: 0; visibility: hidden; pointer-events: none; }
+.fade-screen .screen-6 { display: none; }
+.fade-screen.step-6 .screen-6 { display: grid; }
+.fade-screen.step-6 .screen-5 { opacity: 0; visibility: hidden; pointer-events: none; display: none; }
+.fade-screen.step-6 .screen-6 { opacity: 1; visibility: visible; pointer-events: auto; }
+
+/* Screen 7 visibility */
+.screen-7 { opacity: 0; visibility: hidden; pointer-events: none; }
+.fade-screen .screen-7 { display: none; }
+.fade-screen.step-7 .screen-7 { display: grid; }
+.fade-screen.step-7 .screen-6 { opacity: 0; visibility: hidden; pointer-events: none; display: none; }
+.fade-screen.step-7 .screen-7 { opacity: 1; visibility: visible; pointer-events: auto; }
+
+/* Layout de la pantalla 3: mismo ancho que el blank-message */
+.screen-3, .screen-4, .screen-5, .screen-6 {
+  width: 100%;
+  max-width: 800px;
+  display: grid;
+  row-gap: 18px;
+  justify-items: start;
+  margin-block: auto;
+}
+
+/* Mirror layout for screen-7 */
+.screen-7 { width: 100%; max-width: 800px; display: grid; row-gap: 18px; justify-items: start; margin-block: auto; }
+/* Alinear divider y form al inicio dentro del ancho controlado */
+.screen-3 .light-blue-divider, .screen-4 .light-blue-divider, .screen-5 .light-blue-divider, .screen-6 .light-blue-divider { justify-self: start; margin: 12px 0; }
+.screen-7 .light-blue-divider { justify-self: start; margin: 12px 0; }
+.screen-3 .blank-message, .screen-3 .blank-form, .screen-4 .blank-message, .screen-4 .blank-form, .screen-5 .blank-message, .screen-5 .blank-form, .screen-6 .blank-message, .screen-6 .blank-form { justify-self: start; }
+.screen-7 .blank-message, .screen-7 .blank-form { justify-self: start; }
+/* Place the next arrow to the right on screens 3, 4, 5 and 6 and add breathing space */
+.screen-3 .next-btn, .screen-4 .next-btn, .screen-5 .next-btn, .screen-6 .next-btn { justify-self: end; margin-top: 8px; }
+.screen-7 .next-btn { justify-self: end; margin-top: 8px; }
+@media (min-width: 768px) {
+  .screen-3, .screen-4, .screen-5, .screen-6 { max-width: 680px; }
+  .screen-7 { max-width: 680px; }
+  .screen-3 .blank-message, .screen-3 .blank-form, .screen-4 .blank-message, .screen-4 .blank-form, .screen-5 .blank-message, .screen-5 .blank-form, .screen-6 .blank-message, .screen-6 .blank-form { max-width: 680px; }
+  .screen-7 .blank-message, .screen-7 .blank-form { max-width: 680px; }
+  .screen-3 .light-blue-divider, .screen-4 .light-blue-divider, .screen-5 .light-blue-divider, .screen-6 .light-blue-divider { margin: 14px 0; }
+  .screen-7 .light-blue-divider { margin: 14px 0; }
+  .screen-3 .blank-form .fields > .field:first-child, .screen-4 .blank-form .fields > .field:first-child, .screen-5 .blank-form .fields > .field:first-child, .screen-6 .blank-form .fields > .field:first-child { margin-top: 14px; }
+  .screen-7 .blank-form .fields > .field:first-child { margin-top: 14px; }
+}
+@media (min-width: 1200px) {
+  .screen-3, .screen-4, .screen-5, .screen-6 { max-width: 720px; }
+  .screen-7 { max-width: 720px; }
+  .screen-3 .blank-message, .screen-3 .blank-form, .screen-4 .blank-message, .screen-4 .blank-form, .screen-5 .blank-message, .screen-5 .blank-form, .screen-6 .blank-message, .screen-6 .blank-form { max-width: 720px; }
+  .screen-7 .blank-message, .screen-7 .blank-form { max-width: 720px; }
+  .screen-3 .light-blue-divider, .screen-4 .light-blue-divider, .screen-5 .light-blue-divider, .screen-6 .light-blue-divider { margin: 16px 0; }
+  .screen-7 .light-blue-divider { margin: 16px 0; }
+  .screen-3 .blank-form .fields > .field:first-child, .screen-4 .blank-form .fields > .field:first-child, .screen-5 .blank-form .fields > .field:first-child, .screen-6 .blank-form .fields > .field:first-child { margin-top: 16px; }
+  .screen-7 .blank-form .fields > .field:first-child { margin-top: 16px; }
+}
+
+/* Eliminar padding/borde del contenedor de campos solo en screen 3
+   para alinear exactamente con el inicio del blank-message */
+.screen-3 .blank-form .fields, .screen-4 .blank-form .fields, .screen-5 .blank-form .fields, .screen-6 .blank-form .fields {
+  background: none;
+  border: 0;
+  padding: 0;
+}
+.screen-7 .blank-form .fields { background: none; border: 0; padding: 0; }
+
+/* Recupera el respiro superior del primer campo para igualar a otros screens */
+.screen-3 .blank-form .fields > .field:first-child, .screen-4 .blank-form .fields > .field:first-child, .screen-5 .blank-form .fields > .field:first-child, .screen-6 .blank-form .fields > .field:first-child { margin-top: 12px; }
+.screen-7 .blank-form .fields > .field:first-child { margin-top: 12px; }
+
+
+/* Layout del contenedor de la pantalla 1 para alinear Next a la derecha */
+.screen-1 { width: 100%; max-width: 800px; display: grid; row-gap: 18px; justify-items: start; }
+@media (min-width: 768px) { .screen-1 { max-width: 680px; } }
+@media (min-width: 1200px) { .screen-1 { max-width: 720px; } }
+
+/* Layout de la pantalla 2: centrar verticalmente el bloque */
+.screen-2 {
+  width: 100%;
+  max-width: 800px;
+  display: grid;
+  row-gap: 18px; /* igual que screen-1 */
+  justify-items: start;
+  margin-block: auto; /* centra verticalmente dentro del overlay */
+}
+@media (min-width: 768px) { .screen-2 { max-width: 680px; } }
+@media (min-width: 1200px) { .screen-2 { max-width: 720px; } }
+
+/* Fade-up entrance for screen-2 elements (match screens 3–5) */
+.fade-screen.step-2 .screen-2 .blank-message,
+.fade-screen.step-2 .screen-2 .light-blue-divider,
+.fade-screen.step-2 .screen-2 .blank-form,
+.fade-screen.step-2 .screen-2 .next-btn {
+  opacity: 0;
+  animation: rise-in 520ms ease forwards;
+}
+.fade-screen.step-2 .screen-2 .blank-message { animation-delay: 40ms; }
+.fade-screen.step-2 .screen-2 .light-blue-divider { animation-delay: 140ms; }
+.fade-screen.step-2 .screen-2 .blank-form { animation-delay: 220ms; }
+.fade-screen.step-2 .screen-2 .next-btn { animation-delay: 300ms; }
+/* Screen 2: ajustar espaciamientos para que mensaje, divisor y formulario
+   tengan separación consistente sin acumular gap + márgenes */
+.screen-2 { row-gap: 12px; }
+.screen-2 .light-blue-divider { margin: 0; }
+@media (min-width: 768px) { .screen-2 { row-gap: 14px; } }
+@media (min-width: 1200px) { .screen-2 { row-gap: 16px; } }
+
+/* Screen 1: aplicar el mismo criterio de espacios que en screen 2 */
+.screen-1 { row-gap: 12px; }
+.screen-1 .light-blue-divider { margin: 0; }
+@media (min-width: 768px) { .screen-1 { row-gap: 14px; } }
+@media (min-width: 1200px) { .screen-1 { row-gap: 16px; } }
+@media (prefers-reduced-motion: reduce) {
+  .fade-screen.step-2 .screen-2 .blank-message,
+  .fade-screen.step-2 .screen-2 .light-blue-divider,
+  .fade-screen.step-2 .screen-2 .blank-form,
+  .fade-screen.step-2 .screen-2 .next-btn { animation: none; opacity: 1; transform: none; }
+}
+
+/* Ensure form aligns with screen-2 text width and left edge */
+.screen-2 .blank-form { width: 100%; max-width: 800px; justify-self: start; padding: 0 !important; margin-top: 0 !important; }
+@media (min-width: 768px) { .screen-2 .blank-message, .screen-2 .blank-form { max-width: 680px; justify-self: start; } }
+@media (min-width: 1200px) { .screen-2 .blank-message, .screen-2 .blank-form { max-width: 720px; justify-self: start; } }
+
+/* Remove inner padding/border on fields for screen-2 to align with text */
+.screen-2 .fields { padding: 0; border: 0; background: transparent; }
+
+/* Fade-up entrance for screen-1 elements (match screens 3–5) */
+.fade-screen.done .screen-1 .blank-message,
+.fade-screen.done .screen-1 .light-blue-divider,
+.fade-screen.done .screen-1 .blank-form,
+.fade-screen.done .screen-1 .next-btn {
+  opacity: 0;
+  animation: rise-in 520ms ease forwards;
+}
+.fade-screen.done .screen-1 .blank-message { animation-delay: 40ms; }
+.fade-screen.done .screen-1 .light-blue-divider { animation-delay: 140ms; }
+.fade-screen.done .screen-1 .blank-form { animation-delay: 220ms; }
+.fade-screen.done .screen-1 .next-btn { animation-delay: 300ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  .fade-screen.done .screen-1 .blank-message,
+  .fade-screen.done .screen-1 .light-blue-divider,
+  .fade-screen.done .screen-1 .blank-form,
+  .fade-screen.done .screen-1 .next-btn { animation: none; opacity: 1; transform: none; }
+}
+
+/* ===== Entrada (fade-up) para screens 3, 4 y 5 ===== */
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Estado inicial y animación con leve escalonado */
+.fade-screen.step-3 .screen-3 .blank-message,
+.fade-screen.step-3 .screen-3 .light-blue-divider,
+.fade-screen.step-3 .screen-3 .blank-form,
+.fade-screen.step-3 .screen-3 .next-btn,
+.fade-screen.step-4 .screen-4 .blank-message,
+.fade-screen.step-4 .screen-4 .light-blue-divider,
+.fade-screen.step-4 .screen-4 .blank-form,
+.fade-screen.step-4 .screen-4 .next-btn,
+.fade-screen.step-5 .screen-5 .blank-message,
+.fade-screen.step-5 .screen-5 .light-blue-divider,
+.fade-screen.step-5 .screen-5 .blank-form,
+.fade-screen.step-5 .screen-5 .next-btn,
+.fade-screen.step-6 .screen-6 .blank-message,
+.fade-screen.step-6 .screen-6 .light-blue-divider,
+.fade-screen.step-6 .screen-6 .blank-form,
+.fade-screen.step-6 .screen-6 .next-btn {
+  opacity: 0;
+  animation: rise-in 520ms ease forwards;
+}
+
+.fade-screen.step-3 .screen-3 .blank-message,
+.fade-screen.step-4 .screen-4 .blank-message,
+.fade-screen.step-5 .screen-5 .blank-message,
+.fade-screen.step-6 .screen-6 .blank-message { animation-delay: 40ms; }
+
+.fade-screen.step-3 .screen-3 .light-blue-divider,
+.fade-screen.step-4 .screen-4 .light-blue-divider,
+.fade-screen.step-5 .screen-5 .light-blue-divider,
+.fade-screen.step-6 .screen-6 .light-blue-divider { animation-delay: 140ms; }
+
+.fade-screen.step-3 .screen-3 .blank-form,
+.fade-screen.step-4 .screen-4 .blank-form,
+.fade-screen.step-5 .screen-5 .blank-form,
+.fade-screen.step-6 .screen-6 .blank-form { animation-delay: 220ms; }
+
+.fade-screen.step-3 .screen-3 .next-btn,
+.fade-screen.step-4 .screen-4 .next-btn,
+.fade-screen.step-5 .screen-5 .next-btn,
+.fade-screen.step-6 .screen-6 .next-btn { animation-delay: 300ms; }
+
+/* Step-7 animation (mirror of 3–6) */
+.fade-screen.step-7 .screen-7 .blank-message,
+.fade-screen.step-7 .screen-7 .light-blue-divider,
+.fade-screen.step-7 .screen-7 .blank-form,
+.fade-screen.step-7 .screen-7 .next-btn { opacity: 0; animation: rise-in 520ms ease forwards; }
+.fade-screen.step-7 .screen-7 .blank-message { animation-delay: 40ms; }
+.fade-screen.step-7 .screen-7 .light-blue-divider { animation-delay: 140ms; }
+.fade-screen.step-7 .screen-7 .blank-form { animation-delay: 220ms; }
+.fade-screen.step-7 .screen-7 .next-btn { animation-delay: 300ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  .fade-screen.step-7 .screen-7 .blank-message,
+  .fade-screen.step-7 .screen-7 .light-blue-divider,
+  .fade-screen.step-7 .screen-7 .blank-form,
+  .fade-screen.step-7 .screen-7 .next-btn { animation: none; opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fade-screen.step-3 .screen-3 .blank-message,
+  .fade-screen.step-3 .screen-3 .light-blue-divider,
+  .fade-screen.step-3 .screen-3 .blank-form,
+  .fade-screen.step-3 .screen-3 .next-btn,
+  .fade-screen.step-4 .screen-4 .blank-message,
+  .fade-screen.step-4 .screen-4 .light-blue-divider,
+  .fade-screen.step-4 .screen-4 .blank-form,
+  .fade-screen.step-4 .screen-4 .next-btn,
+  .fade-screen.step-5 .screen-5 .blank-message,
+  .fade-screen.step-5 .screen-5 .light-blue-divider,
+  .fade-screen.step-5 .screen-5 .blank-form,
+  .fade-screen.step-5 .screen-5 .next-btn,
+  .fade-screen.step-6 .screen-6 .blank-message,
+  .fade-screen.step-6 .screen-6 .light-blue-divider,
+  .fade-screen.step-6 .screen-6 .blank-form,
+  .fade-screen.step-6 .screen-6 .next-btn { animation: none; opacity: 1; transform: none; }
+}
