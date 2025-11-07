@@ -298,6 +298,14 @@
   document.querySelectorAll('.blank-form .select-wrap[data-enhance-select]')
     .forEach(enhanceSelect);
 
+  // Normalize special characters in static headings (defensive)
+  document.querySelectorAll('.blank-message').forEach((el) => {
+    el.innerHTML = el.innerHTML
+      .replace(/\\u00e1/g, '\u00e1')
+      .replace('que mÃ¡s', 'que más')
+      .replace('que m�s', 'que más');
+  });
+
   // ===== Screen 3: Experiences form (injected to avoid breaking HTML encoding) =====
   const s3 = document.querySelector('.screen-3');
   if (s3 && !document.getElementById('experience-form')) {
@@ -354,13 +362,26 @@
       lab.appendChild(span);
       group.appendChild(lab);
     });
-
-    field.appendChild(label);
+    
     field.appendChild(group);
     fields.appendChild(field);
     form.appendChild(fields);
     s3.appendChild(hr);
     s3.appendChild(form);
+
+    // Update Screen 3 header copy
+    const head = s3.querySelector('.blank-message');
+    if (head) {
+      head.innerHTML = '"Selecciona las experiencias deportivas <strong>que m\\u00e1s disfrutas."</strong>';
+    }
+    // Fix special characters and add "deportivas" in case innerHTML kept escape sequence
+    if (head) {
+      head.innerHTML = head.innerHTML
+        .replace('\\u00e1', 'á')
+        .replace('experiencias <strong>', 'experiencias deportivas <strong>');
+    }
+    // Normalize any literal unicode escape sequences to actual characters
+    if (head) { head.innerHTML = head.innerHTML.replace(/\\u00e1/g, '\u00e1'); }
 
     // Add a "Next" arrow button to Screen 3 (same style as Screen 2)
     const next3 = document.createElement('button');
@@ -716,3 +737,4 @@
     s7c.appendChild(next7);
   }
 });
+

@@ -153,7 +153,32 @@ body {
   line-height: 0.9;
   letter-spacing: 0.2px;
   text-wrap: balance;
+  /* Forzar NO mayúsculas si algún stylesheet externo impone caps/small-caps */
+  text-transform: none !important; /* respeta el casing del HTML */
+  font-variant: normal !important;
+  font-variant-caps: normal !important; /* evita small-caps */
+  font-feature-settings: "smcp" 0, "c2sc" 0, "case" 0, "cpsp" 0, "titl" 0 !important;
   text-shadow: 0 2px 18px var(--shadow);
+}
+
+/* Más interlineado cuando el H1 tiende a partirse en 2+ líneas */
+@media (max-width: 900px) {
+  .content h1 { line-height: 1.02; }
+}
+@media (max-width: 700px) {
+  .content h1 { line-height: 1.06; }
+}
+@media (max-width: 480px) {
+  .content h1 { line-height: 1.08; }
+}
+
+/* Override final para asegurar Title Case en el H1 aunque la fuente de Adobe fuerce small-caps */
+.main-heading {
+  font-family: Georgia, 'Times New Roman', serif !important; /* evitar variante SC del kit */
+  text-transform: capitalize !important; /* primeras letras de cada palabra */
+  font-variant: normal !important;
+  font-variant-caps: normal !important;
+  font-feature-settings: "smcp" 0, "c2sc" 0, "case" 0, "cpsp" 0, "titl" 0 !important;
 }
 
 
@@ -651,7 +676,8 @@ select::-ms-expand { display: none; }
 
 /* Mensaje central en modo blanco */
 .blank-message {
-  font-family: 'Griffon', Georgia, 'Times New Roman', serif;
+  /* Evitar capitalización forzada por la variante del kit */
+  font-family: Georgia, 'Times New Roman', serif !important;
   color: color-mix(in oklab, var(--primary) 35%, black 65%);
   text-align: left;
   font-size: 20px;
@@ -662,10 +688,20 @@ select::-ms-expand { display: none; }
   justify-self: start; /* pega el bloque al lado izquierdo */
   opacity: 0;
   transition: opacity 1s ease; /* sin delay; se activa tras overlay */
+  text-transform: none !important;
+  font-variant: normal !important;
+  font-variant-caps: normal !important;
+  font-feature-settings: "smcp" 0, "c2sc" 0, "case" 0, "cpsp" 0, "titl" 0 !important;
 }
 .fade-screen.done .blank-message { opacity: 1; }
 
-.blank-message strong { font-weight: 700; }
+.blank-message strong {
+  font-weight: 700;
+  text-transform: none !important;
+  font-variant: normal !important;
+  font-variant-caps: normal !important;
+  font-feature-settings: "smcp" 0, "c2sc" 0, "case" 0, "cpsp" 0, "titl" 0 !important;
+}
 
 @media (min-width: 768px) {
   .blank-message { font-size: 24px; }
@@ -946,6 +982,56 @@ select::-ms-expand { display: none; }
   box-shadow: 0 0 0 2px rgba(3,154,162,0.20);
   transform: scale(1.06);
   padding-left: 34px; /* espacio para check */
+}
+
+/* Mobile: chips dentro de un contenedor scrollable con pista visual */
+@media (max-width: 600px) {
+  .screen-3 .checkbox-group,
+  .screen-4 .checkbox-group,
+  .screen-5 .checkbox-group,
+  .screen-6 .checkbox-group,
+  .screen-7 .checkbox-group {
+    /* Altura visible: 4 filas y media */
+    --chip-font: clamp(13px, 3.6vw, 15px);
+    --chip-pad-y: 8px;
+    --chip-gap: 10px;
+    --chip-row: calc(1.2 * var(--chip-font) + (2 * var(--chip-pad-y)) + 2px);
+    /* Mostrar 5 filas completas */
+    max-height: calc((var(--chip-row) + var(--chip-gap)) * 5 - var(--chip-gap));
+    overflow: auto;
+    padding: 10px;
+    border: 0; /* sin borde visible */
+    border-radius: 14px;
+    background: transparent; /* sin fondo para evitar bordes aparentes */
+    -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: none; /* IE/Edge oculta scrollbar */
+    scrollbar-width: none;    /* Firefox oculta scrollbar */
+    gap: var(--chip-gap);
+    /* Fades top/bottom to sugerir scroll */
+    mask-image: linear-gradient(180deg, transparent 0, #000 12px, #000 calc(100% - 12px), transparent 100%);
+    -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 12px, #000 calc(100% - 12px), transparent 100%);
+  }
+  /* Chips un poco más compactos en móviles */
+  .screen-3 .blank-form .check span,
+  .screen-4 .blank-form .check span,
+  .screen-5 .blank-form .check span,
+  .screen-6 .blank-form .check span,
+  .screen-7 .blank-form .check span {
+    padding: var(--chip-pad-y) 12px;
+    font-size: var(--chip-font);
+    line-height: 1.2;
+  }
+  /* Scrollbar discreto */
+  .screen-3 .checkbox-group::-webkit-scrollbar,
+  .screen-4 .checkbox-group::-webkit-scrollbar,
+  .screen-5 .checkbox-group::-webkit-scrollbar,
+  .screen-6 .checkbox-group::-webkit-scrollbar,
+  .screen-7 .checkbox-group::-webkit-scrollbar { width: 0 !important; height: 0 !important; }
+  .screen-3 .checkbox-group::-webkit-scrollbar-thumb,
+  .screen-4 .checkbox-group::-webkit-scrollbar-thumb,
+  .screen-5 .checkbox-group::-webkit-scrollbar-thumb,
+  .screen-6 .checkbox-group::-webkit-scrollbar-thumb,
+  .screen-7 .checkbox-group::-webkit-scrollbar-thumb { background: transparent; display: none; }
 }
 .screen-3 .blank-form .check input:checked + span::before,
 .screen-4 .blank-form .check input:checked + span::before,

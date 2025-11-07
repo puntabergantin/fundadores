@@ -1,0 +1,12 @@
+        </button>
+      </div>
+      <!-- Pantalla 3: en blanco para cierre/transición final -->
+      <div class="screen screen-3" aria-label="Pantalla 3" aria-hidden="true">
+        <div class="blank-message" role="status" aria-live="polite">"Selecciona las experiencias <strong>que más disfrutas."</strong></div>
+      </div>
+
+      <!-- Pantalla 4: réplica de la pantalla 3 -->
+      <div class="screen screen-4" aria-label="Pantalla 4" aria-hidden="true">
+        <div class="blank-message" role="status" aria-live="polite">"Selecciona las experiencias <strong>que más disfrutas."</strong></div>
+      </div>
+
