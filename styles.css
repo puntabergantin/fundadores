@@ -42,12 +42,62 @@ body {
   top: calc(50px + env(safe-area-inset-top, 0px));
   left: 50%;
   transform: translateX(-50%);
-  width: clamp(140px, 36vw, 300px); /* más grande */
+  /* Fluid using vmin so it reacts to width and height */
+  width: clamp(96px, 22vmin, 260px);
   height: auto;
   z-index: 2; /* sobre scrim (1), bajo overlays si hubiera (3) */
   opacity: 0.98;
   filter: drop-shadow(0 2px 8px rgba(0,0,0,0.35));
   pointer-events: none; /* evitar interacciones accidentales */
+}
+
+/* Muy móviles (ancho <= 360px): crest más compacto y algo más alto del borde */
+@media (max-width: 360px) {
+  .brand-top { width: clamp(96px, 28vw, 220px); top: calc(36px + env(safe-area-inset-top, 0px)); }
+}
+
+/* Desktop amplio: permitimos un máximo mayor sin exagerar */
+@media (min-width: 1200px) {
+  .brand-top { width: clamp(120px, 14vmin, 240px); }
+}
+
+/* Tablets y laptops medianas */
+@media (min-width: 768px) and (max-width: 1199px) {
+  .brand-top { width: clamp(110px, 16vmin, 220px); }
+}
+
+/* Short viewports: shrink crest and increase top padding to avoid overlap */
+@media (max-height: 820px) and (min-width: 768px) {
+  .brand-top { width: clamp(90px, 18vmin, 240px); top: calc(40px + env(safe-area-inset-top, 0px)); }
+  .content { padding-top: clamp(48px, 10vh, 120px); }
+  .footer-stack { gap: clamp(10px, 3vh, 24px); }
+}
+@media (max-height: 650px) and (min-width: 768px) {
+  .brand-top { width: clamp(80px, 16vmin, 220px); top: calc(32px + env(safe-area-inset-top, 0px)); }
+  .content { padding-top: clamp(36px, 8vh, 100px); padding-bottom: calc(clamp(80px, 16vh, 120px) + env(safe-area-inset-bottom, 0px)); }
+  .brand-mark { width: clamp(84px, 10vmin, 140px); }
+}
+
+/* If viewport is short, also tone down text sizes */
+@media (max-height: 650px) {
+  .content h1 { font-size: clamp(28px, 6.2vmin, 52px); }
+  .content h3 { font-size: clamp(14px, 2.8vmin, 16px); }
+  .cta { font-size: clamp(10px, 2.6vmin, 14px); }
+}
+
+/* Landscape phones: ventana ancha pero baja */
+@media (orientation: landscape) and (max-height: 600px) {
+  .hero { place-items: center; }
+  .brand-top { top: calc(28px + env(safe-area-inset-top, 0px)); width: clamp(80px, 18vmin, 220px); }
+  .content {
+    padding-top: clamp(32px, 9vh, 80px);
+    padding-bottom: calc(clamp(64px, 16vh, 110px) + env(safe-area-inset-bottom, 0px));
+  }
+  .content h1 { font-size: clamp(28px, 6.2vmin, 48px); line-height: 0.95; }
+  .content h3 { font-size: clamp(13px, 2.6vmin, 16px); }
+  .cta { font-size: clamp(10px, 2.5vmin, 14px); }
+  .brand-mark { width: clamp(80px, 12vmin, 140px); }
+  .footer-stack { gap: clamp(8px, 2.2vh, 18px); padding-bottom: clamp(8px, 2vh, 16px); }
 }
 
 .hero {
@@ -89,29 +139,31 @@ body {
   position: relative;
   z-index: 2;
   max-width: min(92vw, 720px);
-  padding-inline: 20px;
-  padding-top: 150px; /* margen superior del contenido */
+  padding-inline: clamp(16px, 4vw, 28px);
+  padding-top: clamp(80px, 14vh, 150px); /* margen superior del contenido */
   /* Espacio moderado respecto al logo inferior */
-  padding-bottom: calc(140px + env(safe-area-inset-bottom, 0px));
+  padding-bottom: calc(clamp(110px, 20vh, 160px) + env(safe-area-inset-bottom, 0px));
   text-align: center;
 }
 
 .content h1 {
   margin: 0 0 12px;
   font-family: 'Griffon', Georgia, 'Times New Roman', serif;
-  font-size: 55px;
-  line-height: 0.85;
+  font-size: clamp(32px, 8.5vw, 56px);
+  line-height: 0.9;
   letter-spacing: 0.2px;
+  text-wrap: balance;
   text-shadow: 0 2px 18px var(--shadow);
 }
 
 
 .content h3 {
-  margin: 0 auto 28px;
+  margin: 0 auto 24px;
   font-weight: 400;
   opacity: 0.95;
-  font-size: 18px;
-  line-height: 1.2;
+  font-size: clamp(16px, 4vw, 18px);
+  line-height: 1.3;
+  max-width: 42ch;
   text-shadow: 0 1px 12px var(--shadow);
 }
 
@@ -119,13 +171,20 @@ body {
   appearance: none;
   border: none;
   border-radius: 999px;
-  padding: 14px 22px;
+  padding: 14px clamp(16px, 4vw, 26px);
   /* Glass/blur base (not blue fill) */
   background: rgba(255, 255, 255, 0.10);
   color: var(--white);
   font-weight: 600;
   text-transform: uppercase;
-  font-size: 16px;
+  font-size: clamp(12px, 3.2vw, 16px);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  max-width: 100%;
+  line-height: 1;
+  letter-spacing: clamp(0em, 0.04vw, 0.04em);
   cursor: pointer;
   border: 1px solid rgba(255,255,255,0.22);
   backdrop-filter: blur(10px) saturate(140%);
@@ -149,6 +208,11 @@ body {
   box-shadow: 0 6px 20px rgba(3,154,162,0.35) inset;
 }
 
+/* Extra pequeño: asegure una sola línea del CTA */
+@media (max-width: 360px) {
+  .cta { font-size: 10.5px; letter-spacing: -0.01em; padding-inline: 14px; }
+}
+
 /* Footer stack: agrupa logo inferior y ticker con separación y margen inferior */
 .footer-stack {
   position: fixed;
@@ -158,8 +222,8 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 35px; /* más margen superior del ticker respecto al logo */
-  padding-bottom: 25px; /* 25px de margen inferior total */
+  gap: clamp(16px, 4vh, 35px); /* margen superior del ticker respecto al logo */
+  padding-bottom: clamp(12px, 2.5vh, 25px); /* margen inferior total */
   z-index: 3;
   pointer-events: none; /* evita capturar clics */
 }
@@ -167,10 +231,16 @@ body {
 .brand-mark {
   display: inline-block;
   margin-top: 0;
-  width: clamp(90px, 30vw, 160px);
+  /* Ligero ajuste: reducir un poco en móviles estrechos */
+  width: clamp(78px, 22vw, 150px);
   height: auto;
   opacity: 0.95;
   filter: drop-shadow(0 2px 8px rgba(0,0,0,0.35));
+}
+
+/* En tablet/desktop el logo inferior puede respirar un poco más */
+@media (min-width: 768px) {
+  .brand-mark { width: clamp(90px, 10vw, 140px); }
 }
 
 /* Infinite ticker below bottom logo */
@@ -223,17 +293,13 @@ body {
   /* Más ancho en tablet para permitir H1 en ~2 líneas */
   .content { max-width: min(90vw, 960px); }
   .content h3 { max-width: 64ch; }
-  /* Mantener tamaño de mobile */
-  .content h1 { font-size: 55px; }
-  .content h3 { font-size: 18px; }
+  /* Tamaños fluidos definidos fuera se mantienen */
 }
 
 @media (min-width: 1200px) {
   /* Aún más ancho en desktop amplio, manteniendo márgenes responsivos */
   .content { max-width: min(84vw, 1100px); }
-  /* Mantener tamaño de mobile */
-  .content h1 { font-size: 55px; }
-  .content h3 { font-size: 18px; }
+  /* Tamaños fluidos ya aplican */
 }
 
 /* Respect reduced motion */
@@ -246,7 +312,7 @@ body {
   .hero { place-items: end center; }
   .content {
     /* Un poco menos espacio en móvil */
-    padding-bottom: calc(12dvh + 140px + env(safe-area-inset-bottom, 0px));
+    padding-bottom: calc(8dvh + 120px + env(safe-area-inset-bottom, 0px));
   }
   .content h3 { margin-bottom: 22px; }
 }
@@ -1160,4 +1226,26 @@ select::-ms-expand { display: none; }
   .fade-screen.step-6 .screen-6 .light-blue-divider,
   .fade-screen.step-6 .screen-6 .blank-form,
   .fade-screen.step-6 .screen-6 .next-btn { animation: none; opacity: 1; transform: none; }
+}
+
+/* --- Landscape phones & short windows overrides (put at end for cascade) --- */
+@media (orientation: landscape) and (max-height: 740px) {
+  .hero { place-items: center; }
+  .brand-top { top: calc(20px + env(safe-area-inset-top, 0px)); width: clamp(70px, 16vmin, 200px); }
+  .content { padding-top: clamp(20px, 8vh, 60px); padding-bottom: calc(clamp(56px, 16vh, 100px) + env(safe-area-inset-bottom, 0px)); max-width: min(92vw, 820px); }
+  .content h1 { font-size: clamp(22px, 4.8vmin, 40px); line-height: 1; }
+  .content h3 { font-size: clamp(12px, 2.2vmin, 16px); }
+  .cta { font-size: clamp(10px, 2.1vmin, 13px); }
+  .brand-mark { width: clamp(68px, 10vmin, 120px); }
+  .footer-stack { gap: clamp(6px, 1.6vh, 14px); padding-bottom: clamp(6px, 1.8vh, 14px); }
+}
+
+/* Extremely short landscape (e.g., 360–430px tall) */
+@media (orientation: landscape) and (max-height: 430px) {
+  .brand-top { top: calc(14px + env(safe-area-inset-top, 0px)); width: clamp(60px, 14vmin, 180px); }
+  .content { padding-top: clamp(12px, 6vh, 40px); padding-bottom: calc(clamp(48px, 18vh, 88px) + env(safe-area-inset-bottom, 0px)); }
+  .content h1 { font-size: clamp(20px, 4.2vmin, 36px); }
+  .content h3 { font-size: clamp(11px, 2vmin, 14px); }
+  .cta { font-size: clamp(9.5px, 2vmin, 12.5px); }
+  .brand-mark { width: clamp(60px, 9vmin, 110px); }
 }
