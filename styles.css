@@ -25,13 +25,19 @@
 
 html, body {
   height: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 body {
   margin: 0;
+  padding: 0;
   font-family: 'Montserrat', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   color: var(--white);
   background: var(--ink);
+  position: relative;
 }
 
 /* Prevent overflow by making padding part of width/height calculations */
@@ -103,6 +109,7 @@ body {
 .hero {
   position: relative;
   height: 100dvh;
+  min-height: 100dvh;
   width: 100%;
   overflow: hidden;
   display: grid;
@@ -115,6 +122,7 @@ body {
   inset: 0;
   width: 100%;
   height: 100%;
+  min-height: 100dvh;
   object-fit: cover;
   z-index: 0;
   /* Suaviza la transición del loop */
@@ -147,6 +155,9 @@ body {
 .scrim {
   position: absolute;
   inset: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 100dvh;
   background: linear-gradient(180deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.50) 40%, rgba(0,0,0,0.70) 100%);
   z-index: 1;
 }
