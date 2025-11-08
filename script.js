@@ -25,6 +25,7 @@
   const cta = document.querySelector('[data-next]');
   const fade = document.getElementById('fadeScreen');
   const backBtn = document.getElementById('backBtn');
+  const closeBtn = document.getElementById('closeBtn');
 
   const screen1 = () => document.querySelector('.screen-1');
   const screen2 = () => document.querySelector('.screen-2');
@@ -34,7 +35,39 @@
   const screen6 = () => document.querySelector('.screen-6');
   const screen7 = () => document.querySelector('.screen-7');
 
-  // Overlay wiring (open + back navigation)
+  // Guardar/restaurar progreso en localStorage
+  const saveProgress = () => {
+    const currentStep = ['step-2', 'step-3', 'step-4', 'step-5', 'step-6', 'step-7']
+      .find(cls => fade && fade.classList.contains(cls)) || 'step-1';
+    localStorage.setItem('founders_progress', currentStep);
+  };
+
+  const restoreProgress = () => {
+    const savedStep = localStorage.getItem('founders_progress');
+    if (!savedStep || savedStep === 'step-1') return;
+    
+    // Aplicar el step guardado
+    fade && fade.classList.add(savedStep);
+    
+    // Mostrar la screen correspondiente
+    const stepMap = {
+      'step-2': screen2,
+      'step-3': screen3,
+      'step-4': screen4,
+      'step-5': screen5,
+      'step-6': screen6,
+      'step-7': screen7
+    };
+    
+    const targetScreen = stepMap[savedStep];
+    if (targetScreen) {
+      const s1 = screen1();
+      const target = targetScreen();
+      if (s1) s1.setAttribute('aria-hidden', 'true');
+      if (target) target.setAttribute('aria-hidden', 'false');
+    }
+  };
+
   const resetScreensToStep1 = () => {
     const s1 = screen1(), s2 = screen2(), s3 = screen3(), s4 = screen4(), s5 = screen5(), s6 = screen6(), s7 = screen7();
     if (s1) s1.setAttribute('aria-hidden', 'false');
@@ -47,7 +80,14 @@
   };
 
   const openOverlay = () => {
-    resetScreensToStep1();
+    // No resetear si hay progreso guardado
+    const savedStep = localStorage.getItem('founders_progress');
+    if (!savedStep || savedStep === 'step-1') {
+      resetScreensToStep1();
+    } else {
+      restoreProgress();
+    }
+    
     fade.classList.add('active');
     document.documentElement.style.backgroundColor = '#fff';
     document.documentElement.classList.add('blank-mode');
@@ -60,7 +100,29 @@
     fade.addEventListener('transitionend', onDone, { once: true });
   };
 
+  const closeOverlay = () => {
+    // Guardar progreso antes de cerrar
+    saveProgress();
+    
+    // Ocultar todo inmediatamente sin transiciones intermedias
+    fade.style.transition = 'none';
+    fade.classList.remove('active', 'done');
+    fade.setAttribute('aria-hidden', 'true');
+    document.documentElement.classList.remove('blank-mode', 'names-in');
+    document.documentElement.style.backgroundColor = '';
+    
+    // Restaurar la transición después de un frame para futuras aperturas
+    requestAnimationFrame(() => {
+      fade.style.transition = '';
+    });
+  };
+
   cta && fade && cta.addEventListener('click', (e) => { e.preventDefault(); openOverlay(); });
+
+  // Botón X: cierra y guarda progreso
+  closeBtn && fade && closeBtn.addEventListener('click', () => {
+    closeOverlay();
+  });
 
   backBtn && fade && backBtn.addEventListener('click', () => {
     if (fade.classList.contains('step-7')) {
@@ -85,21 +147,25 @@
       fade.classList.remove('step-4');
       const s3 = screen3(), s4 = screen4();
       if (s3 && s4) { s3.setAttribute('aria-hidden','false'); s4.setAttribute('aria-hidden','true'); }
+      saveProgress();
       return;
     }
     if (fade.classList.contains('step-3')) {
       fade.classList.remove('step-3');
       const s2 = screen2(), s3 = screen3();
       if (s2 && s3) { s2.setAttribute('aria-hidden','false'); s3.setAttribute('aria-hidden','true'); }
+      saveProgress();
       return;
     }
     if (fade.classList.contains('step-2')) {
       fade.classList.remove('step-2');
       const s1 = screen1(), s2 = screen2();
       if (s1 && s2) { s1.setAttribute('aria-hidden','false'); s2.setAttribute('aria-hidden','true'); }
+      saveProgress();
       return;
     }
-    // Close overlay
+    // Si estamos en step-1, cerrar todo y limpiar progreso
+    localStorage.removeItem('founders_progress');
     fade.classList.remove('active');
     fade.setAttribute('aria-hidden', 'true');
     fade.classList.remove('done', 'step-2', 'step-3', 'step-4', 'step-5', 'step-6', 'step-7');
@@ -118,6 +184,7 @@
     const s1 = screen1(), s2 = screen2();
     if (s1 && s2) { s1.setAttribute('aria-hidden','true'); s2.setAttribute('aria-hidden','false'); }
     fade && requestAnimationFrame(() => fade.classList.add('step-2'));
+    saveProgress();
   });
 
   const nextBtn2 = document.getElementById('nextBtn2');
@@ -126,6 +193,7 @@
     const s2 = screen2(), s3 = screen3();
     if (s2 && s3) { s2.setAttribute('aria-hidden','true'); s3.setAttribute('aria-hidden','false'); }
     fade && requestAnimationFrame(() => fade.classList.add('step-3'));
+    saveProgress();
   });
 
   // Next from screen 3 to screen 4
@@ -136,6 +204,7 @@
       const s3 = screen3(), s4 = screen4();
       if (s3 && s4) { s3.setAttribute('aria-hidden','true'); s4.setAttribute('aria-hidden','false'); }
       fade && requestAnimationFrame(() => fade.classList.add('step-4'));
+      saveProgress();
     });
   };
 
