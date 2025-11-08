@@ -643,6 +643,21 @@ select::-ms-expand { display: none; }
   pointer-events: auto;
 }
 
+/* Estado de cierre: transición rápida y bloqueo total de .done */
+.fade-screen.closing {
+  transition: opacity 400ms ease !important;
+}
+
+.fade-screen.closing .blank-message,
+.fade-screen.closing .blank-form,
+.fade-screen.closing .next-btn,
+.fade-screen.closing .back-btn,
+.fade-screen.closing .close-btn,
+.fade-screen.closing .screen {
+  opacity: 0 !important;
+  transition: opacity 400ms ease !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .fade-screen { transition: none; }
 }
@@ -690,6 +705,33 @@ select::-ms-expand { display: none; }
 
 .fade-screen.active .back-btn { opacity: 1; }
 
+/* Botón de cerrar (X) arriba a la derecha */
+.close-btn {
+  position: absolute;
+  top: calc(16px + env(safe-area-inset-top, 0px));
+  right: 16px;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in oklab, var(--primary) 35%, black 65%);
+  background: transparent;
+  color: var(--primary);
+  display: inline-grid;
+  place-items: center;
+  box-shadow: none;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 1s ease, background-color 180ms ease, color 180ms ease, border-color 180ms ease;
+}
+
+.fade-screen.active .close-btn { opacity: 1; }
+
+.close-btn:hover,
+.close-btn:focus-visible {
+  background-color: color-mix(in oklab, var(--primary) 8%, transparent);
+  border-color: var(--primary);
+}
+
 /* Mensaje central en modo blanco */
 .blank-message {
   /* Evitar capitalización forzada por la variante del kit */
@@ -711,6 +753,8 @@ select::-ms-expand { display: none; }
   font-feature-settings: "smcp" 0, "c2sc" 0, "case" 0, "cpsp" 0, "titl" 0 !important;
 }
 .fade-screen.done .blank-message { opacity: 1; }
+/* Durante cierre, bloquear apariciones */
+.fade-screen.closing .blank-message { opacity: 0 !important; }
 
 .blank-message strong {
   font-weight: 700;
@@ -755,6 +799,8 @@ select::-ms-expand { display: none; }
 }
 .next-btn:active { transform: none; box-shadow: none; }
 .fade-screen.done .next-btn { opacity: 1; }
+/* Durante cierre, bloquear apariciones */
+.fade-screen.closing .next-btn { opacity: 0 !important; }
 
 /* ===== Formulario en modo blanco ===== */
 .blank-form {
@@ -766,6 +812,8 @@ select::-ms-expand { display: none; }
     transition: opacity 1s ease;
 }
 .fade-screen.done .blank-form { opacity: 1; }
+/* Durante cierre, bloquear apariciones */
+.fade-screen.closing .blank-form { opacity: 0 !important; }
 
 /* Alinear exactamente con el texto y anular padding heredado del wizard */
 .blank-mode #founders-form,
