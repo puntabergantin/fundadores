@@ -678,6 +678,7 @@ select::-ms-expand { display: none; }
 .blank-message {
   /* Evitar capitalización forzada por la variante del kit */
   font-family: Georgia, 'Times New Roman', serif !important;
+  font-weight: 400; /* peso suave por defecto */
   color: color-mix(in oklab, var(--primary) 35%, black 65%);
   text-align: left;
   font-size: 20px;

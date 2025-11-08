@@ -23,8 +23,8 @@
   const screen6 = () => document.querySelector('.screen-6');
   const screen7 = () => document.querySelector('.screen-7');
 
+  // Overlay wiring (open + back navigation)
   const resetScreensToStep1 = () => {
-    fade.classList.remove('step-2', 'step-3');
     const s1 = screen1(), s2 = screen2(), s3 = screen3(), s4 = screen4(), s5 = screen5(), s6 = screen6(), s7 = screen7();
     if (s1) s1.setAttribute('aria-hidden', 'false');
     if (s2) s2.setAttribute('aria-hidden', 'true');
@@ -88,7 +88,7 @@
       if (s1 && s2) { s1.setAttribute('aria-hidden','false'); s2.setAttribute('aria-hidden','true'); }
       return;
     }
-    // Close overlay, restore landing
+    // Close overlay
     fade.classList.remove('active');
     fade.setAttribute('aria-hidden', 'true');
     fade.classList.remove('done', 'step-2', 'step-3', 'step-4', 'step-5', 'step-6', 'step-7');
@@ -97,6 +97,9 @@
     document.documentElement.style.backgroundColor = '';
   });
 
+  // Normalize ticker separators only
+  document.querySelectorAll('.ticker .sep').forEach(el => el.textContent = '\u2022');
+  
   // Next buttons
   const nextBtn1 = document.getElementById('nextBtn');
   nextBtn1 && nextBtn1.addEventListener('click', (e) => {
@@ -205,7 +208,7 @@
     trigger.className = 'custom-select-trigger';
     trigger.setAttribute('aria-haspopup', 'listbox');
     trigger.setAttribute('aria-expanded', 'false');
-    trigger.textContent = (select.selectedOptions[0] && select.selectedOptions[0].textContent) || (select.options[0] && select.options[0].textContent) || 'Seleccioneâ€¦';
+    trigger.textContent = (select.selectedOptions[0] && select.selectedOptions[0].textContent) || (select.options[0] && select.options[0].textContent) || 'Seleccione…';
 
     // Ensure chevron exists
     let chev = wrap.querySelector('.select-chevron');
@@ -298,14 +301,6 @@
   document.querySelectorAll('.blank-form .select-wrap[data-enhance-select]')
     .forEach(enhanceSelect);
 
-  // Normalize special characters in static headings (defensive)
-  document.querySelectorAll('.blank-message').forEach((el) => {
-    el.innerHTML = el.innerHTML
-      .replace(/\\u00e1/g, '\u00e1')
-      .replace('que mÃ¡s', 'que más')
-      .replace('que m�s', 'que más');
-  });
-
   // ===== Screen 3: Experiences form (injected to avoid breaking HTML encoding) =====
   const s3 = document.querySelector('.screen-3');
   if (s3 && !document.getElementById('experience-form')) {
@@ -389,8 +384,16 @@
     next3.className = 'next-btn';
     next3.type = 'button';
     next3.setAttribute('aria-label', 'Continuar');
+    // Ensure only Screen 3 heading uses bold on "experiencias deportivas"
+    (function(){
+      const el = s3.querySelector('.blank-message');
+      if (el) el.innerHTML = '"Selecciona las <strong>experiencias deportivas</strong> que más disfrutas."';
+    })();
     next3.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">\n      <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>\n    </svg>';
     s3.appendChild(next3);
+    // Finalize heading copy for Screen 3 with correct accents
+    const headFix = s3.querySelector('.blank-message');
+    if (headFix) headFix.innerHTML = '"Selecciona las <strong>experiencias deportivas</strong> que más disfrutas."';
     wireNext3();
   }
 
@@ -737,4 +740,12 @@
     s7c.appendChild(next7);
   }
 });
+
+
+
+
+
+
+
+
 
