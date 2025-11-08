@@ -1,4 +1,15 @@
 ﻿document.addEventListener('DOMContentLoaded', () => {
+  // ===== Video loop seamless (evita el brinco al reiniciar) =====
+  const heroVideo = document.querySelector('.hero-video');
+  if (heroVideo) {
+    heroVideo.addEventListener('timeupdate', () => {
+      // Reinicia 100ms antes del final para transición imperceptible
+      if (heroVideo.duration - heroVideo.currentTime < 0.1) {
+        heroVideo.currentTime = 0;
+      }
+    });
+  }
+
   // ===== Hero slides (simple fade) =====
   const SLIDE_INTERVAL_MS = 5000;
   const slides = Array.from(document.querySelectorAll('.slide'));
