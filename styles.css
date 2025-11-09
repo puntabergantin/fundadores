@@ -533,8 +533,8 @@ select::-ms-expand { display: none; }
 .step-title { text-align: center; font-size: 22px; text-transform: uppercase; letter-spacing: 0.04em; }
 .step-sub { text-align: center; margin-bottom: 14px; }
 
-/* Field groups as soft panels */
-.fields { padding: 12px; border-radius: 16px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); }
+/* Field groups as soft panels - solo para wizard, no para blank-form */
+.wizard-card .fields { padding: 12px; border-radius: 16px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); }
 
 /* Inputs as rounded pills with subtle inset */
 .field input[type="text"],
@@ -894,19 +894,42 @@ select::-ms-expand { display: none; }
 .blank-form .field.is-error .custom-select-trigger:active { border-color: var(--danger); }
 
 .blank-form .custom-select-list {
-  position: absolute;
-  left: 0; right: 0;
-  top: calc(100% + 6px);
+  /* Modal centrado en pantalla */
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: min(92vw, 480px);
   background: #fff;
   border: 1px solid rgba(37,54,69,0.40);
-  border-radius: 12px;
-  max-height: 220px;
+  border-radius: 16px;
+  max-height: min(70vh, 500px);
   overflow: auto;
-  padding: 6px 0;
-  z-index: 10001; /* sobre ticker y dentro del overlay */
+  padding: 8px 0;
+  z-index: 100001; /* Por encima del backdrop */
   display: none;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
   /* Ocultar scrollbar nativo (mostraremos uno custom) */
   scrollbar-width: none; /* Firefox: sin barra */
+}
+
+/* Backdrop con blur detrás del dropdown modal */
+.blank-form .select-wrap::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  background: rgba(255,255,255,0.50);
+  z-index: 100000; /* Muy por encima de todo */
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 300ms ease, backdrop-filter 300ms ease;
+}
+
+.blank-form .select-wrap.is-open::before {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 /* WebKit: esconder scrollbar nativo completamente */
@@ -1236,14 +1259,13 @@ select::-ms-expand { display: none; }
 @media (min-width: 768px) { .screen-1 { max-width: 680px; } }
 @media (min-width: 1200px) { .screen-1 { max-width: 720px; } }
 
-/* Layout de la pantalla 2: centrar verticalmente el bloque */
+/* Layout de la pantalla 2 */
 .screen-2 {
   width: 100%;
   max-width: 800px;
   display: grid;
-  row-gap: 18px; /* igual que screen-1 */
+  row-gap: 18px;
   justify-items: start;
-  margin-block: auto; /* centra verticalmente dentro del overlay */
 }
 @media (min-width: 768px) { .screen-2 { max-width: 680px; } }
 @media (min-width: 1200px) { .screen-2 { max-width: 720px; } }
@@ -1278,14 +1300,6 @@ select::-ms-expand { display: none; }
   .fade-screen.step-2 .screen-2 .blank-form,
   .fade-screen.step-2 .screen-2 .next-btn { animation: none; opacity: 1; transform: none; }
 }
-
-/* Ensure form aligns with screen-2 text width and left edge */
-.screen-2 .blank-form { width: 100%; max-width: 800px; justify-self: start; padding: 0 !important; margin-top: 0 !important; }
-@media (min-width: 768px) { .screen-2 .blank-message, .screen-2 .blank-form { max-width: 680px; justify-self: start; } }
-@media (min-width: 1200px) { .screen-2 .blank-message, .screen-2 .blank-form { max-width: 720px; justify-self: start; } }
-
-/* Remove inner padding/border on fields for screen-2 to align with text */
-.screen-2 .fields { padding: 0; border: 0; background: transparent; }
 
 /* Fade-up entrance for screen-1 elements (match screens 3–5) */
 .fade-screen.done .screen-1 .blank-message,
