@@ -330,6 +330,7 @@
     const open = () => {
       wrap.classList.add('is-open');
       trigger.setAttribute('aria-expanded', 'true');
+      
       // Sync activeIndex with current selection before rendering
       activeIndex = Math.max(0, options.findIndex(o => o.selected));
       renderOptions();
@@ -360,9 +361,20 @@
       } else if (e.key === 'Escape') { e.preventDefault(); close(); }
     });
 
-    // Close on outside click
+    // Close on outside click (incluyendo click en backdrop)
     document.addEventListener('click', (e) => {
-      if (!wrap.contains(e.target)) close();
+      if (!wrap.contains(e.target) || e.target === wrap) {
+        if (wrap.classList.contains('is-open')) {
+          close();
+        }
+      }
+    });
+    
+    // Cerrar al hacer clic en el backdrop
+    wrap.addEventListener('click', (e) => {
+      if (e.target === wrap && wrap.classList.contains('is-open')) {
+        close();
+      }
     });
 
     // Keep trigger label in sync if native select changes (e.g., programmatically)
@@ -494,16 +506,9 @@
     const field = document.createElement('div');
     field.className = 'field';
 
-    const label = document.createElement('label');
-    label.textContent = 'Deportes favoritos';
-    // Override title to requested copy for screen 4
-    label.textContent = 'Intereses culturales';
-
     const group = document.createElement('div');
     group.className = 'checkbox-group';
     group.setAttribute('role', 'group');
-    group.setAttribute('aria-label', 'Deportes favoritos');
-    // Keep aria-label consistent with title for screen 4
     group.setAttribute('aria-label', 'Intereses culturales');
 
     const unescapeUnicode = (str) => str.replace(/\\u([0-9a-fA-F]{4})/g, (_, h) => String.fromCharCode(parseInt(h, 16)));
@@ -542,7 +547,6 @@
       group.appendChild(lab);
     });
 
-    field.appendChild(label);
     field.appendChild(group);
     fields.appendChild(field);
     form.appendChild(fields);
@@ -582,9 +586,6 @@
 
     const field = document.createElement('div');
     field.className = 'field';
-
-    const label = document.createElement('label');
-    label.textContent = 'Bebidas o vinos favoritos';
 
     const group = document.createElement('div');
     group.className = 'checkbox-group';
@@ -630,7 +631,6 @@
       group.appendChild(lab);
     });
 
-    field.appendChild(label);
     field.appendChild(group);
     fields.appendChild(field);
     form.appendChild(fields);
