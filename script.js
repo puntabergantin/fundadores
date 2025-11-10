@@ -80,6 +80,9 @@
   };
 
   const openOverlay = () => {
+    // Limpiar cualquier estado residual
+    fade.classList.remove('closing');
+    
     // No resetear si hay progreso guardado
     const savedStep = localStorage.getItem('founders_progress');
     if (!savedStep || savedStep === 'step-1') {
@@ -91,30 +94,27 @@
     fade.classList.add('active');
     document.documentElement.style.backgroundColor = '#fff';
     document.documentElement.classList.add('blank-mode');
-    const onDone = (ev) => {
-      if (ev && ev.target !== fade) return;
+    
+    // Usar setTimeout en vez de transitionend para más consistencia
+    setTimeout(() => {
       fade.classList.add('done');
       document.documentElement.classList.add('names-in');
       fade.setAttribute('aria-hidden', 'false');
-    };
-    fade.addEventListener('transitionend', onDone, { once: true });
+    }, 10);
   };
 
   const closeOverlay = () => {
     // Guardar progreso antes de cerrar
     saveProgress();
     
-    // Ocultar todo inmediatamente sin transiciones intermedias
-    fade.style.transition = 'none';
+    // Cierre inmediato sin animaciones
     fade.classList.remove('active', 'done');
     fade.setAttribute('aria-hidden', 'true');
     document.documentElement.classList.remove('blank-mode', 'names-in');
     document.documentElement.style.backgroundColor = '';
     
-    // Restaurar la transición después de un frame para futuras aperturas
-    requestAnimationFrame(() => {
-      fade.style.transition = '';
-    });
+    // Limpiar todos los step-X classes
+    fade.className = 'fade-screen';
   };
 
   cta && fade && cta.addEventListener('click', (e) => { e.preventDefault(); openOverlay(); });
@@ -671,9 +671,7 @@
     const field = document.createElement('div');
     field.className = 'field';
 
-    const label = document.createElement('label');
     const unescapeUnicode = (str) => str.replace(/\\u([0-9a-fA-F]{4})/g, (_, h) => String.fromCharCode(parseInt(h, 16)));
-    label.textContent = unescapeUnicode('M\\u00fasica favorita');
 
     const group = document.createElement('div');
     group.className = 'checkbox-group';
@@ -717,7 +715,6 @@
       group.appendChild(lab);
     });
 
-    field.appendChild(label);
     field.appendChild(group);
     fields.appendChild(field);
     form.appendChild(fields);
@@ -758,9 +755,7 @@
     const field = document.createElement('div');
     field.className = 'field';
 
-    const label = document.createElement('label');
     const unescapeUnicode7 = (str) => str.replace(/\\u([0-9a-fA-F]{4})/g, (_, h) => String.fromCharCode(parseInt(h, 16)));
-    label.textContent = 'Estilo de viaje';
 
     const group = document.createElement('div');
     group.className = 'checkbox-group';
@@ -804,7 +799,6 @@
       group.appendChild(lab);
     });
 
-    field.appendChild(label);
     field.appendChild(group);
     fields.appendChild(field);
     form.appendChild(fields);
