@@ -654,19 +654,25 @@ select::-ms-expand { display: none; }
   pointer-events: auto;
 }
 
-/* Estado de cierre: transición rápida y bloqueo total de .done */
+/* Estado de cierre: transición rápida y bloqueo total */
 .fade-screen.closing {
   transition: opacity 400ms ease !important;
 }
 
-.fade-screen.closing .blank-message,
-.fade-screen.closing .blank-form,
-.fade-screen.closing .next-btn,
+/* Bloquear TODAS las animaciones cuando está cerrando - usar selector universal más específico */
 .fade-screen.closing .back-btn,
 .fade-screen.closing .close-btn,
-.fade-screen.closing .screen {
+.fade-screen.closing.done .screen-1 > *,
+.fade-screen.closing.step-2 .screen-2 > *,
+.fade-screen.closing.step-3 .screen-3 > *,
+.fade-screen.closing.step-4 .screen-4 > *,
+.fade-screen.closing.step-5 .screen-5 > *,
+.fade-screen.closing.step-6 .screen-6 > *,
+.fade-screen.closing.step-7 .screen-7 > * {
   opacity: 0 !important;
-  transition: opacity 400ms ease !important;
+  animation: none !important;
+  animation-delay: 0s !important;
+  transition: opacity 300ms ease !important;
 }
 
 @media (prefers-reduced-motion: reduce) {
