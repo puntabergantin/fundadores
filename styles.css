@@ -26,6 +26,20 @@
     width: clamp(80px, 28vw, 120px);
   }
 }
+
+/* Ajuste extra para móviles altos (ej. S24 Ultra) para que el logo no se corte */
+@media (max-width: 600px) and (min-height: 700px) {
+  .home-center {
+    justify-content: center;
+    padding-top: 8vh;
+    padding-bottom: 8vh;
+    gap: 2rem;
+  }
+  .home-center .brand-top {
+    width: clamp(200px, 60vw, 320px);
+    margin-bottom: 2rem;
+  }
+}
 @media (max-width: 600px) {
   .home-center {
     justify-content: flex-start;
