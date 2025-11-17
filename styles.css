@@ -49,7 +49,7 @@
   }
   .home-center .brand-top {
     /* Logo más grande y protagonista en mobile */
-      width: clamp(240px, 72vw, 380px);
+      width: clamp(260px, 72vw, 400px);
     margin-bottom: 2.4rem;
   }
   .home-center .cta, #startBtn {
@@ -1776,5 +1776,19 @@ select::-ms-expand { display: none; }
     margin-bottom: clamp(1.25rem, 5vh, 2rem);
     width: clamp(100px, 26vw, 170px);
     max-width: 60vw;
+  }
+}
+
+/* Ajuste final de home en mobile: centrar Fundadores + CTA sin tocar Bergantín */
+@media (max-width: 600px) {
+  .home-center {
+    justify-content: center;
+    padding-top: 10vh;
+    padding-bottom: 10vh;
+    gap: 2.5rem;
+  }
+  .home-center .brand-top {
+    width: clamp(240px, 70vw, 380px);
+    margin-bottom: 2.4rem;
   }
 }
