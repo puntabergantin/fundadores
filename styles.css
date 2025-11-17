@@ -1759,6 +1759,22 @@ select::-ms-expand { display: none; }
   /* Mantener el logo Bergantín siempre dentro de la pantalla
      con margen inferior consistente y respetando la safe-area */
   .brand-mark-home {
-    bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px));
+      bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px));
+    }
+  }
+
+/* En mobile, el logo Bergantín participa del layout flex para no cortarse
+   y mantener un margen inferior consistente en todos los dispositivos */
+@media (max-width: 600px) {
+  .home-center {
+    align-items: center;
+  }
+  .home-center .brand-mark-home {
+    position: static;
+    transform: none;
+    margin-top: auto;
+    margin-bottom: clamp(1.25rem, 5vh, 2rem);
+    width: clamp(100px, 26vw, 170px);
+    max-width: 60vw;
   }
 }
