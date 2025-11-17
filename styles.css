@@ -1739,11 +1739,26 @@ select::-ms-expand { display: none; }
 }
 
 /* Extremely short landscape (e.g., 360–430px tall) */
-@media (orientation: landscape) and (max-height: 430px) {
-  .brand-top { top: calc(14px + env(safe-area-inset-top, 0px)); width: clamp(60px, 14vmin, 180px); }
-  .content { padding-top: clamp(12px, 6vh, 40px); padding-bottom: calc(clamp(48px, 18vh, 88px) + env(safe-area-inset-bottom, 0px)); }
+  @media (orientation: landscape) and (max-height: 430px) {
+    .brand-top { top: calc(14px + env(safe-area-inset-top, 0px)); width: clamp(60px, 14vmin, 180px); }
+    .content { padding-top: clamp(12px, 6vh, 40px); padding-bottom: calc(clamp(48px, 18vh, 88px) + env(safe-area-inset-bottom, 0px)); }
   .content h1 { font-size: clamp(20px, 4.2vmin, 36px); }
-  .content h3 { font-size: clamp(11px, 2vmin, 14px); }
-  .cta { font-size: clamp(9.5px, 2vmin, 12.5px); }
-  .brand-mark { width: clamp(60px, 9vmin, 110px); }
+    .content h3 { font-size: clamp(11px, 2vmin, 14px); }
+    .cta { font-size: clamp(9.5px, 2vmin, 12.5px); }
+    .brand-mark { width: clamp(60px, 9vmin, 110px); }
+  }
+
+/* ===== Overrides específicos para home en mobile ===== */
+@media (max-width: 600px) {
+  /* Centrar realmente el contenido del hero en móviles altos
+     (sobrescribe place-items: end center de reglas anteriores) */
+  .hero {
+    place-items: center;
+  }
+
+  /* Mantener el logo Bergantín siempre dentro de la pantalla
+     con margen inferior consistente y respetando la safe-area */
+  .brand-mark-home {
+    bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px));
+  }
 }
