@@ -159,8 +159,8 @@
   left: unset;
   top: unset;
   transform: none;
-  width: clamp(160px, 38vw, 340px);
-  max-width: 96vw;
+  width: clamp(240px, 48vw, 420px); /* Aumentado para más protagonismo */
+  max-width: 98vw;
   margin-bottom: 2.8rem;
   filter: drop-shadow(0 2px 8px rgba(0,0,0,0.25));
   pointer-events: none;
@@ -1420,20 +1420,12 @@ select::-ms-expand { display: none; }
   .screen-7 { max-width: 680px; }
   .screen-3 .blank-message, .screen-3 .blank-form, .screen-4 .blank-message, .screen-4 .blank-form, .screen-5 .blank-message, .screen-5 .blank-form, .screen-6 .blank-message, .screen-6 .blank-form { max-width: 680px; }
   .screen-7 .blank-message, .screen-7 .blank-form { max-width: 680px; }
-  .screen-3 .light-blue-divider, .screen-4 .light-blue-divider, .screen-5 .light-blue-divider, .screen-6 .light-blue-divider { margin: 14px 0; }
-  .screen-7 .light-blue-divider { margin: 14px 0; }
-  .screen-3 .blank-form .fields > .field:first-child, .screen-4 .blank-form .fields > .field:first-child, .screen-5 .blank-form .fields > .field:first-child, .screen-6 .blank-form .fields > .field:first-child { margin-top: 14px; }
-  .screen-7 .blank-form .fields > .field:first-child { margin-top: 14px; }
 }
 @media (min-width: 1200px) {
   .screen-3, .screen-4, .screen-5, .screen-6 { max-width: 720px; }
   .screen-7 { max-width: 720px; }
   .screen-3 .blank-message, .screen-3 .blank-form, .screen-4 .blank-message, .screen-4 .blank-form, .screen-5 .blank-message, .screen-5 .blank-form, .screen-6 .blank-message, .screen-6 .blank-form { max-width: 720px; }
   .screen-7 .blank-message, .screen-7 .blank-form { max-width: 720px; }
-  .screen-3 .light-blue-divider, .screen-4 .light-blue-divider, .screen-5 .light-blue-divider, .screen-6 .light-blue-divider { margin: 16px 0; }
-  .screen-7 .light-blue-divider { margin: 16px 0; }
-  .screen-3 .blank-form .fields > .field:first-child, .screen-4 .blank-form .fields > .field:first-child, .screen-5 .blank-form .fields > .field:first-child, .screen-6 .blank-form .fields > .field:first-child { margin-top: 16px; }
-  .screen-7 .blank-form .fields > .field:first-child { margin-top: 16px; }
 }
 
 /* Eliminar padding/borde del contenedor de campos solo en screen 3
@@ -1620,4 +1612,21 @@ select::-ms-expand { display: none; }
   .content h3 { font-size: clamp(11px, 2vmin, 14px); }
   .cta { font-size: clamp(9.5px, 2vmin, 12.5px); }
   .brand-mark { width: clamp(60px, 9vmin, 110px); }
+}
+
+/* Ajuste para asegurar visibilidad del logo de Bergantín en mobile */
+@media (max-width: 600px) {
+  .home-center .brand-top {
+    margin-bottom: 1.2rem !important;
+  }
+  .home-center .cta, #startBtn {
+    margin-bottom: 4.5rem !important;
+  }
+  .brand-mark-home {
+    bottom: 2.2rem !important;
+    width: clamp(90px, 28vw, 120px) !important;
+    max-width: 60vw;
+    opacity: 0.95;
+    z-index: 11;
+  }
 }

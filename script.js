@@ -110,13 +110,16 @@
   const closeOverlay = () => {
     // Guardar progreso antes de cerrar
     saveProgress();
-    
     // Cierre inmediato sin animaciones
     fade.classList.remove('active', 'done');
     fade.setAttribute('aria-hidden', 'true');
     document.documentElement.classList.remove('blank-mode', 'names-in');
     document.documentElement.style.backgroundColor = '';
-    
+    // Mostrar el home-center al cerrar
+    if (homeCenter) {
+      homeCenter.style.display = '';
+      homeCenter.classList.remove('fadeout');
+    }
     // Limpiar todos los step-X classes
     fade.className = 'fade-screen';
   };
