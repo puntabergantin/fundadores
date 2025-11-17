@@ -22,6 +22,10 @@
   }
 
   // ===== Overlay screens =====
+  // Nuevo flujo: home minimalista
+  const homeCenter = document.getElementById('homeCenter');
+  const loaderOverlay = document.getElementById('loaderOverlay');
+  const startBtn = document.getElementById('startBtn');
   const cta = document.querySelector('[data-next]');
   const fade = document.getElementById('fadeScreen');
   const backBtn = document.getElementById('backBtn');
@@ -117,7 +121,32 @@
     fade.className = 'fade-screen';
   };
 
-  cta && fade && cta.addEventListener('click', (e) => { e.preventDefault(); openOverlay(); });
+
+  // Nuevo flujo: botón continuar
+  if (startBtn && homeCenter && loaderOverlay) {
+    const loaderIntro = document.getElementById('loaderIntro');
+    startBtn.addEventListener('click', function () {
+      // Fade out home
+      homeCenter.classList.add('fadeout');
+      setTimeout(() => {
+        homeCenter.style.display = 'none';
+        loaderOverlay.style.display = 'flex';
+        // Fade in loader intro
+        if (loaderIntro) {
+          loaderIntro.classList.add('fadein');
+        }
+        // Después de 2.2s, oculta loader y muestra overlay
+        setTimeout(() => {
+          loaderOverlay.style.display = 'none';
+          if (loaderIntro) loaderIntro.classList.remove('fadein');
+          openOverlay();
+        }, 2200);
+      }, 700); // match fadeout duration
+    });
+  }
+
+  // Por compatibilidad, si existe el antiguo botón cta, lo ocultamos
+  if (cta) cta.style.display = 'none';
 
   // Botón X: cierra y guarda progreso
   closeBtn && fade && closeBtn.addEventListener('click', () => {
@@ -164,7 +193,7 @@
       saveProgress();
       return;
     }
-    // Si estamos en step-1, cerrar todo y limpiar progreso
+    // Si estamos en step-1, cerrar todo y limpiar progreso, mostrar home
     localStorage.removeItem('founders_progress');
     fade.classList.remove('active');
     fade.setAttribute('aria-hidden', 'true');
@@ -172,6 +201,14 @@
     resetScreensToStep1();
     document.documentElement.classList.remove('blank-mode', 'names-in');
     document.documentElement.style.backgroundColor = '';
+    if (typeof homeCenter !== 'undefined' && homeCenter) {
+      homeCenter.style.display = 'flex';
+      homeCenter.classList.remove('fadeout');
+    }
+    if (typeof loaderOverlay !== 'undefined' && loaderOverlay) loaderOverlay.style.display = 'none';
+    // Asegura que el texto de loader no quede visible
+    const loaderIntro = document.getElementById('loaderIntro');
+    if (loaderIntro) loaderIntro.classList.remove('fadein');
   });
 
   // Normalize ticker separators only

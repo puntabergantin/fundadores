@@ -1,3 +1,146 @@
+#loaderIntro {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin: 0 !important;
+  z-index: 101;
+}
+.loader-overlay h3 {
+  max-width: 36ch;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+.home-center.fadeout {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.7s cubic-bezier(.4,0,.2,1);
+}
+.loader-overlay {
+  /* ...existing code... */
+  opacity: 1;
+  transition: opacity 0.7s cubic-bezier(.4,0,.2,1);
+}
+.loader-overlay.fadein {
+  opacity: 1;
+}
+#loaderIntro {
+  opacity: 0;
+  transition: opacity 1.3s cubic-bezier(.4,0,.2,1);
+}
+#loaderIntro.fadein {
+  opacity: 1;
+}
+/* Loader overlay styles */
+.loader-overlay {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100dvh;
+  background: none;
+  z-index: 100;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.4s;
+}
+.loader-overlay[style*="display: flex"] {
+  display: flex !important;
+}
+.loader-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2.2rem;
+  text-align: center;
+}
+.loader-content h1.main-heading {
+  color: #fff;
+  font-family: 'Griffon', Georgia, 'Times New Roman', serif;
+  font-size: clamp(2.1rem, 6vw, 2.8rem);
+  font-weight: 700;
+  margin: 0 0 0.7rem 0;
+  text-shadow: 0 2px 18px rgba(0,0,0,0.35);
+}
+.loader-content h3 {
+  color: #fff;
+  font-size: clamp(1.1rem, 3.5vw, 1.25rem);
+  font-weight: 400;
+  margin: 0;
+  opacity: 0.92;
+  text-shadow: 0 1px 12px rgba(0,0,0,0.25);
+}
+.brand-mark-home {
+  position: absolute;
+  left: 50%;
+  bottom: 2.5rem;
+  transform: translateX(-50%);
+  width: clamp(90px, 22vw, 180px);
+  max-width: 60vw;
+  height: auto;
+  opacity: 0.92;
+  pointer-events: none;
+  z-index: 11;
+}
+/* Home center: logo y botón centrados en toda la pantalla */
+.home-center {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2.5rem;
+  background: transparent;
+  z-index: 10;
+}
+.home-center .brand-top {
+  position: static;
+  left: unset;
+  top: unset;
+  transform: none;
+  width: clamp(160px, 38vw, 340px);
+  max-width: 96vw;
+  margin-bottom: 2.8rem;
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.25));
+  pointer-events: none;
+  transition: width 0.2s;
+}
+.home-center .cta, #startBtn {
+  position: static;
+  margin: 0 auto;
+  min-width: 180px;
+  font-size: 1.1rem;
+  padding: 0.9em 2.2em;
+  border-radius: 2em;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  box-shadow: 0 2px 12px 0 rgba(0,0,0,0.10);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.home-center .cta:hover, #startBtn:hover {
+  background: #027c82;
+}
+.home-center .cta:active, #startBtn:active {
+  background: #025e62;
+}
 /* Color palette */
 :root {
   --primary: #039aa2; /* teal */
@@ -215,7 +358,7 @@ body {
   opacity: 0.95;
   font-size: clamp(16px, 4vw, 18px);
   line-height: 1.3;
-  max-width: 42ch;
+  max-width: 28ch;
   text-shadow: 0 1px 12px var(--shadow);
 }
 

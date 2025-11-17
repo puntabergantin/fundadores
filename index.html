@@ -41,45 +41,36 @@
       <!-- Overlay para legibilidad sobre las imágenes -->
       <div class="scrim" aria-hidden="true"></div>
 
-      <!-- Marca superior dentro del hero -->
-      <img
-        class="brand-top"
-        src="assets/FUNDADORES - BLANCO.svg"
-        alt="Logo Fundadores"
-        width="220"
-        height="auto"
-        loading="eager"
-        decoding="async"
-      />
 
-      <!-- Contenido principal -->
-      <section class="content" role="region" aria-label="Mensaje principal">
-        <h1 class="main-heading">Tu Legado, Nuestra Historia.</h1>
-        <h3>Fundadores no es solo un club. Es una comunidad que comparte una visión de excelencia, familia y futuro.</h3>
-        <button class="cta" type="button" aria-label="Continuar a la siguiente sección" data-next>
-          Queremos conocer más de tu legado
-        </button>
-      </section>
-
-      <!-- Footer stack: logo + ticker (alineado al fondo) -->
-      <div class="footer-stack" aria-hidden="true">
+      <div class="home-center" id="homeCenter">
         <img
-          class="brand-mark"
-          src="assets/LOGO BERGANTIN.svg"
-          alt="Logo Bergantini"
+          class="brand-top"
+          src="assets/FUNDADORES - BLANCO.svg"
+          alt="Logo Fundadores"
           width="220"
+          height="auto"
+          loading="eager"
+          decoding="async"
+        />
+        <button class="cta" type="button" aria-label="Continuar a la siguiente sección" id="startBtn">
+          Queremos conocerte más
+        </button>
+        <img
+          class="brand-mark-home"
+          src="assets/LOGO BERGANTIN.svg"
+          alt="Logo Bergantín"
+          width="160"
           height="auto"
           loading="lazy"
           decoding="async"
         />
+      </div>
 
-        <div class="ticker" aria-label="Lista de miembros" role="region">
-          <div class="ticker-inner">
-            <div class="ticker-track">
-              <span>ALONSO</span><span class="sep">•</span><span>VALENTINA</span><span class="sep">•</span><span>MATEO</span><span class="sep">•</span><span>ISABELLA</span><span class="sep">•</span><span>EMILIANO</span><span class="sep">•</span><span>SOFÍA</span><span class="sep">•</span><span>SEBASTIÁN</span><span class="sep">•</span><span>REGINA</span><span class="sep">•</span>
-            </div><div class="ticker-track" aria-hidden="true">
-              <span>ALONSO</span><span class="sep">•</span><span>VALENTINA</span><span class="sep">•</span><span>MATEO</span><span class="sep">•</span><span>ISABELLA</span><span class="sep">•</span><span>EMILIANO</span><span class="sep">•</span><span>SOFÍA</span><span class="sep">•</span><span>SEBASTIÁN</span><span class="sep">•</span><span>REGINA</span><span class="sep">•</span>
-            </div>
+      <div class="loader-overlay" id="loaderOverlay" style="display:none;">
+        <div class="loader-content">
+          <div id="loaderIntro">
+            <h1 class="main-heading">Tu Legado, Nuestra Historia.</h1>
+            <h3>Fundadores, más que un club, es una comunidad para compartir experiencias, una historia, un encuentro entre amigos.</h3>
           </div>
         </div>
       </div>
