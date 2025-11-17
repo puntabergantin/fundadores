@@ -204,6 +204,9 @@
     if (typeof homeCenter !== 'undefined' && homeCenter) {
       homeCenter.style.display = 'flex';
       homeCenter.classList.remove('fadeout');
+      // Mostrar también el logo de Bergantín si está oculto
+      var bergantinLogo = document.querySelector('.brand-mark-home');
+      if (bergantinLogo) bergantinLogo.style.display = '';
     }
     if (typeof loaderOverlay !== 'undefined' && loaderOverlay) loaderOverlay.style.display = 'none';
     // Asegura que el texto de loader no quede visible

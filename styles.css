@@ -1,3 +1,50 @@
+@media (max-width: 600px) {
+  .home-center {
+    justify-content: flex-start;
+    padding-top: 13vh;
+    padding-bottom: 13vh;
+    gap: 2.2rem;
+    min-height: 100dvh;
+    box-sizing: border-box;
+  }
+  .home-center .brand-top {
+    width: clamp(110px, 38vw, 170px);
+    margin-bottom: 2.2rem;
+  }
+  .home-center .cta, #startBtn {
+    font-size: 1rem;
+    min-width: 90vw;
+    max-width: 98vw;
+    padding: 1.1em 0;
+    margin-bottom: 2.5rem;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+  }
+  .brand-mark-home {
+    bottom: 1.5rem;
+    width: clamp(80px, 28vw, 120px);
+  }
+}
+@media (max-width: 600px) {
+  .home-center {
+    justify-content: flex-start;
+    padding-top: 12vh;
+    padding-bottom: 10vh;
+    gap: 2.2rem;
+  }
+  .home-center .brand-top {
+    width: clamp(120px, 38vw, 180px);
+    margin-bottom: 2.2rem;
+  }
+  .home-center .cta, #startBtn {
+    font-size: 1rem;
+    min-width: 90vw;
+    max-width: 98vw;
+    padding: 1.1em 0;
+    margin-bottom: 2.5rem;
+  }
+}
 #loaderIntro {
   position: absolute;
   top: 0;
