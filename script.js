@@ -110,18 +110,24 @@
   const closeOverlay = () => {
     // Guardar progreso antes de cerrar
     saveProgress();
+    
     // Cierre inmediato sin animaciones
     fade.classList.remove('active', 'done');
     fade.setAttribute('aria-hidden', 'true');
     document.documentElement.classList.remove('blank-mode', 'names-in');
     document.documentElement.style.backgroundColor = '';
-    // Mostrar el home-center al cerrar
+    
+    // Limpiar todos los step-X classes
+    fade.className = 'fade-screen';
+
+    // Restaurar el home completo (video + logo + botón)
     if (homeCenter) {
       homeCenter.style.display = '';
       homeCenter.classList.remove('fadeout');
     }
-    // Limpiar todos los step-X classes
-    fade.className = 'fade-screen';
+    if (loaderOverlay) {
+      loaderOverlay.style.display = 'none';
+    }
   };
 
 
@@ -314,9 +320,9 @@
   });
 
   // ===== Custom select enhancer (non-breaking) =====
-  const enhanceSelect = (wrap) => {
-    const select = wrap.querySelector('select');
-    if (!select) return;
+    const enhanceSelect = (wrap) => {
+      const select = wrap.querySelector('select');
+      if (!select) return;
 
     // Avoid double-enhance
     if (wrap.dataset.enhanced === '1') return;
@@ -370,19 +376,23 @@
       });
     };
 
-    const open = () => {
-      wrap.classList.add('is-open');
-      trigger.setAttribute('aria-expanded', 'true');
+      const open = () => {
+        wrap.classList.add('is-open');
+        trigger.setAttribute('aria-expanded', 'true');
+        const fadeScreenEl = document.getElementById('fadeScreen');
+        if (fadeScreenEl) fadeScreenEl.classList.add('select-open');
       
       // Sync activeIndex with current selection before rendering
       activeIndex = Math.max(0, options.findIndex(o => o.selected));
       renderOptions();
       list.focus({ preventScroll: true });
     };
-    const close = () => {
-      wrap.classList.remove('is-open');
-      trigger.setAttribute('aria-expanded', 'false');
-      trigger.focus({ preventScroll: true });
+      const close = () => {
+        wrap.classList.remove('is-open');
+        trigger.setAttribute('aria-expanded', 'false');
+        const fadeScreenEl = document.getElementById('fadeScreen');
+        if (fadeScreenEl) fadeScreenEl.classList.remove('select-open');
+        trigger.focus({ preventScroll: true });
     };
     const toggle = () => (wrap.classList.contains('is-open') ? close() : open());
 
