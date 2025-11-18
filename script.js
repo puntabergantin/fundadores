@@ -38,10 +38,11 @@
   const screen5 = () => document.querySelector('.screen-5');
   const screen6 = () => document.querySelector('.screen-6');
   const screen7 = () => document.querySelector('.screen-7');
+  const screen8 = () => document.querySelector('.screen-8');
 
   // Guardar/restaurar progreso en localStorage
   const saveProgress = () => {
-    const currentStep = ['step-2', 'step-3', 'step-4', 'step-5', 'step-6', 'step-7']
+    const currentStep = ['step-2', 'step-3', 'step-4', 'step-5', 'step-6', 'step-7', 'step-8']
       .find(cls => fade && fade.classList.contains(cls)) || 'step-1';
     localStorage.setItem('founders_progress', currentStep);
   };
@@ -60,7 +61,8 @@
       'step-4': screen4,
       'step-5': screen5,
       'step-6': screen6,
-      'step-7': screen7
+      'step-7': screen7,
+      'step-8': screen8
     };
     
     const targetScreen = stepMap[savedStep];
@@ -73,7 +75,7 @@
   };
 
   const resetScreensToStep1 = () => {
-    const s1 = screen1(), s2 = screen2(), s3 = screen3(), s4 = screen4(), s5 = screen5(), s6 = screen6(), s7 = screen7();
+    const s1 = screen1(), s2 = screen2(), s3 = screen3(), s4 = screen4(), s5 = screen5(), s6 = screen6(), s7 = screen7(), s8 = screen8();
     if (s1) s1.setAttribute('aria-hidden', 'false');
     if (s2) s2.setAttribute('aria-hidden', 'true');
     if (s3) s3.setAttribute('aria-hidden', 'true');
@@ -81,6 +83,7 @@
     if (s5) s5.setAttribute('aria-hidden', 'true');
     if (s6) s6.setAttribute('aria-hidden', 'true');
     if (s7) s7.setAttribute('aria-hidden', 'true');
+    if (s8) s8.setAttribute('aria-hidden', 'true');
   };
 
   const openOverlay = () => {
@@ -163,6 +166,12 @@
   });
 
   backBtn && fade && backBtn.addEventListener('click', () => {
+    if (fade.classList.contains('step-8')) {
+      fade.classList.remove('step-8');
+      const s7 = screen7(), s8 = screen8();
+      if (s7 && s8) { s7.setAttribute('aria-hidden','false'); s8.setAttribute('aria-hidden','true'); }
+      return;
+    }
     if (fade.classList.contains('step-7')) {
       fade.classList.remove('step-7');
       const s6 = screen6(), s7 = screen7();
@@ -206,7 +215,7 @@
     localStorage.removeItem('founders_progress');
     fade.classList.remove('active');
     fade.setAttribute('aria-hidden', 'true');
-    fade.classList.remove('done', 'step-2', 'step-3', 'step-4', 'step-5', 'step-6', 'step-7');
+    fade.classList.remove('done', 'step-2', 'step-3', 'step-4', 'step-5', 'step-6', 'step-7', 'step-8');
     resetScreensToStep1();
     document.documentElement.classList.remove('blank-mode', 'names-in');
     document.documentElement.style.backgroundColor = '';
@@ -791,6 +800,69 @@
     });
   }
 
+  // Helper: sincronizar "Cumpleaños de hijos" en Screen 8 a partir del repeatable de hijos
+  function syncChildrenBirthdaysField() {
+    const s8 = screen8();
+    if (!s8) return;
+
+    // Buscar primero por data-role; si no existe (versión anterior), localizar por label
+    let field = s8.querySelector('[data-role="children-birthdays-field"]');
+    if (!field) {
+      field = Array.from(s8.querySelectorAll('.field')).find((f) => {
+        const lbl = f.querySelector('label');
+        if (!lbl) return false;
+        const txt = lbl.textContent.toLowerCase();
+        return txt.includes('cumple') && txt.includes('hijo');
+      });
+    }
+    if (!field) return;
+
+    // Mantener solo la etiqueta; limpiar resto
+    const label = field.querySelector('label');
+    field.innerHTML = '';
+    if (label) field.appendChild(label);
+
+    const childrenField = document.querySelector('.field.repeatable[data-name="children"]');
+    const childrenInputs = childrenField
+      ? Array.from(childrenField.querySelectorAll('.items input'))
+      : [];
+    const namedChildren = childrenInputs
+      .map(inp => ((inp.value || inp.placeholder || '').trim()))
+      .filter(Boolean);
+
+    if (namedChildren.length) {
+      const list = document.createElement('div');
+      list.className = 'children-birthdays-list';
+
+      namedChildren.forEach((name, idx) => {
+        const row = document.createElement('div');
+        row.className = 'children-birthday-row';
+
+        const nameSpan = document.createElement('span');
+        nameSpan.className = 'child-name';
+        nameSpan.textContent = name;
+
+        const dateInput = document.createElement('input');
+        dateInput.type = 'date';
+        dateInput.name = 'childrenBirthdays[]';
+        dateInput.id = `childBirthday${idx + 1}`;
+
+        row.appendChild(nameSpan);
+        row.appendChild(dateInput);
+        list.appendChild(row);
+      });
+
+      field.appendChild(list);
+    } else {
+      const naBox = document.createElement('button');
+      naBox.type = 'button';
+      naBox.className = 'na-box';
+      naBox.textContent = 'N/A';
+      naBox.disabled = true;
+      field.appendChild(naBox);
+    }
+  }
+
   // ===== Screen 7: replicate of Screen 6 =====
   const s7c = document.querySelector('.screen-7');
   if (s7c && !document.getElementById('experience-form-7')) {
@@ -865,14 +937,171 @@
     next7.setAttribute('aria-label', 'Continuar');
     next7.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">\n      <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>\n    </svg>';
     s7c.appendChild(next7);
+
+      // Wire: Screen 7 -> Screen 8
+      next7.addEventListener('click', (e) => {
+        e.preventDefault();
+        const s7 = screen7();
+        let s8 = screen8();
+      if (!s8 && fade) {
+        // Crear contenedor de screen-8 si no existe (fallback)
+          s8 = document.createElement('div');
+          s8.className = 'screen screen-8';
+          s8.setAttribute('aria-label', 'Pantalla 8');
+          s8.setAttribute('aria-hidden', 'true');
+          fade.appendChild(s8);
+        }
+        // Sincronizar las filas de cumpleaños de hijos antes de mostrar Screen 8
+        syncChildrenBirthdaysField();
+        if (s7 && s8) { s7.setAttribute('aria-hidden','true'); s8.setAttribute('aria-hidden','false'); }
+        fade && requestAnimationFrame(() => fade.classList.add('step-8'));
+      });
+  }
+
+  // ===== Screen 8: Fechas e hitos especiales (form) =====
+  let s8c = screen8();
+  if (!s8c && fade) {
+    s8c = document.createElement('div');
+    s8c.className = 'screen screen-8';
+    s8c.setAttribute('aria-label', 'Pantalla 8');
+    s8c.setAttribute('aria-hidden', 'true');
+    fade.appendChild(s8c);
+  }
+  if (s8c && !document.getElementById('milestones-form-8')) {
+    const hr = document.createElement('hr');
+    hr.className = 'light-blue-divider';
+
+    const form = document.createElement('form');
+    form.id = 'milestones-form-8';
+    form.className = 'blank-form';
+    form.noValidate = true;
+
+    const fields = document.createElement('div');
+    fields.className = 'fields';
+
+    // Cumpleaños (Fecha)
+    {
+      const field = document.createElement('div');
+      field.className = 'field';
+
+      const label = document.createElement('label');
+      label.setAttribute('for', 'birthday');
+      label.textContent = 'Cumpleaños';
+
+      const input = document.createElement('input');
+      input.id = 'birthday';
+      input.name = 'birthday';
+      input.type = 'date';
+      input.placeholder = '15/06/1985';
+
+      field.appendChild(label);
+      field.appendChild(input);
+      fields.appendChild(field);
+    }
+
+    // Aniversario (Fecha)
+    {
+      const field = document.createElement('div');
+      field.className = 'field';
+
+      const label = document.createElement('label');
+      label.setAttribute('for', 'anniversary');
+      label.textContent = 'Aniversario';
+
+      const input = document.createElement('input');
+      input.id = 'anniversary';
+      input.name = 'anniversary';
+      input.type = 'date';
+      input.placeholder = '10/12/2012';
+
+      field.appendChild(label);
+      field.appendChild(input);
+      fields.appendChild(field);
+    }
+
+    // Cumpleaños de hijos (una fila por hijo, tomada del screen de hijos)
+    {
+      const childrenField = document.querySelector('.field.repeatable[data-name="children"]');
+      const childrenInputs = childrenField
+        ? Array.from(childrenField.querySelectorAll('.items input'))
+        : [];
+      const namedChildren = childrenInputs
+        .map(inp => ((inp.value || inp.placeholder || '').trim()))
+        .filter(Boolean);
+
+      const field = document.createElement('div');
+      field.className = 'field';
+
+      const label = document.createElement('label');
+      label.textContent = 'Cumpleaños de hijos';
+      field.appendChild(label);
+
+      if (namedChildren.length) {
+        const list = document.createElement('div');
+        list.className = 'children-birthdays-list';
+
+        namedChildren.forEach((name, idx) => {
+          const row = document.createElement('div');
+          row.className = 'children-birthday-row';
+
+          const nameSpan = document.createElement('span');
+          nameSpan.className = 'child-name';
+          nameSpan.textContent = name;
+
+          const dateInput = document.createElement('input');
+          dateInput.type = 'date';
+          dateInput.name = 'childrenBirthdays[]';
+          dateInput.id = `childBirthday${idx + 1}`;
+
+          row.appendChild(nameSpan);
+          row.appendChild(dateInput);
+          list.appendChild(row);
+        });
+
+        field.appendChild(list);
+      } else {
+        // Si no hay hijos, mostrar una caja tipo "Agregar hijo" pero N/A
+        const naBox = document.createElement('button');
+        naBox.type = 'button';
+        naBox.className = 'na-box';
+        naBox.textContent = 'N/A';
+        naBox.disabled = true;
+        field.appendChild(naBox);
+      }
+
+      fields.appendChild(field);
+    }
+
+    // Otros hitos (Texto libre)
+    {
+      const field = document.createElement('div');
+      field.className = 'field';
+
+      const label = document.createElement('label');
+      label.setAttribute('for', 'otherMilestones');
+      label.textContent = 'Otros hitos';
+
+      const textarea = document.createElement('textarea');
+      textarea.id = 'otherMilestones';
+      textarea.name = 'otherMilestones';
+      textarea.rows = 3;
+      textarea.placeholder = 'Día de matrimonio, logros, aniversarios especiales...';
+
+      field.appendChild(label);
+      field.appendChild(textarea);
+      fields.appendChild(field);
+    }
+
+    form.appendChild(fields);
+    s8c.appendChild(hr);
+    s8c.appendChild(form);
+
+    const next8 = document.createElement('button');
+    next8.id = 'nextBtn8';
+    next8.className = 'next-btn';
+    next8.type = 'button';
+    next8.setAttribute('aria-label', 'Continuar');
+    next8.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">\n      <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>\n    </svg>';
+    s8c.appendChild(next8);
   }
 });
-
-
-
-
-
-
-
-
-

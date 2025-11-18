@@ -897,6 +897,13 @@ select::-ms-expand { display: none; }
     url("assets/SLIDE 7.jpg") center center / cover no-repeat;
 }
 
+/* Screen 8 fondo */
+.fade-screen.step-8 {
+  background:
+    linear-gradient(0deg, rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+    url("assets/SLIDE 8.jpg") center center / cover no-repeat;
+}
+
 .fade-screen.active {
   visibility: visible;
   opacity: 1;
@@ -917,7 +924,8 @@ select::-ms-expand { display: none; }
 .fade-screen.closing.step-4 .screen-4 > *,
 .fade-screen.closing.step-5 .screen-5 > *,
 .fade-screen.closing.step-6 .screen-6 > *,
-.fade-screen.closing.step-7 .screen-7 > * {
+.fade-screen.closing.step-7 .screen-7 > *,
+.fade-screen.closing.step-8 .screen-8 > * {
   opacity: 0 !important;
   animation: none !important;
   animation-delay: 0s !important;
@@ -1339,8 +1347,11 @@ select::-ms-expand { display: none; }
 
 /* Screen 3/4/5/6/7 override: selected chips outlined (no fill), text + check azul */
 .screen-3 .checkbox-group, .screen-4 .checkbox-group, .screen-5 .checkbox-group, .screen-6 .checkbox-group, .screen-7 .checkbox-group { gap: 10px; }
+.screen-8 .checkbox-group { gap: 10px; }
 .screen-3 .blank-form .check span, .screen-4 .blank-form .check span, .screen-5 .blank-form .check span, .screen-6 .blank-form .check span, .screen-7 .blank-form .check span { padding: 10px 14px; border-width: 1px; }
+.screen-8 .blank-form .check span { padding: 10px 14px; border-width: 1px; }
 .screen-3 .blank-form .check:hover span, .screen-4 .blank-form .check:hover span, .screen-5 .blank-form .check:hover span, .screen-6 .blank-form .check:hover span, .screen-7 .blank-form .check:hover span { border-color: var(--primary); }
+.screen-8 .blank-form .check:hover span { border-color: var(--primary); }
 .screen-3 .blank-form .check input:checked + span, .screen-4 .blank-form .check input:checked + span, .screen-5 .blank-form .check input:checked + span, .screen-6 .blank-form .check input:checked + span, .screen-7 .blank-form .check input:checked + span {
   background: #fff;
   color: var(--primary);
@@ -1356,11 +1367,12 @@ select::-ms-expand { display: none; }
   .screen-4 .checkbox-group,
   .screen-5 .checkbox-group,
   .screen-6 .checkbox-group,
-  .screen-7 .checkbox-group {
+  .screen-7 .checkbox-group,
+  .screen-8 .checkbox-group {
     /* Altura visible: 4 filas y media */
     --chip-font: clamp(13px, 3.6vw, 15px);
     --chip-pad-y: 8px;
-    --chip-gap: 10px;
+      --chip-gap: 10px;
     --chip-row: calc(1.2 * var(--chip-font) + (2 * var(--chip-pad-y)) + 2px);
     /* Mostrar 5 filas completas */
     max-height: calc((var(--chip-row) + var(--chip-gap)) * 5 - var(--chip-gap));
@@ -1392,18 +1404,21 @@ select::-ms-expand { display: none; }
   .screen-4 .checkbox-group::-webkit-scrollbar,
   .screen-5 .checkbox-group::-webkit-scrollbar,
   .screen-6 .checkbox-group::-webkit-scrollbar,
-  .screen-7 .checkbox-group::-webkit-scrollbar { width: 0 !important; height: 0 !important; }
+  .screen-7 .checkbox-group::-webkit-scrollbar,
+  .screen-8 .checkbox-group::-webkit-scrollbar { width: 0 !important; height: 0 !important; }
   .screen-3 .checkbox-group::-webkit-scrollbar-thumb,
   .screen-4 .checkbox-group::-webkit-scrollbar-thumb,
   .screen-5 .checkbox-group::-webkit-scrollbar-thumb,
   .screen-6 .checkbox-group::-webkit-scrollbar-thumb,
-  .screen-7 .checkbox-group::-webkit-scrollbar-thumb { background: transparent; display: none; }
+  .screen-7 .checkbox-group::-webkit-scrollbar-thumb,
+  .screen-8 .checkbox-group::-webkit-scrollbar-thumb { background: transparent; display: none; }
 }
 .screen-3 .blank-form .check input:checked + span::before,
 .screen-4 .blank-form .check input:checked + span::before,
 .screen-5 .blank-form .check input:checked + span::before,
 .screen-6 .blank-form .check input:checked + span::before,
-.screen-7 .blank-form .check input:checked + span::before {
+.screen-7 .blank-form .check input:checked + span::before,
+.screen-8 .blank-form .check input:checked + span::before {
   content: '';
   position: absolute;
   left: 12px;
@@ -1465,6 +1480,13 @@ select::-ms-expand { display: none; }
 .fade-screen.step-7 .screen-6 { opacity: 0; visibility: hidden; pointer-events: none; display: none; }
 .fade-screen.step-7 .screen-7 { opacity: 1; visibility: visible; pointer-events: auto; }
 
+/* Screen 8 visibility */
+.screen-8 { opacity: 0; visibility: hidden; pointer-events: none; }
+.fade-screen .screen-8 { display: none; }
+.fade-screen.step-8 .screen-8 { display: grid; }
+.fade-screen.step-8 .screen-7 { opacity: 0; visibility: hidden; pointer-events: none; display: none; }
+.fade-screen.step-8 .screen-8 { opacity: 1; visibility: visible; pointer-events: auto; }
+
 /* Layout de la pantalla 3: mismo ancho que el blank-message */
 .screen-3, .screen-4, .screen-5, .screen-6 {
   width: 100%;
@@ -1475,31 +1497,39 @@ select::-ms-expand { display: none; }
   margin-block: auto;
 }
 
-/* Mirror layout for screen-7 */
-.screen-7 { width: 100%; max-width: 800px; display: grid; row-gap: 18px; justify-items: start; margin-block: auto; }
+/* Mirror layout for screen-7 y screen-8 */
+.screen-7,
+.screen-8 { width: 100%; max-width: 800px; display: grid; row-gap: 18px; justify-items: start; margin-block: auto; }
 /* Alinear divider y form al inicio dentro del ancho controlado */
 .screen-3 .light-blue-divider, .screen-4 .light-blue-divider, .screen-5 .light-blue-divider, .screen-6 .light-blue-divider { justify-self: start; margin: 12px 0; }
-.screen-7 .light-blue-divider { justify-self: start; margin: 12px 0; }
+  .screen-7 .light-blue-divider,
+  .screen-8 .light-blue-divider { justify-self: start; margin: 12px 0; }
 .screen-3 .blank-message, .screen-3 .blank-form, .screen-4 .blank-message, .screen-4 .blank-form, .screen-5 .blank-message, .screen-5 .blank-form, .screen-6 .blank-message, .screen-6 .blank-form { justify-self: start; }
-.screen-7 .blank-message, .screen-7 .blank-form { justify-self: start; }
+  .screen-7 .blank-message, .screen-7 .blank-form,
+  .screen-8 .blank-message, .screen-8 .blank-form { justify-self: start; }
 /* Place the next arrow to the right on screens 3, 4, 5 and 6 and add breathing space */
 .screen-3 .next-btn, .screen-4 .next-btn, .screen-5 .next-btn, .screen-6 .next-btn { justify-self: end; margin-top: 8px; }
-.screen-7 .next-btn { justify-self: end; margin-top: 8px; }
+  .screen-7 .next-btn,
+  .screen-8 .next-btn { justify-self: end; margin-top: 8px; }
 @media (min-width: 768px) {
   .screen-3, .screen-4, .screen-5, .screen-6 { max-width: 680px; }
-  .screen-7 { max-width: 680px; }
+    .screen-7, .screen-8 { max-width: 680px; }
   .screen-3 .blank-message, .screen-3 .blank-form, .screen-4 .blank-message, .screen-4 .blank-form, .screen-5 .blank-message, .screen-5 .blank-form, .screen-6 .blank-message, .screen-6 .blank-form { max-width: 680px; }
-  .screen-7 .blank-message, .screen-7 .blank-form { max-width: 680px; }
+    .screen-7 .blank-message, .screen-7 .blank-form,
+    .screen-8 .blank-message, .screen-8 .blank-form { max-width: 680px; }
   .screen-3 .light-blue-divider, .screen-4 .light-blue-divider, .screen-5 .light-blue-divider, .screen-6 .light-blue-divider { margin: 14px 0; }
-  .screen-7 .light-blue-divider { margin: 14px 0; }
+    .screen-7 .light-blue-divider,
+    .screen-8 .light-blue-divider { margin: 14px 0; }
   .screen-3 .blank-form .fields > .field:first-child, .screen-4 .blank-form .fields > .field:first-child, .screen-5 .blank-form .fields > .field:first-child, .screen-6 .blank-form .fields > .field:first-child { margin-top: 14px; }
-  .screen-7 .blank-form .fields > .field:first-child { margin-top: 14px; }
+    .screen-7 .blank-form .fields > .field:first-child,
+    .screen-8 .blank-form .fields > .field:first-child { margin-top: 14px; }
 }
 @media (min-width: 1200px) {
   .screen-3, .screen-4, .screen-5, .screen-6 { max-width: 720px; }
-  .screen-7 { max-width: 720px; }
+    .screen-7, .screen-8 { max-width: 720px; }
   .screen-3 .blank-message, .screen-3 .blank-form, .screen-4 .blank-message, .screen-4 .blank-form, .screen-5 .blank-message, .screen-5 .blank-form, .screen-6 .blank-message, .screen-6 .blank-form { max-width: 720px; }
-  .screen-7 .blank-message, .screen-7 .blank-form { max-width: 720px; }
+    .screen-7 .blank-message, .screen-7 .blank-form,
+    .screen-8 .blank-message, .screen-8 .blank-form { max-width: 720px; }
   .screen-3 .light-blue-divider, .screen-4 .light-blue-divider, .screen-5 .light-blue-divider, .screen-6 .light-blue-divider { margin: 16px 0; }
   .screen-7 .light-blue-divider { margin: 16px 0; }
   .screen-3 .blank-form .fields > .field:first-child, .screen-4 .blank-form .fields > .field:first-child, .screen-5 .blank-form .fields > .field:first-child, .screen-6 .blank-form .fields > .field:first-child { margin-top: 16px; }
@@ -1670,13 +1700,30 @@ select::-ms-expand { display: none; }
   .fade-screen.step-6 .screen-6 .next-btn { animation: none; opacity: 1; transform: none; }
 }
 
+/* Step-8 animation (mirror of step-7) */
+.fade-screen.step-8 .screen-8 .blank-message,
+.fade-screen.step-8 .screen-8 .light-blue-divider,
+.fade-screen.step-8 .screen-8 .blank-form,
+.fade-screen.step-8 .screen-8 .next-btn { opacity: 0; animation: rise-in 520ms ease forwards; }
+.fade-screen.step-8 .screen-8 .blank-message { animation-delay: 40ms; }
+.fade-screen.step-8 .screen-8 .light-blue-divider { animation-delay: 140ms; }
+.fade-screen.step-8 .screen-8 .blank-form { animation-delay: 220ms; }
+.fade-screen.step-8 .screen-8 .next-btn { animation-delay: 300ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  .fade-screen.step-8 .screen-8 .blank-message,
+  .fade-screen.step-8 .screen-8 .light-blue-divider,
+  .fade-screen.step-8 .screen-8 .blank-form,
+  .fade-screen.step-8 .screen-8 .next-btn { animation: none; opacity: 1; transform: none; }
+}
+
 /* Override: mensajes del overlay siempre en blanco sobre las fotos */
 .fade-screen .blank-message { color: #ffffff; }
 
 /* Override: campos del overlay con glassmorphism y placeholders blancos */
   .fade-screen .blank-form .field input,
   .fade-screen .blank-form .field select,
-.fade-screen .blank-form .field textarea {
+  .fade-screen .blank-form .field textarea {
   color: #ffffff;
   background: rgba(0,0,0,0.35);
   backdrop-filter: blur(12px);
@@ -1703,6 +1750,37 @@ select::-ms-expand { display: none; }
     outline: none;
     border-color: #ffffff;
     box-shadow: none !important;
+  }
+
+  /* Screen 8: layout para filas de cumpleaños de hijos */
+  .children-birthdays-list {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    gap: 10px 12px;
+    align-items: center;
+  }
+  .children-birthday-row {
+    display: contents;
+  }
+  .children-birthday-row .child-name {
+    font-size: 0.95rem;
+    opacity: 0.9;
+  }
+  .children-birthday-row input[type="date"] {
+    width: 100%;
+  }
+
+  /* Caja N/A cuando no hay hijos */
+  .na-box {
+    margin-top: 4px;
+    align-self: start;
+    background: none;
+    border: 1px dashed rgba(255,255,255,0.75);
+    color: #ffffff;
+    border-radius: 8px;
+    padding: 8px 10px;
+    cursor: default;
+    opacity: 0.7;
   }
 
   /* Override: pills (chips) en overlay con fondo blur */
