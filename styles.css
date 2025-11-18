@@ -1968,7 +1968,15 @@ select::-ms-expand { display: none; }
   margin-top: 8px;
 }
 
-/* Al entrar a step-9 ocultar completamente la screen-8 anterior */
+/* Al entrar a step-9 ocultar completamente las screens anteriores
+   para evitar que se apilen en el mismo overlay */
+.fade-screen.step-9 .screen-1,
+.fade-screen.step-9 .screen-2,
+.fade-screen.step-9 .screen-3,
+.fade-screen.step-9 .screen-4,
+.fade-screen.step-9 .screen-5,
+.fade-screen.step-9 .screen-6,
+.fade-screen.step-9 .screen-7,
 .fade-screen.step-9 .screen-8 {
   display: none;
   opacity: 0;
