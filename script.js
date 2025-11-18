@@ -39,10 +39,11 @@
   const screen6 = () => document.querySelector('.screen-6');
   const screen7 = () => document.querySelector('.screen-7');
   const screen8 = () => document.querySelector('.screen-8');
+  const screen9 = () => document.querySelector('.screen-9');
 
   // Guardar/restaurar progreso en localStorage
   const saveProgress = () => {
-    const currentStep = ['step-2', 'step-3', 'step-4', 'step-5', 'step-6', 'step-7', 'step-8']
+    const currentStep = ['step-2', 'step-3', 'step-4', 'step-5', 'step-6', 'step-7', 'step-8', 'step-9']
       .find(cls => fade && fade.classList.contains(cls)) || 'step-1';
     localStorage.setItem('founders_progress', currentStep);
   };
@@ -62,7 +63,8 @@
       'step-5': screen5,
       'step-6': screen6,
       'step-7': screen7,
-      'step-8': screen8
+      'step-8': screen8,
+      'step-9': screen9
     };
     
     const targetScreen = stepMap[savedStep];
@@ -74,17 +76,18 @@
     }
   };
 
-  const resetScreensToStep1 = () => {
-    const s1 = screen1(), s2 = screen2(), s3 = screen3(), s4 = screen4(), s5 = screen5(), s6 = screen6(), s7 = screen7(), s8 = screen8();
-    if (s1) s1.setAttribute('aria-hidden', 'false');
-    if (s2) s2.setAttribute('aria-hidden', 'true');
-    if (s3) s3.setAttribute('aria-hidden', 'true');
-    if (s4) s4.setAttribute('aria-hidden', 'true');
-    if (s5) s5.setAttribute('aria-hidden', 'true');
-    if (s6) s6.setAttribute('aria-hidden', 'true');
-    if (s7) s7.setAttribute('aria-hidden', 'true');
-    if (s8) s8.setAttribute('aria-hidden', 'true');
-  };
+    const resetScreensToStep1 = () => {
+      const s1 = screen1(), s2 = screen2(), s3 = screen3(), s4 = screen4(), s5 = screen5(), s6 = screen6(), s7 = screen7(), s8 = screen8(), s9 = screen9();
+      if (s1) s1.setAttribute('aria-hidden', 'false');
+      if (s2) s2.setAttribute('aria-hidden', 'true');
+      if (s3) s3.setAttribute('aria-hidden', 'true');
+      if (s4) s4.setAttribute('aria-hidden', 'true');
+      if (s5) s5.setAttribute('aria-hidden', 'true');
+      if (s6) s6.setAttribute('aria-hidden', 'true');
+      if (s7) s7.setAttribute('aria-hidden', 'true');
+      if (s8) s8.setAttribute('aria-hidden', 'true');
+      if (s9) s9.setAttribute('aria-hidden', 'true');
+    };
 
   const openOverlay = () => {
     // Limpiar cualquier estado residual
@@ -166,9 +169,15 @@
   });
 
   backBtn && fade && backBtn.addEventListener('click', () => {
-    if (fade.classList.contains('step-8')) {
-      fade.classList.remove('step-8');
-      const s7 = screen7(), s8 = screen8();
+      if (fade.classList.contains('step-9')) {
+        fade.classList.remove('step-9');
+        const s8 = screen8(), s9 = screen9();
+        if (s8 && s9) { s8.setAttribute('aria-hidden','false'); s9.setAttribute('aria-hidden','true'); }
+        return;
+      }
+      if (fade.classList.contains('step-8')) {
+        fade.classList.remove('step-8');
+        const s7 = screen7(), s8 = screen8();
       if (s7 && s8) { s7.setAttribute('aria-hidden','false'); s8.setAttribute('aria-hidden','true'); }
       return;
     }
@@ -215,7 +224,7 @@
     localStorage.removeItem('founders_progress');
     fade.classList.remove('active');
     fade.setAttribute('aria-hidden', 'true');
-    fade.classList.remove('done', 'step-2', 'step-3', 'step-4', 'step-5', 'step-6', 'step-7', 'step-8');
+    fade.classList.remove('done', 'step-2', 'step-3', 'step-4', 'step-5', 'step-6', 'step-7', 'step-8', 'step-9');
     resetScreensToStep1();
     document.documentElement.classList.remove('blank-mode', 'names-in');
     document.documentElement.style.backgroundColor = '';
@@ -480,19 +489,20 @@
     group.setAttribute('role', 'group');
     group.setAttribute('aria-label', 'Deportes favoritos');
 
+    // Orden personalizado: Golf, Natación, Baloncesto, Tenis, Pádel, Running, Ciclismo y luego el resto
     const options = [
-      'Futbol',
-      'Futbol americano',
+      'Golf',
+      'Natacion',
       'Baloncesto',
-      'Beisbol',
       'Tenis',
       'Padel',
-      'Golf',
+      'Running',
+      'Ciclismo',
+      'Futbol',
+      'Futbol americano',
+      'Beisbol',
       'Rugby',
       'Voleibol',
-      'Natacion',
-      'Ciclismo',
-      'Running',
       'Automovilismo',
       'Motociclismo',
       'Boxeo',
@@ -593,7 +603,8 @@
     const extraOptions = [
       'Musica', 'Cine', 'Teatro', 'Literatura', 'Historia',
       'Fotografia', 'Danza', 'Pintura', 'Museos', 'Diseno',
-      'Moda', 'Arqueologia'
+      'Moda', 'Arqueologia',
+      'Catas Cigarros', 'Wellness', 'Charlas', 'Cl\u00ednicas deportivas', 'Religiosas'
     ];
     extraOptions.forEach((v) => {
       const lab = document.createElement('label');
@@ -740,30 +751,36 @@
     group.setAttribute('role', 'group');
     group.setAttribute('aria-label', unescapeUnicode('M\\u00fasica favorita'));
 
-    // helper defined above
-    const options6 = [ 'Pop', 'Rock', 'Jazz', 'Cl\u00e1sica' ];
-    options6.forEach((v) => {
-      const lab = document.createElement('label');
-      lab.className = 'check';
-      const inp = document.createElement('input');
-      inp.type = 'checkbox';
-      inp.name = 'cultural[]';
-      inp.value = unescapeUnicode(v);
-      const span = document.createElement('span');
-      span.textContent = unescapeUnicode(v);
-      lab.appendChild(inp);
-      lab.appendChild(span);
-      group.appendChild(lab);
-    });
-
-    const extraOptions6 = [
-      'Blues', 'Hip Hop', 'R&B', 'Reggae',
-      'Electr\u00f3nica', 'House', 'Techno', 'Trance',
-      'Country', 'Folk', 'Indie', 'Metal',
-      'Salsa', 'Bachata', 'Cumbia', 'Merengue', 'Bolero',
-      'Flamenco', 'Tango', 'K-pop', 'Reggaet\u00f3n'
+    // Orden personalizado de géneros musicales:
+    // Merengue, Bolero, Salsa, Bachata, Pop, Rock, Country, y luego los demás.
+    const musicGenres = [
+      'Merengue',
+      'Bolero',
+      'Salsa',
+      'Bachata',
+      'Pop',
+      'Rock',
+      'Country',
+      'Jazz',
+      'Cl\u00e1sica',
+      'Blues',
+      'Hip Hop',
+      'R&B',
+      'Reggae',
+      'Electr\u00f3nica',
+      'House',
+      'Techno',
+      'Trance',
+      'Folk',
+      'Indie',
+      'Metal',
+      'Cumbia',
+      'Flamenco',
+      'Tango',
+      'K-pop',
+      'Reggaet\u00f3n'
     ];
-    extraOptions6.forEach((v) => {
+    musicGenres.forEach((v) => {
       const lab = document.createElement('label');
       lab.className = 'check';
       const inp = document.createElement('input');
@@ -1079,7 +1096,7 @@
 
       const label = document.createElement('label');
       label.setAttribute('for', 'otherMilestones');
-      label.textContent = 'Otros hitos';
+      label.textContent = 'Otros';
 
       const textarea = document.createElement('textarea');
       textarea.id = 'otherMilestones';
@@ -1103,5 +1120,151 @@
     next8.setAttribute('aria-label', 'Continuar');
     next8.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">\n      <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>\n    </svg>';
     s8c.appendChild(next8);
+
+    // Avanzar del screen 8 al 9
+    next8.addEventListener('click', (e) => {
+      e.preventDefault();
+      const s8 = screen8();
+      const s9 = screen9();
+      if (s8 && s9) {
+        s8.setAttribute('aria-hidden', 'true');
+        s9.setAttribute('aria-hidden', 'false');
+      }
+      fade && requestAnimationFrame(() => fade.classList.add('step-9'));
+      saveProgress();
+    });
+  }
+
+  // ===== Screen 9: datos de la propiedad (villa/unidad) =====
+  const s9c = screen9();
+  if (s9c && !document.getElementById('milestones-form-9')) {
+    const hr9 = document.createElement('hr');
+    hr9.className = 'light-blue-divider';
+
+    const form9 = document.createElement('form');
+    form9.id = 'milestones-form-9';
+    form9.className = 'blank-form';
+    form9.noValidate = true;
+
+    const fields9 = document.createElement('div');
+    fields9.className = 'fields';
+
+    // Nombre de villa / unidad (Texto)
+    {
+      const field = document.createElement('div');
+      field.className = 'field';
+
+      const label = document.createElement('label');
+      label.setAttribute('for', 'villaName');
+      label.textContent = 'Nombre de villa / unidad';
+
+      const input = document.createElement('input');
+      input.id = 'villaName';
+      input.name = 'villaName';
+      input.type = 'text';
+      input.placeholder = 'Villa #7 - Sapphire Island';
+
+      field.appendChild(label);
+      field.appendChild(input);
+      fields9.appendChild(field);
+    }
+
+    // Fecha de adquisición (Fecha)
+    {
+      const field = document.createElement('div');
+      field.className = 'field';
+
+      const label = document.createElement('label');
+      label.setAttribute('for', 'acquisitionDate');
+      label.textContent = 'Fecha de adquisición';
+
+      const input = document.createElement('input');
+      input.id = 'acquisitionDate';
+      input.name = 'acquisitionDate';
+      input.type = 'date';
+      input.placeholder = '12/02/2023';
+
+      field.appendChild(label);
+      field.appendChild(input);
+      fields9.appendChild(field);
+    }
+
+    // Uso actual (Selector)
+    {
+      const field = document.createElement('div');
+      field.className = 'field';
+
+      const label = document.createElement('label');
+      label.setAttribute('for', 'currentUse');
+      label.textContent = 'Uso actual';
+      field.appendChild(label);
+
+      const selectWrap = document.createElement('div');
+      selectWrap.className = 'select-wrap';
+
+      const select = document.createElement('select');
+      select.id = 'currentUse';
+      select.name = 'currentUse';
+
+      const optPlaceholder = document.createElement('option');
+      optPlaceholder.value = '';
+      optPlaceholder.disabled = true;
+      optPlaceholder.selected = true;
+      optPlaceholder.textContent = 'Seleccione.';
+      select.appendChild(optPlaceholder);
+
+      ['Propia', 'Renta', 'En desarrollo'].forEach(text => {
+        const opt = document.createElement('option');
+        opt.value = text;
+        opt.textContent = text;
+        select.appendChild(opt);
+      });
+
+      selectWrap.appendChild(select);
+
+      // Chevron visual como en otros selects
+      const chev = document.createElement('span');
+      chev.className = 'select-chevron';
+      chev.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+      selectWrap.appendChild(chev);
+      field.appendChild(selectWrap);
+
+      // Aplicar el mismo enhancer de selects que en el resto del formulario
+      enhanceSelect(selectWrap);
+
+      fields9.appendChild(field);
+    }
+
+    // Observaciones (Texto libre)
+    {
+      const field = document.createElement('div');
+      field.className = 'field';
+
+      const label = document.createElement('label');
+      label.setAttribute('for', 'propertyNotes');
+      label.textContent = 'Observaciones';
+
+      const textarea = document.createElement('textarea');
+      textarea.id = 'propertyNotes';
+      textarea.name = 'propertyNotes';
+      textarea.rows = 3;
+      textarea.placeholder = 'Uso familiar mensual, comentarios...';
+
+      field.appendChild(label);
+      field.appendChild(textarea);
+      fields9.appendChild(field);
+    }
+
+    form9.appendChild(fields9);
+    s9c.appendChild(hr9);
+    s9c.appendChild(form9);
+
+    const next9 = document.createElement('button');
+    next9.id = 'nextBtn9';
+    next9.className = 'next-btn';
+    next9.type = 'button';
+    next9.setAttribute('aria-label', 'Continuar');
+    next9.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">\n      <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>\n    </svg>';
+    s9c.appendChild(next9);
   }
 });
