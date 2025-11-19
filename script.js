@@ -40,10 +40,11 @@
   const screen7 = () => document.querySelector('.screen-7');
   const screen8 = () => document.querySelector('.screen-8');
   const screen9 = () => document.querySelector('.screen-9');
+  const screen10 = () => document.querySelector('.screen-10');
 
   // Guardar/restaurar progreso en localStorage
   const saveProgress = () => {
-    const currentStep = ['step-2', 'step-3', 'step-4', 'step-5', 'step-6', 'step-7', 'step-8', 'step-9']
+    const currentStep = ['step-2', 'step-3', 'step-4', 'step-5', 'step-6', 'step-7', 'step-8', 'step-9', 'step-10']
       .find(cls => fade && fade.classList.contains(cls)) || 'step-1';
     localStorage.setItem('founders_progress', currentStep);
   };
@@ -64,7 +65,8 @@
       'step-6': screen6,
       'step-7': screen7,
       'step-8': screen8,
-      'step-9': screen9
+      'step-9': screen9,
+      'step-10': screen10
     };
     
     const targetScreen = stepMap[savedStep];
@@ -77,7 +79,7 @@
   };
 
     const resetScreensToStep1 = () => {
-      const s1 = screen1(), s2 = screen2(), s3 = screen3(), s4 = screen4(), s5 = screen5(), s6 = screen6(), s7 = screen7(), s8 = screen8(), s9 = screen9();
+      const s1 = screen1(), s2 = screen2(), s3 = screen3(), s4 = screen4(), s5 = screen5(), s6 = screen6(), s7 = screen7(), s8 = screen8(), s9 = screen9(), s10 = screen10();
       if (s1) s1.setAttribute('aria-hidden', 'false');
       if (s2) s2.setAttribute('aria-hidden', 'true');
       if (s3) s3.setAttribute('aria-hidden', 'true');
@@ -87,6 +89,7 @@
       if (s7) s7.setAttribute('aria-hidden', 'true');
       if (s8) s8.setAttribute('aria-hidden', 'true');
       if (s9) s9.setAttribute('aria-hidden', 'true');
+      if (s10) s10.setAttribute('aria-hidden', 'true');
     };
 
   const openOverlay = () => {
@@ -169,6 +172,12 @@
   });
 
   backBtn && fade && backBtn.addEventListener('click', () => {
+      if (fade.classList.contains('step-10')) {
+        fade.classList.remove('step-10');
+        const s9 = screen9(), s10 = screen10();
+        if (s9 && s10) { s9.setAttribute('aria-hidden','false'); s10.setAttribute('aria-hidden','true'); }
+        return;
+      }
       if (fade.classList.contains('step-9')) {
         fade.classList.remove('step-9');
         const s8 = screen8(), s9 = screen9();
@@ -224,7 +233,7 @@
     localStorage.removeItem('founders_progress');
     fade.classList.remove('active');
     fade.setAttribute('aria-hidden', 'true');
-    fade.classList.remove('done', 'step-2', 'step-3', 'step-4', 'step-5', 'step-6', 'step-7', 'step-8', 'step-9');
+    fade.classList.remove('done', 'step-2', 'step-3', 'step-4', 'step-5', 'step-6', 'step-7', 'step-8', 'step-9', 'step-10');
     resetScreensToStep1();
     document.documentElement.classList.remove('blank-mode', 'names-in');
     document.documentElement.style.backgroundColor = '';
@@ -1266,5 +1275,197 @@
     next9.setAttribute('aria-label', 'Continuar');
     next9.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">\n      <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>\n    </svg>';
     s9c.appendChild(next9);
+
+    // Avanzar del screen 9 al 10
+    next9.addEventListener('click', (e) => {
+      e.preventDefault();
+      const s9 = screen9();
+      const s10 = screen10();
+      if (s9 && s10) {
+        s9.setAttribute('aria-hidden', 'true');
+        s10.setAttribute('aria-hidden', 'false');
+      }
+      fade && requestAnimationFrame(() => fade.classList.add('step-10'));
+      saveProgress();
+    });
+  }
+
+  // ===== Screen 10: contacto preferido =====
+  const s10c = screen10();
+  if (s10c && !document.getElementById('events-form-10')) {
+    const hr10 = document.createElement('hr');
+    hr10.className = 'light-blue-divider';
+
+    const form10 = document.createElement('form');
+    form10.id = 'events-form-10';
+    form10.className = 'blank-form';
+    form10.noValidate = true;
+
+    const fields10 = document.createElement('div');
+    fields10.className = 'fields';
+
+    // Canal preferido (selector)
+    {
+      const field = document.createElement('div');
+      field.className = 'field';
+
+      const label = document.createElement('label');
+      label.setAttribute('for', 'preferredChannel');
+      label.textContent = 'Canal preferido';
+      field.appendChild(label);
+
+      const selectWrap = document.createElement('div');
+      selectWrap.className = 'select-wrap';
+
+      const select = document.createElement('select');
+      select.id = 'preferredChannel';
+      select.name = 'preferredChannel';
+
+      const optPlaceholder = document.createElement('option');
+      optPlaceholder.value = '';
+      optPlaceholder.disabled = true;
+      optPlaceholder.selected = true;
+      optPlaceholder.textContent = 'Seleccione.';
+      select.appendChild(optPlaceholder);
+
+      ['WhatsApp', 'Email', 'Teléfono'].forEach((text) => {
+        const opt = document.createElement('option');
+        opt.value = text;
+        opt.textContent = text;
+        select.appendChild(opt);
+      });
+
+      selectWrap.appendChild(select);
+
+      const chev = document.createElement('span');
+      chev.className = 'select-chevron';
+      chev.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+      selectWrap.appendChild(chev);
+
+      enhanceSelect(selectWrap);
+
+      field.appendChild(selectWrap);
+      fields10.appendChild(field);
+    }
+
+    // Horario de contacto (selector)
+    {
+      const field = document.createElement('div');
+      field.className = 'field';
+
+      const label = document.createElement('label');
+      label.setAttribute('for', 'contactSchedule');
+      label.textContent = 'Horario de contacto';
+      field.appendChild(label);
+
+      const selectWrap = document.createElement('div');
+      selectWrap.className = 'select-wrap';
+
+      const select = document.createElement('select');
+      select.id = 'contactSchedule';
+      select.name = 'contactSchedule';
+
+      const optPlaceholder = document.createElement('option');
+      optPlaceholder.value = '';
+      optPlaceholder.disabled = true;
+      optPlaceholder.selected = true;
+      optPlaceholder.textContent = 'Seleccione.';
+      select.appendChild(optPlaceholder);
+
+      ['Mañana', 'Tarde', 'Noche'].forEach((text) => {
+        const opt = document.createElement('option');
+        opt.value = text;
+        opt.textContent = text;
+        select.appendChild(opt);
+      });
+
+      selectWrap.appendChild(select);
+
+      const chev = document.createElement('span');
+      chev.className = 'select-chevron';
+      chev.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+      selectWrap.appendChild(chev);
+
+      enhanceSelect(selectWrap);
+
+      field.appendChild(selectWrap);
+      fields10.appendChild(field);
+    }
+
+    // Tono de comunicación (selector)
+    {
+      const field = document.createElement('div');
+      field.className = 'field';
+
+      const label = document.createElement('label');
+      label.setAttribute('for', 'communicationTone');
+      label.textContent = 'Tono de comunicación';
+      field.appendChild(label);
+
+      const selectWrap = document.createElement('div');
+      selectWrap.className = 'select-wrap';
+
+      const select = document.createElement('select');
+      select.id = 'communicationTone';
+      select.name = 'communicationTone';
+
+      const optPlaceholder = document.createElement('option');
+      optPlaceholder.value = '';
+      optPlaceholder.disabled = true;
+      optPlaceholder.selected = true;
+      optPlaceholder.textContent = 'Seleccione.';
+      select.appendChild(optPlaceholder);
+
+      ['Formal', 'Cercano', 'Exclusivo'].forEach((text) => {
+        const opt = document.createElement('option');
+        opt.value = text;
+        opt.textContent = text;
+        select.appendChild(opt);
+      });
+
+      selectWrap.appendChild(select);
+
+      const chev = document.createElement('span');
+      chev.className = 'select-chevron';
+      chev.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+      selectWrap.appendChild(chev);
+
+      enhanceSelect(selectWrap);
+
+      field.appendChild(selectWrap);
+      fields10.appendChild(field);
+    }
+
+    // Comentarios adicionales (texto largo)
+    {
+      const field = document.createElement('div');
+      field.className = 'field';
+
+      const label = document.createElement('label');
+      label.setAttribute('for', 'additionalComments');
+      label.textContent = 'Comentarios adicionales';
+
+      const textarea = document.createElement('textarea');
+      textarea.id = 'additionalComments';
+      textarea.name = 'additionalComments';
+      textarea.rows = 3;
+      textarea.placeholder = '“Aprecio los detalles discretos.”';
+
+      field.appendChild(label);
+      field.appendChild(textarea);
+      fields10.appendChild(field);
+    }
+
+    form10.appendChild(fields10);
+    s10c.appendChild(hr10);
+    s10c.appendChild(form10);
+
+    // Botón Finalizar y enviar
+    const finishBtn = document.createElement('button');
+    finishBtn.type = 'button';
+    finishBtn.className = 'finish-btn';
+    finishBtn.textContent = 'Finalizar y enviar';
+    finishBtn.setAttribute('aria-label', 'Finalizar y enviar');
+    s10c.appendChild(finishBtn);
   }
 });

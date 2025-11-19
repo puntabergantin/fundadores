@@ -55,15 +55,6 @@
         <button class="cta" type="button" aria-label="Continuar a la siguiente sección" id="startBtn">
           Queremos conocerte más
         </button>
-        <img
-          class="brand-mark-home"
-          src="assets/LOGO BERGANTIN.svg"
-          alt="Logo Bergantín"
-          width="160"
-          height="auto"
-          loading="lazy"
-          decoding="async"
-        />
       </div>
 
       <div class="loader-overlay" id="loaderOverlay" style="display:none;">
@@ -89,7 +80,7 @@
         </svg>
       </button>
       <div class="screen screen-1" aria-label="Pantalla 1">
-        <div class="blank-message" role="status" aria-live="polite">"Permítenos construir <strong>experiencia a tu medida</strong>."</div>
+        <div class="blank-message" role="status" aria-live="polite">"Permítenos construir <strong>experiencias a tu medida</strong>."</div>
 
         <!-- Formulario inicial -->
         <hr class="light-blue-divider" />
@@ -317,6 +308,35 @@
               <label for="residence">Residencia actual</label>
               <input id="residence" name="residence" type="text" placeholder="Ciudad, país" required />
             </div>
+            <div class="field">
+              <label>Size de Tshirt/Camisas</label>
+              <div class="checkbox-group" role="radiogroup" aria-label="Size de Tshirt o Camisas">
+                <label class="check">
+                  <input type="radio" name="shirtSize" value="XS" />
+                  <span>XS</span>
+                </label>
+                <label class="check">
+                  <input type="radio" name="shirtSize" value="S" />
+                  <span>S</span>
+                </label>
+                <label class="check">
+                  <input type="radio" name="shirtSize" value="M" />
+                  <span>M</span>
+                </label>
+                <label class="check">
+                  <input type="radio" name="shirtSize" value="L" />
+                  <span>L</span>
+                </label>
+                <label class="check">
+                  <input type="radio" name="shirtSize" value="XL" />
+                  <span>XL</span>
+                </label>
+                <label class="check">
+                  <input type="radio" name="shirtSize" value="XXL" />
+                  <span>XXL</span>
+                </label>
+              </div>
+            </div>
           </div>
         </form>
 
@@ -412,6 +432,13 @@
       <div class="screen screen-9" aria-label="Pantalla 9" aria-hidden="true">
         <div class="blank-message" role="status" aria-live="polite">
           "Cuentanos sobre <strong>tu propiedad</strong>."
+        </div>
+      </div>
+
+      <!-- Pantalla 10: réplica de la pantalla 9 con eventos -->
+      <div class="screen screen-10" aria-label="Pantalla 10" aria-hidden="true">
+        <div class="blank-message" role="status" aria-live="polite">
+          "Queremos hablarte en tu <strong>lenguaje.</strong>"
         </div>
       </div>
 

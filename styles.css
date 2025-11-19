@@ -142,18 +142,7 @@
   opacity: 0.92;
   text-shadow: 0 1px 12px rgba(0,0,0,0.25);
 }
-.brand-mark-home {
-  position: absolute;
-  left: 50%;
-  bottom: 2.5rem;
-  transform: translateX(-50%);
-  width: clamp(90px, 22vw, 180px);
-  max-width: 60vw;
-  height: auto;
-  opacity: 0.92;
-  pointer-events: none;
-  z-index: 11;
-}
+.brand-mark-home { display: none !important; }
 /* Home center: logo y botón centrados en toda la pantalla */
 .home-center {
   position: absolute;
@@ -1035,6 +1024,34 @@ select::-ms-expand { display: none; }
   border-color: var(--primary);
 }
 
+/* Botón Finalizar y enviar (screen-10) */
+.finish-btn {
+  align-self: end;
+  background: var(--primary);
+  color: #fff;
+  border: 0;
+  border-radius: 999px;
+  padding: 12px 20px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(3,154,162,0.35);
+  transition: background-color 180ms ease, transform 140ms ease, box-shadow 180ms ease;
+}
+.finish-btn:hover {
+  background: #027c82;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 22px rgba(3,154,162,0.40);
+}
+.finish-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 14px rgba(3,154,162,0.32);
+}
+.finish-btn:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
 /* Mensaje central en modo blanco */
 .blank-message {
   /* Evitar capitalización forzada por la variante del kit */
@@ -1526,7 +1543,8 @@ select::-ms-expand { display: none; }
 .screen-6,
 .screen-7,
 .screen-8,
-.screen-9 {
+.screen-9,
+.screen-10 {
   justify-self: stretch;
 }
 
@@ -1544,7 +1562,8 @@ select::-ms-expand { display: none; }
 /* Mirror layout for screen-7, screen-8 y screen-9 */
 .screen-7,
 .screen-8,
-.screen-9 {
+.screen-9,
+.screen-10 {
   width: 100%;
   max-width: 800px;
   display: grid;
@@ -1557,11 +1576,13 @@ select::-ms-expand { display: none; }
 .screen-3 .light-blue-divider, .screen-4 .light-blue-divider, .screen-5 .light-blue-divider, .screen-6 .light-blue-divider { justify-self: start; margin: 12px 0; }
   .screen-7 .light-blue-divider,
   .screen-8 .light-blue-divider,
-  .screen-9 .light-blue-divider { justify-self: start; margin: 12px 0; }
+  .screen-9 .light-blue-divider,
+  .screen-10 .light-blue-divider { justify-self: start; margin: 12px 0; }
 .screen-3 .blank-message, .screen-3 .blank-form, .screen-4 .blank-message, .screen-4 .blank-form, .screen-5 .blank-message, .screen-5 .blank-form, .screen-6 .blank-message, .screen-6 .blank-form { justify-self: start; }
   .screen-7 .blank-message, .screen-7 .blank-form,
   .screen-8 .blank-message, .screen-8 .blank-form,
-  .screen-9 .blank-message, .screen-9 .blank-form { justify-self: start; }
+  .screen-9 .blank-message, .screen-9 .blank-form,
+  .screen-10 .blank-message, .screen-10 .blank-form { justify-self: start; }
 /* Place the next arrow to the right on screens 3, 4, 5 and 6 and add breathing space */
 .screen-3 .next-btn, .screen-4 .next-btn, .screen-5 .next-btn, .screen-6 .next-btn { justify-self: end; margin-top: 8px; }
   .screen-7 .next-btn,
@@ -1899,28 +1920,11 @@ select::-ms-expand { display: none; }
     place-items: center;
   }
 
-  /* Mantener el logo Bergantín siempre dentro de la pantalla
-     con margen inferior consistente y respetando la safe-area */
-  .brand-mark-home {
-      bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px));
-    }
+/* Logo Bergantín oculto */
+/* .brand-mark-home reglas anteriores eliminadas */
   }
 
-/* En mobile, el logo Bergantín participa del layout flex para no cortarse
-   y mantener un margen inferior consistente en todos los dispositivos */
-@media (max-width: 600px) {
-  .home-center {
-    align-items: center;
-  }
-  .home-center .brand-mark-home {
-    position: static;
-    transform: none;
-    margin-top: auto;
-    margin-bottom: clamp(1.25rem, 5vh, 2rem);
-    width: clamp(100px, 26vw, 170px);
-    max-width: 60vw;
-  }
-}
+/* Sin reglas para brand-mark-home en mobile, se oculta */
 
 /* Ajuste final de home en mobile: centrar Fundadores + CTA sin tocar Bergantín */
 @media (max-width: 600px) {
@@ -1996,3 +2000,34 @@ select::-ms-expand { display: none; }
 .fade-screen.step-9 .screen-9 .light-blue-divider { animation-delay: 140ms; }
 .fade-screen.step-9 .screen-9 .blank-form { animation-delay: 220ms; }
 .fade-screen.step-9 .screen-9 .next-btn { animation-delay: 300ms; }
+
+/* ===== Screen 10: igual a screen 9 ===== */
+.screen-10 {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.fade-screen .screen-10 {
+  display: none;
+}
+.fade-screen.step-10 .screen-10 {
+  display: grid;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+/* Al entrar a step-10 ocultar todas las anteriores */
+.fade-screen.step-10 .screen-1,
+.fade-screen.step-10 .screen-2,
+.fade-screen.step-10 .screen-3,
+.fade-screen.step-10 .screen-4,
+.fade-screen.step-10 .screen-5,
+.fade-screen.step-10 .screen-6,
+.fade-screen.step-10 .screen-7,
+.fade-screen.step-10 .screen-8,
+.fade-screen.step-10 .screen-9 {
+  display: none;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
