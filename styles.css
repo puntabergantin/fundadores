@@ -142,7 +142,18 @@
   opacity: 0.92;
   text-shadow: 0 1px 12px rgba(0,0,0,0.25);
 }
-.brand-mark-home { display: none !important; }
+.brand-mark-home {
+  position: absolute;
+  left: 50%;
+  bottom: 2.5rem;
+  transform: translateX(-50%);
+  width: clamp(90px, 22vw, 180px);
+  max-width: 60vw;
+  height: auto;
+  opacity: 0.92;
+  pointer-events: none;
+  z-index: 11;
+}
 /* Home center: logo y botón centrados en toda la pantalla */
 .home-center {
   position: absolute;
@@ -199,6 +210,10 @@
   --white: #ffffff;
   --shadow: rgba(0,0,0,0.35);
   --danger: #d93025;  /* error red */
+  /* Anchos coherentes para todos los screens */
+  --screen-max: 800px;
+  --screen-max-md: 680px;
+  --screen-max-lg: 720px;
 }
 
 /* Light-blue divider used between intro text and form */
@@ -308,26 +323,6 @@ body {
   overflow: hidden;
   display: grid;
   place-items: center;
-}
-
-/* Ajuste para pantallas de poca altura en escritorio (ej. laptops bajos) */
-@media (min-width: 768px) and (max-height: 700px) {
-  .home-center {
-    justify-content: center;
-    padding-top: 8vh;
-    padding-bottom: 8vh;
-    gap: 1.8rem;
-  }
-  .home-center .brand-top {
-    width: clamp(200px, 32vh, 280px);
-    margin-bottom: 1.8rem;
-  }
-  .home-center .cta, #startBtn {
-    padding: 0.8em 2.1em;
-  }
-  .brand-mark-home {
-    bottom: 1.5rem;
-  }
 }
 
 /* Video de fondo */
@@ -851,17 +846,15 @@ select::-ms-expand { display: none; }
     url("assets/SLIDE 1.png") center center / cover no-repeat;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 1s ease;
+  transition: opacity 1s ease, background-image 0.6s ease;
   z-index: 9999;
   pointer-events: none;
   display: grid;
-  /* Columna explícita para que el ancho del bloque no dependa del contenido */
-  grid-template-columns: minmax(0, 1fr);
   /* Centrado vertical del bloque (mensaje + formulario) */
   align-content: center;
-  /* Alinear a la izquierda horizontalmente */
-  justify-content: start;
-  justify-items: start;
+  /* Distribuir horizontalmente sin comprimir el grid */
+  justify-content: stretch;
+  justify-items: stretch;
   padding: clamp(16px, 5vw, 48px);
   row-gap: 18px;
 }
@@ -912,20 +905,71 @@ select::-ms-expand { display: none; }
 .fade-screen.step-8 {
   background:
     linear-gradient(0deg, rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
-    url("assets/SLIDE 8.jpg") center center / cover no-repeat;
+    url("assets/SLIDE 1.png") center center / cover no-repeat;
 }
 
 /* Screen 9 fondo */
 .fade-screen.step-9 {
   background:
     linear-gradient(0deg, rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
-    url("assets/SLIDE 9.jpg") center center / cover no-repeat;
+    url("assets/SLIDE 2.png") center center / cover no-repeat;
+}
+
+/* Screen 10 fondo */
+.fade-screen.step-10 {
+  background:
+    linear-gradient(0deg, rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+    url("assets/SLIDE 3.jpg") center center / cover no-repeat;
 }
 
 .fade-screen.active {
   visibility: visible;
   opacity: 1;
   pointer-events: auto;
+}
+
+/* Centra todos los screens y fija un ancho coherente en cada breakpoint */
+.fade-screen .screen {
+  display: grid;
+  row-gap: 18px;
+  width: min(100%, var(--screen-max));
+  margin-inline: auto;
+  justify-self: center;
+  justify-items: stretch;
+  align-items: start;
+  box-sizing: border-box;
+}
+.fade-screen .screen > * {
+  width: 100%;
+  max-width: var(--screen-max);
+  margin-inline: auto;
+  justify-self: center;
+  box-sizing: border-box;
+}
+
+.fade-screen .light-blue-divider {
+  max-width: var(--screen-max);
+  width: 100%;
+  margin-inline: auto;
+  justify-self: stretch;
+  grid-column: 1 / -1;
+  display: block;
+}
+
+/* Fuerza mismo ancho interno para pantallas 8, 9 y 10 (mensaje + formulario) */
+.fade-screen .screen-8,
+.fade-screen .screen-9,
+.fade-screen .screen-10 {
+  width: min(100%, var(--screen-max));
+  max-width: var(--screen-max);
+  justify-items: stretch;
+}
+.fade-screen .screen-8 > *,
+.fade-screen .screen-9 > *,
+.fade-screen .screen-10 > * {
+  width: 100%;
+  max-width: 100%;
+  justify-self: center;
 }
 
 /* Estado de cierre: transición rápida y bloqueo total */
@@ -942,9 +986,7 @@ select::-ms-expand { display: none; }
 .fade-screen.closing.step-4 .screen-4 > *,
 .fade-screen.closing.step-5 .screen-5 > *,
 .fade-screen.closing.step-6 .screen-6 > *,
-.fade-screen.closing.step-7 .screen-7 > *,
-.fade-screen.closing.step-8 .screen-8 > *,
-.fade-screen.closing.step-9 .screen-9 > * {
+.fade-screen.closing.step-7 .screen-7 > * {
   opacity: 0 !important;
   animation: none !important;
   animation-delay: 0s !important;
@@ -1024,34 +1066,6 @@ select::-ms-expand { display: none; }
   border-color: var(--primary);
 }
 
-/* Botón Finalizar y enviar (screen-10) */
-.finish-btn {
-  align-self: end;
-  background: var(--primary);
-  color: #fff;
-  border: 0;
-  border-radius: 999px;
-  padding: 12px 20px;
-  font-weight: 700;
-  letter-spacing: 0.01em;
-  cursor: pointer;
-  box-shadow: 0 6px 20px rgba(3,154,162,0.35);
-  transition: background-color 180ms ease, transform 140ms ease, box-shadow 180ms ease;
-}
-.finish-btn:hover {
-  background: #027c82;
-  transform: translateY(-1px);
-  box-shadow: 0 8px 22px rgba(3,154,162,0.40);
-}
-.finish-btn:active {
-  transform: translateY(0);
-  box-shadow: 0 4px 14px rgba(3,154,162,0.32);
-}
-.finish-btn:focus-visible {
-  outline: 2px solid #fff;
-  outline-offset: 3px;
-}
-
 /* Mensaje central en modo blanco */
 .blank-message {
   /* Evitar capitalización forzada por la variante del kit */
@@ -1064,7 +1078,7 @@ select::-ms-expand { display: none; }
   letter-spacing: 0.2px;
   max-width: 800px;
   width: 100%; /* alinear con ancho del formulario */
-  justify-self: start; /* pega el bloque al lado izquierdo */
+  justify-self: center;
   opacity: 0;
   transition: opacity 1s ease; /* sin delay; se activa tras overlay */
   text-transform: none !important;
@@ -1075,6 +1089,15 @@ select::-ms-expand { display: none; }
 .fade-screen.done .blank-message { opacity: 1; }
 /* Durante cierre, bloquear apariciones */
 .fade-screen.closing .blank-message { opacity: 0 !important; }
+
+.fade-screen .blank-message,
+.fade-screen .blank-form,
+.fade-screen .blank-form .fields {
+  width: min(100%, var(--screen-max));
+  max-width: var(--screen-max);
+  margin-inline: auto;
+  justify-self: stretch;
+}
 
 .blank-message strong {
   font-weight: 700;
@@ -1123,6 +1146,38 @@ select::-ms-expand { display: none; }
   /* Durante cierre, bloquear apariciones */
 .fade-screen.closing .next-btn { opacity: 0 !important; }
 
+/* Botón Finalizar (pantalla 10) */
+.finish-btn {
+  width: auto;
+  min-width: 160px;
+  height: 44px;
+  border-radius: 999px;
+  border: 1px solid #ffffff;
+  background: rgba(3,154,162,0.95);
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
+  display: inline-grid;
+  place-items: center;
+  box-shadow: 0 4px 16px rgba(3,154,162,0.35);
+  cursor: pointer;
+  justify-self: end;
+  opacity: 0;
+  padding: 0 28px;
+  transition: opacity 1s ease, background-color 180ms ease, transform 140ms ease;
+}
+.finish-btn:hover {
+  background: rgba(3,154,162,1);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(3,154,162,0.45);
+}
+.finish-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 12px rgba(3,154,162,0.30);
+}
+.fade-screen.done .finish-btn { opacity: 1; }
+.fade-screen.closing .finish-btn { opacity: 0 !important; }
+
 /* Cuando hay un select abierto, ocultar/desactivar el botón Siguiente */
 .fade-screen.select-open .next-btn {
   opacity: 0;
@@ -1133,7 +1188,7 @@ select::-ms-expand { display: none; }
 .blank-form {
     width: 100%;
     max-width: 800px;
-    justify-self: start;
+    justify-self: center;
     margin-top: 0;
     opacity: 0;
     transition: opacity 1s ease;
@@ -1150,11 +1205,38 @@ select::-ms-expand { display: none; }
 }
 
 .blank-form .field { display: grid; gap: 6px; margin-bottom: 0; overflow: visible; }
-.blank-form .fields { gap: 8px; }
+.blank-form .fields { gap: 8px; width: 100%; }
 .blank-form .select-wrap { position: relative; }
 .blank-form .select-wrap select { display: block; width: 100%; }
 /* Ensure hidden attribute actually hides even with grid rules */
 .blank-form [hidden] { display: none !important; }
+
+/* Overlay de confirmación en blanco */
+.success-overlay {
+  position: fixed;
+  inset: 0;
+  background: #ffffff;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  padding: 24px;
+}
+.success-overlay.is-visible { display: flex; }
+.success-card {
+  background: #ffffff;
+  border: 1px solid rgba(3,154,162,0.25);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+  border-radius: 18px;
+  padding: 24px 28px;
+  max-width: 320px;
+  text-align: center;
+  color: #253645;
+  font-family: 'Montserrat', system-ui, sans-serif;
+  font-size: 18px;
+  line-height: 1.4;
+  font-weight: 600;
+}
 
 /* Smooth show/hide for conditional fields (screen 2) */
 #partnerField {
@@ -1394,11 +1476,8 @@ select::-ms-expand { display: none; }
 
 /* Screen 3/4/5/6/7 override: selected chips outlined (no fill), text + check azul */
 .screen-3 .checkbox-group, .screen-4 .checkbox-group, .screen-5 .checkbox-group, .screen-6 .checkbox-group, .screen-7 .checkbox-group { gap: 10px; }
-.screen-8 .checkbox-group { gap: 10px; }
 .screen-3 .blank-form .check span, .screen-4 .blank-form .check span, .screen-5 .blank-form .check span, .screen-6 .blank-form .check span, .screen-7 .blank-form .check span { padding: 10px 14px; border-width: 1px; }
-.screen-8 .blank-form .check span { padding: 10px 14px; border-width: 1px; }
 .screen-3 .blank-form .check:hover span, .screen-4 .blank-form .check:hover span, .screen-5 .blank-form .check:hover span, .screen-6 .blank-form .check:hover span, .screen-7 .blank-form .check:hover span { border-color: var(--primary); }
-.screen-8 .blank-form .check:hover span { border-color: var(--primary); }
 .screen-3 .blank-form .check input:checked + span, .screen-4 .blank-form .check input:checked + span, .screen-5 .blank-form .check input:checked + span, .screen-6 .blank-form .check input:checked + span, .screen-7 .blank-form .check input:checked + span {
   background: #fff;
   color: var(--primary);
@@ -1414,12 +1493,11 @@ select::-ms-expand { display: none; }
   .screen-4 .checkbox-group,
   .screen-5 .checkbox-group,
   .screen-6 .checkbox-group,
-  .screen-7 .checkbox-group,
-  .screen-8 .checkbox-group {
+  .screen-7 .checkbox-group {
     /* Altura visible: 4 filas y media */
     --chip-font: clamp(13px, 3.6vw, 15px);
     --chip-pad-y: 8px;
-      --chip-gap: 10px;
+    --chip-gap: 10px;
     --chip-row: calc(1.2 * var(--chip-font) + (2 * var(--chip-pad-y)) + 2px);
     /* Mostrar 5 filas completas */
     max-height: calc((var(--chip-row) + var(--chip-gap)) * 5 - var(--chip-gap));
@@ -1451,21 +1529,18 @@ select::-ms-expand { display: none; }
   .screen-4 .checkbox-group::-webkit-scrollbar,
   .screen-5 .checkbox-group::-webkit-scrollbar,
   .screen-6 .checkbox-group::-webkit-scrollbar,
-  .screen-7 .checkbox-group::-webkit-scrollbar,
-  .screen-8 .checkbox-group::-webkit-scrollbar { width: 0 !important; height: 0 !important; }
+  .screen-7 .checkbox-group::-webkit-scrollbar { width: 0 !important; height: 0 !important; }
   .screen-3 .checkbox-group::-webkit-scrollbar-thumb,
   .screen-4 .checkbox-group::-webkit-scrollbar-thumb,
   .screen-5 .checkbox-group::-webkit-scrollbar-thumb,
   .screen-6 .checkbox-group::-webkit-scrollbar-thumb,
-  .screen-7 .checkbox-group::-webkit-scrollbar-thumb,
-  .screen-8 .checkbox-group::-webkit-scrollbar-thumb { background: transparent; display: none; }
+  .screen-7 .checkbox-group::-webkit-scrollbar-thumb { background: transparent; display: none; }
 }
 .screen-3 .blank-form .check input:checked + span::before,
 .screen-4 .blank-form .check input:checked + span::before,
 .screen-5 .blank-form .check input:checked + span::before,
 .screen-6 .blank-form .check input:checked + span::before,
-.screen-7 .blank-form .check input:checked + span::before,
-.screen-8 .blank-form .check input:checked + span::before {
+.screen-7 .blank-form .check input:checked + span::before {
   content: '';
   position: absolute;
   left: 12px;
@@ -1534,90 +1609,53 @@ select::-ms-expand { display: none; }
 .fade-screen.step-8 .screen-7 { opacity: 0; visibility: hidden; pointer-events: none; display: none; }
 .fade-screen.step-8 .screen-8 { opacity: 1; visibility: visible; pointer-events: auto; }
 
-/* Asegurar que todos los screens tomen siempre todo el ancho disponible dentro de fade-screen */
-.screen-1,
-.screen-2,
-.screen-3,
-.screen-4,
-.screen-5,
-.screen-6,
-.screen-7,
-.screen-8,
-.screen-9,
-.screen-10 {
-  justify-self: stretch;
-}
+/* Screen 9 visibility */
+.screen-9 { opacity: 0; visibility: hidden; pointer-events: none; }
+.fade-screen .screen-9 { display: none; }
+.fade-screen.step-9 .screen-9 { display: grid; }
+.fade-screen.step-9 .screen-8 { opacity: 0; visibility: hidden; pointer-events: none; display: none; }
+.fade-screen.step-9 .screen-9 { opacity: 1; visibility: visible; pointer-events: auto; }
 
-/* Layout de la pantalla 3: mismo ancho que el blank-message */
-.screen-3, .screen-4, .screen-5, .screen-6 {
-  width: 100%;
-  max-width: 800px;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  row-gap: 18px;
-  justify-items: start;
-  margin-block: auto;
-}
+/* Screen 10 visibility */
+.screen-10 { opacity: 0; visibility: hidden; pointer-events: none; }
+.fade-screen .screen-10 { display: none; }
+.fade-screen.step-10 .screen-10 { display: grid; }
+.fade-screen.step-10 .screen-9 { opacity: 0; visibility: hidden; pointer-events: none; display: none; }
+.fade-screen.step-10 .screen-10 { opacity: 1; visibility: visible; pointer-events: auto; }
 
-/* Mirror layout for screen-7, screen-8 y screen-9 */
-.screen-7,
-.screen-8,
-.screen-9,
-.screen-10 {
-  width: 100%;
-  max-width: 800px;
+/* Layout UNIFICADO para TODAS las pantallas (3-10): mismo ancho base */
+.screen-3, .screen-4, .screen-5, .screen-6, .screen-7, .screen-8, .screen-9, .screen-10 {
+  width: min(100%, var(--screen-max));
+  max-width: var(--screen-max);
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
   row-gap: 18px;
-  justify-items: start;
+  justify-items: center;
   margin-block: auto;
 }
 /* Alinear divider y form al inicio dentro del ancho controlado */
 .screen-3 .light-blue-divider, .screen-4 .light-blue-divider, .screen-5 .light-blue-divider, .screen-6 .light-blue-divider { justify-self: start; margin: 12px 0; }
-  .screen-7 .light-blue-divider,
-  .screen-8 .light-blue-divider,
-  .screen-9 .light-blue-divider,
-  .screen-10 .light-blue-divider { justify-self: start; margin: 12px 0; }
-.screen-3 .blank-message, .screen-3 .blank-form, .screen-4 .blank-message, .screen-4 .blank-form, .screen-5 .blank-message, .screen-5 .blank-form, .screen-6 .blank-message, .screen-6 .blank-form { justify-self: start; }
-  .screen-7 .blank-message, .screen-7 .blank-form,
-  .screen-8 .blank-message, .screen-8 .blank-form,
-  .screen-9 .blank-message, .screen-9 .blank-form,
-  .screen-10 .blank-message, .screen-10 .blank-form { justify-self: start; }
+.screen-7 .light-blue-divider { justify-self: start; margin: 12px 0; }
+
+  /* Alinear los contenidos internos al centro para que todas las pantallas
+    compartan exactamente el mismo ancho y comportamiento que screen-1 */
+  .screen-3 .blank-message, .screen-3 .blank-form, .screen-4 .blank-message, .screen-4 .blank-form, .screen-5 .blank-message, .screen-5 .blank-form, .screen-6 .blank-message, .screen-6 .blank-form { justify-self: center; }
+  .screen-7 .blank-message, .screen-7 .blank-form { justify-self: center; }
+  .screen-8 .blank-message, .screen-8 .blank-form, .screen-9 .blank-message, .screen-9 .blank-form, .screen-10 .blank-message, .screen-10 .blank-form { justify-self: center; }
 /* Place the next arrow to the right on screens 3, 4, 5 and 6 and add breathing space */
 .screen-3 .next-btn, .screen-4 .next-btn, .screen-5 .next-btn, .screen-6 .next-btn { justify-self: end; margin-top: 8px; }
-  .screen-7 .next-btn,
-  .screen-8 .next-btn { justify-self: end; margin-top: 8px; }
+.screen-7 .next-btn { justify-self: end; margin-top: 8px; }
+.screen-8 .next-btn, .screen-9 .next-btn { justify-self: end; margin-top: 8px; }
 @media (min-width: 768px) {
-  .screen-3, .screen-4, .screen-5, .screen-6 { max-width: 680px; }
-    .screen-7, .screen-8, .screen-9 { max-width: 680px; }
-  .screen-3 .blank-message, .screen-3 .blank-form, .screen-4 .blank-message, .screen-4 .blank-form, .screen-5 .blank-message, .screen-5 .blank-form, .screen-6 .blank-message, .screen-6 .blank-form { max-width: 680px; }
-    .screen-7 .blank-message, .screen-7 .blank-form,
-    .screen-8 .blank-message, .screen-8 .blank-form,
-    .screen-9 .blank-message, .screen-9 .blank-form { max-width: 680px; }
-  .screen-3 .light-blue-divider, .screen-4 .light-blue-divider, .screen-5 .light-blue-divider, .screen-6 .light-blue-divider { margin: 14px 0; }
-    .screen-7 .light-blue-divider,
-    .screen-8 .light-blue-divider,
-    .screen-9 .light-blue-divider { margin: 14px 0; }
-  .screen-3 .blank-form .fields > .field:first-child, .screen-4 .blank-form .fields > .field:first-child, .screen-5 .blank-form .fields > .field:first-child, .screen-6 .blank-form .fields > .field:first-child { margin-top: 14px; }
-    .screen-7 .blank-form .fields > .field:first-child,
-    .screen-8 .blank-form .fields > .field:first-child,
-    .screen-9 .blank-form .fields > .field:first-child { margin-top: 14px; }
+  .screen-3, .screen-4, .screen-5, .screen-6, .screen-7, .screen-8, .screen-9, .screen-10 { max-width: var(--screen-max-md); }
+  .screen-3 .blank-message, .screen-3 .blank-form, .screen-4 .blank-message, .screen-4 .blank-form, .screen-5 .blank-message, .screen-5 .blank-form, .screen-6 .blank-message, .screen-6 .blank-form, .screen-7 .blank-message, .screen-7 .blank-form, .screen-8 .blank-message, .screen-8 .blank-form, .screen-9 .blank-message, .screen-9 .blank-form, .screen-10 .blank-message, .screen-10 .blank-form { max-width: var(--screen-max-md); }
+  .screen-3 .light-blue-divider, .screen-4 .light-blue-divider, .screen-5 .light-blue-divider, .screen-6 .light-blue-divider, .screen-7 .light-blue-divider { margin: 14px 0; }
+  .screen-3 .blank-form .fields > .field:first-child, .screen-4 .blank-form .fields > .field:first-child, .screen-5 .blank-form .fields > .field:first-child, .screen-6 .blank-form .fields > .field:first-child, .screen-7 .blank-form .fields > .field:first-child, .screen-8 .blank-form .fields > .field:first-child, .screen-9 .blank-form .fields > .field:first-child, .screen-10 .blank-form .fields > .field:first-child { margin-top: 14px; }
 }
 @media (min-width: 1200px) {
-  .screen-3, .screen-4, .screen-5, .screen-6 { max-width: 720px; }
-    .screen-7, .screen-8, .screen-9 { max-width: 720px; }
-  .screen-3 .blank-message, .screen-3 .blank-form, .screen-4 .blank-message, .screen-4 .blank-form, .screen-5 .blank-message, .screen-5 .blank-form, .screen-6 .blank-message, .screen-6 .blank-form { max-width: 720px; }
-    .screen-7 .blank-message, .screen-7 .blank-form,
-    .screen-8 .blank-message, .screen-8 .blank-form,
-    .screen-9 .blank-message, .screen-9 .blank-form { max-width: 720px; }
-  .screen-3 .light-blue-divider, .screen-4 .light-blue-divider, .screen-5 .light-blue-divider, .screen-6 .light-blue-divider { margin: 16px 0; }
-  .screen-7 .light-blue-divider,
-  .screen-8 .light-blue-divider,
-  .screen-9 .light-blue-divider { margin: 16px 0; }
-  .screen-3 .blank-form .fields > .field:first-child, .screen-4 .blank-form .fields > .field:first-child, .screen-5 .blank-form .fields > .field:first-child, .screen-6 .blank-form .fields > .field:first-child { margin-top: 16px; }
-  .screen-7 .blank-form .fields > .field:first-child,
-  .screen-8 .blank-form .fields > .field:first-child,
-  .screen-9 .blank-form .fields > .field:first-child { margin-top: 16px; }
+  .screen-3, .screen-4, .screen-5, .screen-6, .screen-7, .screen-8, .screen-9, .screen-10 { max-width: var(--screen-max-lg); }
+  .screen-3 .blank-message, .screen-3 .blank-form, .screen-4 .blank-message, .screen-4 .blank-form, .screen-5 .blank-message, .screen-5 .blank-form, .screen-6 .blank-message, .screen-6 .blank-form, .screen-7 .blank-message, .screen-7 .blank-form, .screen-8 .blank-message, .screen-8 .blank-form, .screen-9 .blank-message, .screen-9 .blank-form, .screen-10 .blank-message, .screen-10 .blank-form { max-width: var(--screen-max-lg); }
+  .screen-3 .light-blue-divider, .screen-4 .light-blue-divider, .screen-5 .light-blue-divider, .screen-6 .light-blue-divider, .screen-7 .light-blue-divider { margin: 16px 0; }
+  .screen-3 .blank-form .fields > .field:first-child, .screen-4 .blank-form .fields > .field:first-child, .screen-5 .blank-form .fields > .field:first-child, .screen-6 .blank-form .fields > .field:first-child, .screen-7 .blank-form .fields > .field:first-child, .screen-8 .blank-form .fields > .field:first-child, .screen-9 .blank-form .fields > .field:first-child, .screen-10 .blank-form .fields > .field:first-child { margin-top: 16px; }
 }
 
 /* Eliminar padding/borde del contenedor de campos solo en screen 3
@@ -1627,30 +1665,30 @@ select::-ms-expand { display: none; }
   border: 0;
   padding: 0;
 }
-.screen-7 .blank-form .fields,
-.screen-8 .blank-form .fields,
-.screen-9 .blank-form .fields { background: none; border: 0; padding: 0; }
+.screen-7 .blank-form .fields { background: none; border: 0; padding: 0; }
+.screen-8 .blank-form .fields, .screen-9 .blank-form .fields, .screen-10 .blank-form .fields { background: none; border: 0; padding: 0; }
 
 /* Recupera el respiro superior del primer campo para igualar a otros screens */
 .screen-3 .blank-form .fields > .field:first-child, .screen-4 .blank-form .fields > .field:first-child, .screen-5 .blank-form .fields > .field:first-child, .screen-6 .blank-form .fields > .field:first-child { margin-top: 12px; }
 .screen-7 .blank-form .fields > .field:first-child { margin-top: 12px; }
+.screen-8 .blank-form .fields > .field:first-child, .screen-9 .blank-form .fields > .field:first-child, .screen-10 .blank-form .fields > .field:first-child { margin-top: 12px; }
 
 
 /* Layout del contenedor de la pantalla 1 para alinear Next a la derecha */
-.screen-1 { width: 100%; max-width: 800px; display: grid; row-gap: 18px; justify-items: start; }
-@media (min-width: 768px) { .screen-1 { max-width: 680px; } }
-@media (min-width: 1200px) { .screen-1 { max-width: 720px; } }
+.screen-1 { width: min(100%, var(--screen-max)); max-width: var(--screen-max); display: grid; row-gap: 18px; justify-items: center; }
+@media (min-width: 768px) { .screen-1 { max-width: var(--screen-max-md); } }
+@media (min-width: 1200px) { .screen-1 { max-width: var(--screen-max-lg); } }
 
 /* Layout de la pantalla 2 */
 .screen-2 {
-  width: 100%;
-  max-width: 800px;
+  width: min(100%, var(--screen-max));
+  max-width: var(--screen-max);
   display: grid;
   row-gap: 18px;
-  justify-items: start;
+  justify-items: center;
 }
-@media (min-width: 768px) { .screen-2 { max-width: 680px; } }
-@media (min-width: 1200px) { .screen-2 { max-width: 720px; } }
+@media (min-width: 768px) { .screen-2 { max-width: var(--screen-max-md); } }
+@media (min-width: 1200px) { .screen-2 { max-width: var(--screen-max-lg); } }
 
 /* Fade-up entrance for screen-2 elements (match screens 3–5) */
 .fade-screen.step-2 .screen-2 .blank-message,
@@ -1676,6 +1714,16 @@ select::-ms-expand { display: none; }
 .screen-1 .light-blue-divider { margin: 0; }
 @media (min-width: 768px) { .screen-1 { row-gap: 14px; } }
 @media (min-width: 1200px) { .screen-1 { row-gap: 16px; } }
+
+/* Screens 8, 9 y 10: aplicar el mismo criterio de espacios que screens 1 y 2 */
+.screen-8, .screen-9, .screen-10 { row-gap: 12px; }
+.screen-8 .light-blue-divider, .screen-9 .light-blue-divider, .screen-10 .light-blue-divider { margin: 0; }
+@media (min-width: 768px) { 
+  .screen-8, .screen-9, .screen-10 { row-gap: 14px; } 
+}
+@media (min-width: 1200px) { 
+  .screen-8, .screen-9, .screen-10 { row-gap: 16px; } 
+}
 @media (prefers-reduced-motion: reduce) {
   .fade-screen.step-2 .screen-2 .blank-message,
   .fade-screen.step-2 .screen-2 .light-blue-divider,
@@ -1760,11 +1808,53 @@ select::-ms-expand { display: none; }
 .fade-screen.step-7 .screen-7 .blank-form { animation-delay: 220ms; }
 .fade-screen.step-7 .screen-7 .next-btn { animation-delay: 300ms; }
 
+/* Step-8 animation */
+.fade-screen.step-8 .screen-8 .blank-message,
+.fade-screen.step-8 .screen-8 .light-blue-divider,
+.fade-screen.step-8 .screen-8 .blank-form,
+.fade-screen.step-8 .screen-8 .next-btn { opacity: 0; animation: rise-in 520ms ease forwards; }
+.fade-screen.step-8 .screen-8 .blank-message { animation-delay: 40ms; }
+.fade-screen.step-8 .screen-8 .light-blue-divider { animation-delay: 140ms; }
+.fade-screen.step-8 .screen-8 .blank-form { animation-delay: 220ms; }
+.fade-screen.step-8 .screen-8 .next-btn { animation-delay: 300ms; }
+
+/* Step-9 animation */
+.fade-screen.step-9 .screen-9 .blank-message,
+.fade-screen.step-9 .screen-9 .light-blue-divider,
+.fade-screen.step-9 .screen-9 .blank-form,
+.fade-screen.step-9 .screen-9 .next-btn { opacity: 0; animation: rise-in 520ms ease forwards; }
+.fade-screen.step-9 .screen-9 .blank-message { animation-delay: 40ms; }
+.fade-screen.step-9 .screen-9 .light-blue-divider { animation-delay: 140ms; }
+.fade-screen.step-9 .screen-9 .blank-form { animation-delay: 220ms; }
+.fade-screen.step-9 .screen-9 .next-btn { animation-delay: 300ms; }
+
+/* Step-10 animation */
+.fade-screen.step-10 .screen-10 .blank-message,
+.fade-screen.step-10 .screen-10 .light-blue-divider,
+.fade-screen.step-10 .screen-10 .blank-form,
+.fade-screen.step-10 .screen-10 .finish-btn { opacity: 0; animation: rise-in 520ms ease forwards; }
+.fade-screen.step-10 .screen-10 .blank-message { animation-delay: 40ms; }
+.fade-screen.step-10 .screen-10 .light-blue-divider { animation-delay: 140ms; }
+.fade-screen.step-10 .screen-10 .blank-form { animation-delay: 220ms; }
+.fade-screen.step-10 .screen-10 .finish-btn { animation-delay: 300ms; }
+
 @media (prefers-reduced-motion: reduce) {
   .fade-screen.step-7 .screen-7 .blank-message,
   .fade-screen.step-7 .screen-7 .light-blue-divider,
   .fade-screen.step-7 .screen-7 .blank-form,
-  .fade-screen.step-7 .screen-7 .next-btn { animation: none; opacity: 1; transform: none; }
+  .fade-screen.step-7 .screen-7 .next-btn,
+  .fade-screen.step-8 .screen-8 .blank-message,
+  .fade-screen.step-8 .screen-8 .light-blue-divider,
+  .fade-screen.step-8 .screen-8 .blank-form,
+  .fade-screen.step-8 .screen-8 .next-btn,
+  .fade-screen.step-9 .screen-9 .blank-message,
+  .fade-screen.step-9 .screen-9 .light-blue-divider,
+  .fade-screen.step-9 .screen-9 .blank-form,
+  .fade-screen.step-9 .screen-9 .next-btn,
+  .fade-screen.step-10 .screen-10 .blank-message,
+  .fade-screen.step-10 .screen-10 .light-blue-divider,
+  .fade-screen.step-10 .screen-10 .blank-form,
+  .fade-screen.step-10 .screen-10 .finish-btn { animation: none; opacity: 1; transform: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1786,30 +1876,13 @@ select::-ms-expand { display: none; }
   .fade-screen.step-6 .screen-6 .next-btn { animation: none; opacity: 1; transform: none; }
 }
 
-/* Step-8 animation (mirror of step-7) */
-.fade-screen.step-8 .screen-8 .blank-message,
-.fade-screen.step-8 .screen-8 .light-blue-divider,
-.fade-screen.step-8 .screen-8 .blank-form,
-.fade-screen.step-8 .screen-8 .next-btn { opacity: 0; animation: rise-in 520ms ease forwards; }
-.fade-screen.step-8 .screen-8 .blank-message { animation-delay: 40ms; }
-.fade-screen.step-8 .screen-8 .light-blue-divider { animation-delay: 140ms; }
-.fade-screen.step-8 .screen-8 .blank-form { animation-delay: 220ms; }
-.fade-screen.step-8 .screen-8 .next-btn { animation-delay: 300ms; }
-
-@media (prefers-reduced-motion: reduce) {
-  .fade-screen.step-8 .screen-8 .blank-message,
-  .fade-screen.step-8 .screen-8 .light-blue-divider,
-  .fade-screen.step-8 .screen-8 .blank-form,
-  .fade-screen.step-8 .screen-8 .next-btn { animation: none; opacity: 1; transform: none; }
-}
-
 /* Override: mensajes del overlay siempre en blanco sobre las fotos */
 .fade-screen .blank-message { color: #ffffff; }
 
 /* Override: campos del overlay con glassmorphism y placeholders blancos */
   .fade-screen .blank-form .field input,
   .fade-screen .blank-form .field select,
-  .fade-screen .blank-form .field textarea {
+.fade-screen .blank-form .field textarea {
   color: #ffffff;
   background: rgba(0,0,0,0.35);
   backdrop-filter: blur(12px);
@@ -1836,37 +1909,6 @@ select::-ms-expand { display: none; }
     outline: none;
     border-color: #ffffff;
     box-shadow: none !important;
-  }
-
-  /* Screen 8: layout para filas de cumpleaños de hijos */
-  .children-birthdays-list {
-    display: grid;
-    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-    gap: 10px 12px;
-    align-items: center;
-  }
-  .children-birthday-row {
-    display: contents;
-  }
-  .children-birthday-row .child-name {
-    font-size: 0.95rem;
-    opacity: 0.9;
-  }
-  .children-birthday-row input[type="date"] {
-    width: 100%;
-  }
-
-  /* Caja N/A cuando no hay hijos */
-  .na-box {
-    margin-top: 4px;
-    align-self: start;
-    background: none;
-    border: 1px dashed rgba(255,255,255,0.75);
-    color: #ffffff;
-    border-radius: 8px;
-    padding: 8px 10px;
-    cursor: default;
-    opacity: 0.7;
   }
 
   /* Override: pills (chips) en overlay con fondo blur */
@@ -1920,11 +1962,28 @@ select::-ms-expand { display: none; }
     place-items: center;
   }
 
-/* Logo Bergantín oculto */
-/* .brand-mark-home reglas anteriores eliminadas */
+  /* Mantener el logo Bergantín siempre dentro de la pantalla
+     con margen inferior consistente y respetando la safe-area */
+  .brand-mark-home {
+      bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px));
+    }
   }
 
-/* Sin reglas para brand-mark-home en mobile, se oculta */
+/* En mobile, el logo Bergantín participa del layout flex para no cortarse
+   y mantener un margen inferior consistente en todos los dispositivos */
+@media (max-width: 600px) {
+  .home-center {
+    align-items: center;
+  }
+  .home-center .brand-mark-home {
+    position: static;
+    transform: none;
+    margin-top: auto;
+    margin-bottom: clamp(1.25rem, 5vh, 2rem);
+    width: clamp(100px, 26vw, 170px);
+    max-width: 60vw;
+  }
+}
 
 /* Ajuste final de home en mobile: centrar Fundadores + CTA sin tocar Bergantín */
 @media (max-width: 600px) {
@@ -1940,94 +1999,99 @@ select::-ms-expand { display: none; }
   }
 }
 
-/* ===== Screen 9: visibilidad igual que otros screens ===== */
-.screen-9 {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-}
-.fade-screen .screen-9 {
-  display: none;
-}
-.fade-screen.step-9 .screen-9 {
+/* ===== Estilos específicos para cumpleaños de hijos (Screen 8) ===== */
+.children-birthdays-list {
   display: grid;
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
-}
-/* Ancho del formulario en screen-9 fijo como en las demás pantallas */
-.screen-9 .blank-form {
+  gap: 12px;
   width: 100%;
-  max-width: 800px;
-}
-@media (min-width: 768px) {
-  .screen-9 .blank-form { max-width: 680px; }
-}
-@media (min-width: 1200px) {
-  .screen-9 .blank-form { max-width: 720px; }
 }
 
-/* Alinear la flecha Next de screen-9 como las dem�s */
-.screen-9 .next-btn {
-  margin-top: 8px;
-}
-
-/* Al entrar a step-9 ocultar completamente las screens anteriores
-   para evitar que se apilen en el mismo overlay */
-.fade-screen.step-9 .screen-1,
-.fade-screen.step-9 .screen-2,
-.fade-screen.step-9 .screen-3,
-.fade-screen.step-9 .screen-4,
-.fade-screen.step-9 .screen-5,
-.fade-screen.step-9 .screen-6,
-.fade-screen.step-9 .screen-7,
-.fade-screen.step-9 .screen-8 {
-  display: none;
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-}
-
-/* Animación de entrada para screen 9 (igual a otras) */
-.fade-screen.step-9 .screen-9 .blank-message,
-.fade-screen.step-9 .screen-9 .light-blue-divider,
-.fade-screen.step-9 .screen-9 .blank-form,
-.fade-screen.step-9 .screen-9 .next-btn {
-  opacity: 0;
-  animation: rise-in 520ms ease forwards;
-}
-.fade-screen.step-9 .screen-9 .blank-message { animation-delay: 40ms; }
-.fade-screen.step-9 .screen-9 .light-blue-divider { animation-delay: 140ms; }
-.fade-screen.step-9 .screen-9 .blank-form { animation-delay: 220ms; }
-.fade-screen.step-9 .screen-9 .next-btn { animation-delay: 300ms; }
-
-/* ===== Screen 10: igual a screen 9 ===== */
-.screen-10 {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-}
-.fade-screen .screen-10 {
-  display: none;
-}
-.fade-screen.step-10 .screen-10 {
+.children-birthday-row {
   display: grid;
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  align-items: stretch;
 }
-/* Al entrar a step-10 ocultar todas las anteriores */
-.fade-screen.step-10 .screen-1,
-.fade-screen.step-10 .screen-2,
-.fade-screen.step-10 .screen-3,
-.fade-screen.step-10 .screen-4,
-.fade-screen.step-10 .screen-5,
-.fade-screen.step-10 .screen-6,
-.fade-screen.step-10 .screen-7,
-.fade-screen.step-10 .screen-8,
-.fade-screen.step-10 .screen-9 {
-  display: none;
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
+
+.child-name {
+  font-size: 16px;
+  font-weight: 400;
+  color: #ffffff;
+  padding: 12px 14px;
+  background: rgba(0,0,0,0.35);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,1);
+  display: flex;
+  align-items: center;
+}
+
+/* Los inputs de fecha heredan automáticamente los estilos de .fade-screen .blank-form .field input */
+
+.na-box {
+  width: 100%;
+  padding: 12px 14px;
+  background: rgba(0,0,0,0.35);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.5);
+  border-radius: 16px;
+  color: rgba(255,255,255,0.7);
+  font-size: 16px;
+  cursor: not-allowed;
+  text-align: left;
+  font-family: 'Montserrat', system-ui, sans-serif;
+  opacity: 0.8;
+}
+
+/* Responsive para cumpleaños de hijos en móviles */
+@media (max-width: 600px) {
+  .children-birthday-row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  
+  .child-name {
+    font-size: 13px;
+    padding: 10px 12px;
+  }
+}
+
+/* ===== Mejoras responsive generales para todas las pantallas ===== */
+@media (max-width: 600px) {
+  .fade-screen {
+    padding: clamp(16px, 3vw, 20px);
+    padding-top: clamp(20px, 5vh, 32px);
+    padding-bottom: clamp(20px, 5vh, 32px);
+  }
+  
+  .blank-message {
+    font-size: clamp(20px, 5.4vw, 22px);
+    line-height: 1.35;
+  }
+  
+  .blank-form .field input,
+  .blank-form .field select,
+  .blank-form .field textarea {
+    font-size: 16px; /* Evita zoom automático en iOS */
+    padding: 12px 14px;
+  }
+  
+  .finish-btn {
+    width: 100%;
+    max-width: 100%;
+    justify-self: stretch;
+  }
+  
+  /* Asegurar que TODAS las pantallas usen todo el ancho disponible en móvil */
+  .screen-1, .screen-2, .screen-3, .screen-4, .screen-5, .screen-6, .screen-7, .screen-8, .screen-9, .screen-10 {
+    max-width: 100% !important;
+  }
+  /* Asegurar que los contenidos internos (mensaje y formulario) ocupen
+     todo el ancho disponible en móvil y se comporten igual que screen-1 */
+  .blank-message, .blank-form {
+    max-width: 100% !important;
+    justify-self: center;
+  }
 }

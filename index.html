@@ -21,7 +21,7 @@
     <!-- Preload video para carga más rápida -->
     <link rel="preload" href="assets/BERGANTIN-VIDEO.mp4" as="video" type="video/mp4" />
 
-    <link rel="stylesheet" href="styles.css?v=26" />
+    <link rel="stylesheet" href="styles.css?v=32" />
   </head>
   <body>
     <main class="hero" aria-label="Banner de bienvenida con video de fondo">
@@ -444,7 +444,13 @@
 
     </div>
 
-    <script src="script.js?v=3"></script>
+    <script src="script.js?v=4"></script>
+    <!-- Overlay de confirmación en blanco -->
+    <div id="successOverlay" class="success-overlay" aria-hidden="true" role="status">
+      <div class="success-card">
+        <p>¡Envío realizado correctamente!</p>
+      </div>
+    </div>
     <script>
       // Fallback: ensure CTA opens overlay if prior JS was altered
       (function(){
@@ -467,6 +473,5 @@
     </script>
   </body>
   </html>
-
 
 

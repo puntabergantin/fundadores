@@ -1,4 +1,25 @@
 ﻿document.addEventListener('DOMContentLoaded', () => {
+  // ===== Runtime stylesheet hot-reload to avoid hard-refresh for users =====
+  // This replaces the existing styles.css link with a cloned one that
+  // contains a timestamp query param so the browser fetches the latest CSS
+  // and applies it immediately without a full page reload.
+  try {
+    const styleLink = document.querySelector('link[rel="stylesheet"][href*="styles.css"]');
+    if (styleLink) {
+      const hrefBase = styleLink.getAttribute('href').split('?')[0];
+      const newLink = styleLink.cloneNode();
+      newLink.setAttribute('href', hrefBase + (hrefBase.includes('?') ? '&' : '?') + 't=' + Date.now());
+      newLink.addEventListener('load', () => {
+        // remove the old link after new CSS has loaded to avoid FOUC
+        try { styleLink.parentNode && styleLink.parentNode.removeChild(styleLink); } catch (e) {}
+      });
+      styleLink.parentNode.insertBefore(newLink, styleLink.nextSibling);
+    }
+  } catch (e) {
+    // don't break the app if anything goes wrong here
+    console.warn('Stylesheet hot-reload failed', e);
+  }
+
   // ===== Video loop seamless (evita el brinco al reiniciar) =====
   const heroVideo = document.querySelector('.hero-video');
   if (heroVideo) {
@@ -562,7 +583,9 @@
       const el = s3.querySelector('.blank-message');
       if (el) el.innerHTML = '"Selecciona las <strong>experiencias deportivas</strong> que más disfrutas."';
     })();
-    next3.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">\n      <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>\n    </svg>';
+    next3.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>';
     s3.appendChild(next3);
     // Finalize heading copy for Screen 3 with correct accents
     const headFix = s3.querySelector('.blank-message');
@@ -640,7 +663,9 @@
     next4.className = 'next-btn';
     next4.type = 'button';
     next4.setAttribute('aria-label', 'Continuar');
-    next4.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">\n      <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>\n    </svg>';
+    next4.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>';
     s4.appendChild(next4);
 
     // Wire: Screen 4 -> Screen 5
@@ -724,7 +749,9 @@
     next5.className = 'next-btn';
     next5.type = 'button';
     next5.setAttribute('aria-label', 'Continuar');
-    next5.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">\n      <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>\n    </svg>';
+    next5.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>';
     s5.appendChild(next5);
 
     // Wire: Screen 5 -> Screen 6
@@ -814,7 +841,9 @@
     next6.className = 'next-btn';
     next6.type = 'button';
     next6.setAttribute('aria-label', 'Continuar');
-    next6.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">\n      <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>\n    </svg>';
+    next6.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>';
     s6.appendChild(next6);
 
     // Wire: Screen 6 -> Screen 7
@@ -961,7 +990,9 @@
     next7.className = 'next-btn';
     next7.type = 'button';
     next7.setAttribute('aria-label', 'Continuar');
-    next7.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">\n      <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>\n    </svg>';
+    next7.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>';
     s7c.appendChild(next7);
 
       // Wire: Screen 7 -> Screen 8
@@ -1127,7 +1158,9 @@
     next8.className = 'next-btn';
     next8.type = 'button';
     next8.setAttribute('aria-label', 'Continuar');
-    next8.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">\n      <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>\n    </svg>';
+    next8.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>';
     s8c.appendChild(next8);
 
     // Avanzar del screen 8 al 9
@@ -1273,7 +1306,9 @@
     next9.className = 'next-btn';
     next9.type = 'button';
     next9.setAttribute('aria-label', 'Continuar');
-    next9.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">\n      <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>\n    </svg>';
+    next9.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>';
     s9c.appendChild(next9);
 
     // Avanzar del screen 9 al 10
@@ -1467,5 +1502,105 @@
     finishBtn.textContent = 'Finalizar y enviar';
     finishBtn.setAttribute('aria-label', 'Finalizar y enviar');
     s10c.appendChild(finishBtn);
+    
+    // Implementar funcionalidad de finalizar con envío a Sheets y pantalla de éxito
+    finishBtn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      
+      // Recopilar todos los datos del formulario
+      const formData = {
+        // Pantalla 1
+        fullName: document.getElementById('fullName')?.value,
+        email: document.getElementById('email')?.value,
+        phone: document.getElementById('phone')?.value,
+        nationality: document.getElementById('nationality')?.value,
+        residence: document.getElementById('residence')?.value,
+        shirtSize: document.querySelector('input[name="shirtSize"]:checked')?.value,
+        
+        // Pantalla 2
+        maritalStatus: document.getElementById('maritalStatus')?.value,
+        partnerName: document.getElementById('partnerName')?.value,
+        children: Array.from(document.querySelectorAll('[name="children[]"]')).map(inp => inp.value).filter(Boolean),
+        pets: Array.from(document.querySelectorAll('[name="pets[]"]')).map(inp => inp.value).filter(Boolean),
+        importantPeople: document.getElementById('importantPeople')?.value,
+        
+        // Pantalla 3 - Deportes
+        sports: Array.from(document.querySelectorAll('[name="sports[]"]:checked')).map(inp => inp.value),
+        
+        // Pantalla 4 - Cultural
+        cultural: Array.from(document.querySelectorAll('[name="cultural[]"]:checked')).map(inp => inp.value),
+        
+        // Pantalla 5 - Bebidas (nota: usa mismo name que cultural, necesita ajuste)
+        // Pantalla 6 - Música (nota: usa mismo name que cultural, necesita ajuste)
+        
+        // Pantalla 7 - Viajes
+        travelStyle: Array.from(document.querySelectorAll('[name="travelStyle[]"]:checked')).map(inp => inp.value),
+        
+        // Pantalla 8 - Fechas
+        birthday: document.getElementById('birthday')?.value,
+        anniversary: document.getElementById('anniversary')?.value,
+        childrenBirthdays: Array.from(document.querySelectorAll('[name="childrenBirthdays[]"]')).map(inp => inp.value).filter(Boolean),
+        otherMilestones: document.getElementById('otherMilestones')?.value,
+        
+        // Pantalla 9 - Propiedad
+        villaName: document.getElementById('villaName')?.value,
+        acquisitionDate: document.getElementById('acquisitionDate')?.value,
+        currentUse: document.getElementById('currentUse')?.value,
+        propertyNotes: document.getElementById('propertyNotes')?.value,
+        
+        // Pantalla 10 - Contacto
+        preferredChannel: document.getElementById('preferredChannel')?.value,
+        contactSchedule: document.getElementById('contactSchedule')?.value,
+        communicationTone: document.getElementById('communicationTone')?.value,
+        additionalComments: document.getElementById('additionalComments')?.value
+      };
+
+      try {
+        await sendToSheet(formData);
+        showSuccessOverlay();
+      } catch (err) {
+        console.error('No se pudo enviar a la hoja:', err);
+        alert('No pudimos enviar tus datos ahora. Intenta de nuevo o contacta soporte.');
+      }
+      
+      // Limpiar progreso guardado y cerrar
+      localStorage.removeItem('founders_progress');
+      closeOverlay();
+    });
   }
 });
+
+
+
+
+// ===== Envío a Google Sheets (configurar endpoint) =====
+const SHEET_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbweJvBsCVmpUOOZVsQyJ-Kg2CE2B_xPLxx2lsm31GCIlKFyCfM8Vy7iTkkv3c1dxdJ7/exec';
+
+async function sendToSheet(payload) {
+  if (!SHEET_WEBHOOK_URL) {
+    console.warn('SHEET_WEBHOOK_URL no configurada. Datos no enviados.', payload);
+    return;
+  }
+  const res = await fetch(SHEET_WEBHOOK_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+    mode: 'cors'
+  });
+  if (!res.ok) {
+    const txt = await res.text().catch(() => '');
+    throw new Error('Sheets respondio ' + res.status + ': ' + txt);
+  }
+  return res.json().catch(() => ({}));
+}
+
+function showSuccessOverlay() {
+  const overlay = document.getElementById('successOverlay');
+  if (!overlay) return;
+  overlay.classList.add('is-visible');
+  overlay.setAttribute('aria-hidden', 'false');
+  setTimeout(() => {
+    overlay.classList.remove('is-visible');
+    overlay.setAttribute('aria-hidden', 'true');
+  }, 2000);
+}
