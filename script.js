@@ -583,9 +583,9 @@
       const el = s3.querySelector('.blank-message');
       if (el) el.innerHTML = '"Selecciona las <strong>experiencias deportivas</strong> que más disfrutas."';
     })();
-    next3.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    next3.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>';
+    </svg>`;
     s3.appendChild(next3);
     // Finalize heading copy for Screen 3 with correct accents
     const headFix = s3.querySelector('.blank-message');
@@ -663,9 +663,9 @@
     next4.className = 'next-btn';
     next4.type = 'button';
     next4.setAttribute('aria-label', 'Continuar');
-    next4.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    next4.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>';
+    </svg>`;
     s4.appendChild(next4);
 
     // Wire: Screen 4 -> Screen 5
@@ -749,9 +749,9 @@
     next5.className = 'next-btn';
     next5.type = 'button';
     next5.setAttribute('aria-label', 'Continuar');
-    next5.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    next5.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>';
+    </svg>`;
     s5.appendChild(next5);
 
     // Wire: Screen 5 -> Screen 6
@@ -841,9 +841,9 @@
     next6.className = 'next-btn';
     next6.type = 'button';
     next6.setAttribute('aria-label', 'Continuar');
-    next6.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    next6.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>';
+    </svg>`;
     s6.appendChild(next6);
 
     // Wire: Screen 6 -> Screen 7
@@ -990,9 +990,9 @@
     next7.className = 'next-btn';
     next7.type = 'button';
     next7.setAttribute('aria-label', 'Continuar');
-    next7.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    next7.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>';
+    </svg>`;
     s7c.appendChild(next7);
 
       // Wire: Screen 7 -> Screen 8
@@ -1158,9 +1158,9 @@
     next8.className = 'next-btn';
     next8.type = 'button';
     next8.setAttribute('aria-label', 'Continuar');
-    next8.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    next8.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>';
+    </svg>`;
     s8c.appendChild(next8);
 
     // Avanzar del screen 8 al 9
@@ -1306,9 +1306,9 @@
     next9.className = 'next-btn';
     next9.type = 'button';
     next9.setAttribute('aria-label', 'Continuar');
-    next9.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    next9.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>';
+    </svg>`;
     s9c.appendChild(next9);
 
     // Avanzar del screen 9 al 10
