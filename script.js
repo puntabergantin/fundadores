@@ -1574,7 +1574,7 @@
 
 
 // ===== Envío a Google Sheets (configurar endpoint) =====
-const SHEET_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbxXXNTYYVgwBG54MHNWRpLvsiGTYYjofSPSHWFwt6ITWGNN6fpypeAK1EgqBPBLzLiJ/exec';
+const SHEET_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbyCPq0XCYv3tn_S0-IFGmguDd1nEKTsyjcCzSOtI7m744DYKDMUG0UHXgnTA2Atsd1H/exec';
 
 async function sendToSheet(payload) {
   if (!SHEET_WEBHOOK_URL) {
