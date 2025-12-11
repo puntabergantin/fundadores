@@ -1581,17 +1581,27 @@ async function sendToSheet(payload) {
     console.warn('SHEET_WEBHOOK_URL no configurada. Datos no enviados.', payload);
     return;
   }
-  const res = await fetch(SHEET_WEBHOOK_URL, {
+
+  // Intento normal (CORS habilitado en el WebApp). Si falla por preflight,
+  // reintenta con un request simple sin CORS para que el envío no se bloquee.
+  const simpleRequest = {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload),
-    mode: 'cors'
-  });
-  if (!res.ok) {
-    const txt = await res.text().catch(() => '');
-    throw new Error('Sheets respondio ' + res.status + ': ' + txt);
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // simple request => sin preflight
+    body: JSON.stringify(payload)
+  };
+
+  try {
+    const res = await fetch(SHEET_WEBHOOK_URL, { ...simpleRequest, mode: 'cors' });
+    if (res.ok) {
+      return res.json().catch(() => ({}));
+    }
+    throw new Error('Sheets respondio ' + res.status);
+  } catch (err) {
+    console.warn('Fallo CORS, reintentando con no-cors:', err);
+    await fetch(SHEET_WEBHOOK_URL, { ...simpleRequest, mode: 'no-cors' });
+    // Respuesta opaca, no podemos leer estado, asumimos entregado.
+    return {};
   }
-  return res.json().catch(() => ({}));
 }
 
 function showSuccessOverlay() {
