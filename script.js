@@ -247,6 +247,11 @@
   const nextBtn1 = document.getElementById('nextBtn');
   nextBtn1 && nextBtn1.addEventListener('click', (e) => {
     e.preventDefault();
+    const form = document.getElementById('founders-form');
+    if (form && !form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
     const s1 = screen1(), s2 = screen2();
     if (s1 && s2) { s1.setAttribute('aria-hidden','true'); s2.setAttribute('aria-hidden','false'); }
     fade && requestAnimationFrame(() => fade.classList.add('step-2'));
