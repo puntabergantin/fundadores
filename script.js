@@ -64,66 +64,35 @@
   const screen10 = () => document.querySelector('.screen-10');
 
   // Guardar/restaurar progreso en localStorage
+  const clearProgress = () => {
+    localStorage.removeItem('founders_progress');
+  };
+
   const saveProgress = () => {
-    const currentStep = ['step-2', 'step-3', 'step-4', 'step-5', 'step-6', 'step-7', 'step-8', 'step-9', 'step-10']
-      .find(cls => fade && fade.classList.contains(cls)) || 'step-1';
-    localStorage.setItem('founders_progress', currentStep);
+    // Ya no persistimos el paso actual; solo mantenemos los datos en el DOM.
+    clearProgress();
   };
 
-  const restoreProgress = () => {
-    const savedStep = localStorage.getItem('founders_progress');
-    if (!savedStep || savedStep === 'step-1') return;
-    
-    // Aplicar el step guardado
-    fade && fade.classList.add(savedStep);
-    
-    // Mostrar la screen correspondiente
-    const stepMap = {
-      'step-2': screen2,
-      'step-3': screen3,
-      'step-4': screen4,
-      'step-5': screen5,
-      'step-6': screen6,
-      'step-7': screen7,
-      'step-8': screen8,
-      'step-9': screen9,
-      'step-10': screen10
-    };
-    
-    const targetScreen = stepMap[savedStep];
-    if (targetScreen) {
-      const s1 = screen1();
-      const target = targetScreen();
-      if (s1) s1.setAttribute('aria-hidden', 'true');
-      if (target) target.setAttribute('aria-hidden', 'false');
-    }
+  const resetScreensToStep1 = () => {
+    const s1 = screen1(), s2 = screen2(), s3 = screen3(), s4 = screen4(), s5 = screen5(), s6 = screen6(), s7 = screen7(), s8 = screen8(), s9 = screen9(), s10 = screen10();
+    if (s1) s1.setAttribute('aria-hidden', 'false');
+    if (s2) s2.setAttribute('aria-hidden', 'true');
+    if (s3) s3.setAttribute('aria-hidden', 'true');
+    if (s4) s4.setAttribute('aria-hidden', 'true');
+    if (s5) s5.setAttribute('aria-hidden', 'true');
+    if (s6) s6.setAttribute('aria-hidden', 'true');
+    if (s7) s7.setAttribute('aria-hidden', 'true');
+    if (s8) s8.setAttribute('aria-hidden', 'true');
+    if (s9) s9.setAttribute('aria-hidden', 'true');
+    if (s10) s10.setAttribute('aria-hidden', 'true');
   };
-
-    const resetScreensToStep1 = () => {
-      const s1 = screen1(), s2 = screen2(), s3 = screen3(), s4 = screen4(), s5 = screen5(), s6 = screen6(), s7 = screen7(), s8 = screen8(), s9 = screen9(), s10 = screen10();
-      if (s1) s1.setAttribute('aria-hidden', 'false');
-      if (s2) s2.setAttribute('aria-hidden', 'true');
-      if (s3) s3.setAttribute('aria-hidden', 'true');
-      if (s4) s4.setAttribute('aria-hidden', 'true');
-      if (s5) s5.setAttribute('aria-hidden', 'true');
-      if (s6) s6.setAttribute('aria-hidden', 'true');
-      if (s7) s7.setAttribute('aria-hidden', 'true');
-      if (s8) s8.setAttribute('aria-hidden', 'true');
-      if (s9) s9.setAttribute('aria-hidden', 'true');
-      if (s10) s10.setAttribute('aria-hidden', 'true');
-    };
 
   const openOverlay = () => {
     // Limpiar cualquier estado residual
     fade.classList.remove('closing');
-    
-    // No resetear si hay progreso guardado
-    const savedStep = localStorage.getItem('founders_progress');
-    if (!savedStep || savedStep === 'step-1') {
-      resetScreensToStep1();
-    } else {
-      restoreProgress();
-    }
+    // Siempre arrancar en la pantalla 1, pero sin borrar los datos ya capturados
+    clearProgress();
+    resetScreensToStep1();
     
     fade.classList.add('active');
     document.documentElement.style.backgroundColor = '#fff';
@@ -138,8 +107,8 @@
   };
 
   const closeOverlay = () => {
-    // Guardar progreso antes de cerrar
-    saveProgress();
+    // Siempre limpiar el paso guardado para que el pr¢ximo arranque sea en screen 1
+    clearProgress();
     
     // Cierre inmediato sin animaciones
     fade.classList.remove('active', 'done');
@@ -251,7 +220,7 @@
       return;
     }
     // Si estamos en step-1, cerrar todo y limpiar progreso, mostrar home
-    localStorage.removeItem('founders_progress');
+    clearProgress();
     fade.classList.remove('active');
     fade.setAttribute('aria-hidden', 'true');
     fade.classList.remove('done', 'step-2', 'step-3', 'step-4', 'step-5', 'step-6', 'step-7', 'step-8', 'step-9', 'step-10');
@@ -1063,7 +1032,7 @@
 
       const label = document.createElement('label');
       label.setAttribute('for', 'anniversary');
-      label.textContent = 'Aniversario';
+      label.textContent = 'Aniversario de Bodas (Si aplica)';
 
       const input = document.createElement('input');
       input.id = 'anniversary';
@@ -1198,7 +1167,7 @@
 
       const label = document.createElement('label');
       label.setAttribute('for', 'villaName');
-      label.textContent = 'Nombre de villa / unidad';
+      label.textContent = 'Nombre de villa / unidad (Si aplica)';
 
       const input = document.createElement('input');
       input.id = 'villaName';
@@ -1211,14 +1180,14 @@
       fields9.appendChild(field);
     }
 
-    // Fecha de adquisición (Fecha)
+    // Fecha de firma de contrato (Fecha)
     {
       const field = document.createElement('div');
       field.className = 'field';
 
       const label = document.createElement('label');
       label.setAttribute('for', 'acquisitionDate');
-      label.textContent = 'Fecha de adquisición';
+      label.textContent = 'Fecha de firma de contrato';
 
       const input = document.createElement('input');
       input.id = 'acquisitionDate';
@@ -1235,6 +1204,7 @@
     {
       const field = document.createElement('div');
       field.className = 'field';
+      field.style.display = 'none';
 
       const label = document.createElement('label');
       label.setAttribute('for', 'currentUse');
@@ -1281,6 +1251,7 @@
     {
       const field = document.createElement('div');
       field.className = 'field';
+      field.style.display = 'none';
 
       const label = document.createElement('label');
       label.setAttribute('for', 'propertyNotes');
@@ -1431,6 +1402,7 @@
     {
       const field = document.createElement('div');
       field.className = 'field';
+      field.style.display = 'none';
 
       const label = document.createElement('label');
       label.setAttribute('for', 'communicationTone');
@@ -1551,7 +1523,6 @@
         // Pantalla 10 - Contacto
         preferredChannel: document.getElementById('preferredChannel')?.value,
         contactSchedule: document.getElementById('contactSchedule')?.value,
-        communicationTone: document.getElementById('communicationTone')?.value,
         additionalComments: document.getElementById('additionalComments')?.value
       };
 
@@ -1564,7 +1535,7 @@
       }
       
       // Limpiar progreso guardado y cerrar
-      localStorage.removeItem('founders_progress');
+      clearProgress();
       closeOverlay();
     });
   }
