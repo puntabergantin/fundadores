@@ -510,7 +510,12 @@
       'Automovilismo',
       'Motociclismo',
       'Boxeo',
-      'MMA'
+      'MMA',
+      'Ejercicios de fuerza',
+      'Calistenia',
+      'Pesca',
+      'Deportes de invierno',
+      'Otros'
     ];
     options.forEach((v) => {
       const lab = document.createElement('label');
@@ -525,9 +530,38 @@
       lab.appendChild(span);
       group.appendChild(lab);
     });
-    
+
+    // Campo "Otros" (texto libre) que se muestra al seleccionar la opción
+    const otherField = document.createElement('div');
+    otherField.className = 'field';
+    otherField.style.display = 'none';
+    const otherLabel = document.createElement('label');
+    otherLabel.setAttribute('for', 'sportsOther');
+    otherLabel.textContent = 'Otros';
+    const otherInput = document.createElement('input');
+    otherInput.type = 'text';
+    otherInput.id = 'sportsOther';
+    otherInput.name = 'sportsOther';
+    otherInput.placeholder = 'Describe otra experiencia deportiva';
+    otherField.appendChild(otherLabel);
+    otherField.appendChild(otherInput);
+
     field.appendChild(group);
     fields.appendChild(field);
+    fields.appendChild(otherField);
+
+    // Toggle campo texto según selección de "Otros"
+    const otherCheckbox = group.querySelector('input[name="sports[]"][value="Otros"]');
+    if (otherCheckbox) {
+      const toggleOther = () => {
+        const on = otherCheckbox.checked;
+        otherField.style.display = on ? 'block' : 'none';
+        if (!on) otherInput.value = '';
+      };
+      otherCheckbox.addEventListener('change', toggleOther);
+      toggleOther();
+    }
+
     form.appendChild(fields);
     s3.appendChild(hr);
     s3.appendChild(form);
@@ -610,7 +644,8 @@
       'Musica', 'Cine', 'Teatro', 'Literatura', 'Historia',
       'Fotografia', 'Danza', 'Pintura', 'Museos', 'Diseno',
       'Moda', 'Arqueologia',
-      'Catas Cigarros', 'Wellness', 'Charlas', 'Cl\u00ednicas deportivas', 'Religiosas'
+      'Catas Cigarros', 'Wellness', 'Charlas', 'Cl\u00ednicas deportivas', 'Religiosas',
+      'Otros'
     ];
     extraOptions.forEach((v) => {
       const lab = document.createElement('label');
@@ -626,8 +661,36 @@
       group.appendChild(lab);
     });
 
+    // Campo "Otros" (texto libre) que se muestra al seleccionar la opción
+    const otherField = document.createElement('div');
+    otherField.className = 'field';
+    otherField.style.display = 'none';
+    const otherLabel = document.createElement('label');
+    otherLabel.setAttribute('for', 'culturalOther');
+    otherLabel.textContent = 'Otros';
+    const otherInput = document.createElement('input');
+    otherInput.type = 'text';
+    otherInput.id = 'culturalOther';
+    otherInput.name = 'culturalOther';
+    otherInput.placeholder = 'Describe otra experiencia cultural';
+    otherField.appendChild(otherLabel);
+    otherField.appendChild(otherInput);
+
     field.appendChild(group);
     fields.appendChild(field);
+    fields.appendChild(otherField);
+
+    // Toggle campo texto según selección de "Otros"
+    const otherCheckbox = group.querySelector('input[name="cultural[]"][value="Otros"]');
+    if (otherCheckbox) {
+      const toggleOther = () => {
+        const on = otherCheckbox.checked;
+        otherField.style.display = on ? 'block' : 'none';
+        if (!on) otherInput.value = '';
+      };
+      otherCheckbox.addEventListener('change', toggleOther);
+      toggleOther();
+    }
     form.appendChild(fields);
     s4.appendChild(hr);
     s4.appendChild(form);
@@ -675,14 +738,17 @@
 
     const unescapeUnicode = (str) => str.replace(/\\u([0-9a-fA-F]{4})/g, (_, h) => String.fromCharCode(parseInt(h, 16)));
     const options5 = [
-      'Vino tinto', 'Vino blanco', 'Vino rosado', 'Champagne/Espumante'
+      'Vino tinto', 'Vino blanco', 'Vino rosado', 'Espumantes / Champagne',
+      'Cerveza', 'Ron', 'Whisky', 'Vodka', 'Gin', 'Tequila', 'Mezcal',
+      'C\u00f3cteles', 'Caf\u00e9', 'T\u00e9',
+      'Otros'
     ];
     options5.forEach((v) => {
       const lab = document.createElement('label');
       lab.className = 'check';
       const inp = document.createElement('input');
       inp.type = 'checkbox';
-      inp.name = 'cultural[]';
+      inp.name = 'drinks[]';
       inp.value = unescapeUnicode(v);
       const span = document.createElement('span');
       span.textContent = unescapeUnicode(v);
@@ -691,29 +757,37 @@
       group.appendChild(lab);
     });
 
-    const extraOptions5 = [
-      'Malbec', 'Cabernet Sauvignon', 'Merlot', 'Pinot Noir', 'Syrah', 'Tempranillo',
-      'Chardonnay', 'Sauvignon Blanc', 'Riesling',
-      'Cerveza', 'IPA', 'Lager', 'Stout',
-      'Whisky', 'Gin', 'Ron', 'Vodka', 'Tequila', 'Mezcal',
-      'C\u00f3cteles cl\u00e1sicos', 'Caf\u00e9', 'T\u00e9'
-    ];
-    extraOptions5.forEach((v) => {
-      const lab = document.createElement('label');
-      lab.className = 'check';
-      const inp = document.createElement('input');
-      inp.type = 'checkbox';
-      inp.name = 'cultural[]';
-      inp.value = unescapeUnicode(v);
-      const span = document.createElement('span');
-      span.textContent = unescapeUnicode(v);
-      lab.appendChild(inp);
-      lab.appendChild(span);
-      group.appendChild(lab);
-    });
+    // Campo "Otros" (texto libre) que se muestra al seleccionar la opción
+    const otherField5 = document.createElement('div');
+    otherField5.className = 'field';
+    otherField5.style.display = 'none';
+    const otherLabel5 = document.createElement('label');
+    otherLabel5.setAttribute('for', 'drinksOther');
+    otherLabel5.textContent = 'Otros';
+    const otherInput5 = document.createElement('input');
+    otherInput5.type = 'text';
+    otherInput5.id = 'drinksOther';
+    otherInput5.name = 'drinksOther';
+    otherInput5.placeholder = 'Describe otra bebida que disfrutas';
+    otherField5.appendChild(otherLabel5);
+    otherField5.appendChild(otherInput5);
 
     field.appendChild(group);
     fields.appendChild(field);
+    fields.appendChild(otherField5);
+
+    // Toggle campo texto según selección de "Otros"
+    const otherCheckbox5 = group.querySelector('input[name="drinks[]"][value="Otros"]');
+    if (otherCheckbox5) {
+      const toggleOther5 = () => {
+        const on = otherCheckbox5.checked;
+        otherField5.style.display = on ? 'block' : 'none';
+        if (!on) otherInput5.value = '';
+      };
+      otherCheckbox5.addEventListener('change', toggleOther5);
+      toggleOther5();
+    }
+
     form.appendChild(fields);
     s5.appendChild(hr);
     s5.appendChild(form);
@@ -788,14 +862,15 @@
       'Flamenco',
       'Tango',
       'K-pop',
-      'Reggaet\u00f3n'
+      'Reggaet\u00f3n',
+      'Otros'
     ];
     musicGenres.forEach((v) => {
       const lab = document.createElement('label');
       lab.className = 'check';
       const inp = document.createElement('input');
       inp.type = 'checkbox';
-      inp.name = 'cultural[]';
+      inp.name = 'music[]';
       inp.value = unescapeUnicode(v);
       const span = document.createElement('span');
       span.textContent = unescapeUnicode(v);
@@ -804,8 +879,37 @@
       group.appendChild(lab);
     });
 
+    // Campo "Otros" (texto libre) que se muestra al seleccionar la opción
+    const otherFieldMusic = document.createElement('div');
+    otherFieldMusic.className = 'field';
+    otherFieldMusic.style.display = 'none';
+    const otherLabelMusic = document.createElement('label');
+    otherLabelMusic.setAttribute('for', 'musicOther');
+    otherLabelMusic.textContent = 'Otros';
+    const otherInputMusic = document.createElement('input');
+    otherInputMusic.type = 'text';
+    otherInputMusic.id = 'musicOther';
+    otherInputMusic.name = 'musicOther';
+    otherInputMusic.placeholder = 'Describe otro género musical';
+    otherFieldMusic.appendChild(otherLabelMusic);
+    otherFieldMusic.appendChild(otherInputMusic);
+
     field.appendChild(group);
     fields.appendChild(field);
+    fields.appendChild(otherFieldMusic);
+
+    // Toggle campo texto según selección de "Otros"
+    const otherCheckboxMusic = group.querySelector('input[name="music[]"][value="Otros"]');
+    if (otherCheckboxMusic) {
+      const toggleOtherMusic = () => {
+        const on = otherCheckboxMusic.checked;
+        otherFieldMusic.style.display = on ? 'block' : 'none';
+        if (!on) otherInputMusic.value = '';
+      };
+      otherCheckboxMusic.addEventListener('change', toggleOtherMusic);
+      toggleOtherMusic();
+    }
+
     form.appendChild(fields);
     s6.appendChild(hr);
     s6.appendChild(form);
@@ -937,7 +1041,8 @@
       'Fotogr\u00e1fico',
       'Deportes de invierno',
       'Naturaleza',
-      'Aventura extrema'
+      'Aventura extrema',
+      'Otros'
     ];
     options7.forEach((v) => {
       const lab = document.createElement('label');
@@ -953,8 +1058,37 @@
       group.appendChild(lab);
     });
 
+    // Campo "Otros" (texto libre) que se muestra al seleccionar la opción
+    const otherField7 = document.createElement('div');
+    otherField7.className = 'field';
+    otherField7.style.display = 'none';
+    const otherLabel7 = document.createElement('label');
+    otherLabel7.setAttribute('for', 'travelStyleOther');
+    otherLabel7.textContent = 'Otros';
+    const otherInput7 = document.createElement('input');
+    otherInput7.type = 'text';
+    otherInput7.id = 'travelStyleOther';
+    otherInput7.name = 'travelStyleOther';
+    otherInput7.placeholder = 'Describe otro estilo de viaje';
+    otherField7.appendChild(otherLabel7);
+    otherField7.appendChild(otherInput7);
+
     field.appendChild(group);
     fields.appendChild(field);
+    fields.appendChild(otherField7);
+
+    // Toggle campo texto según selección de "Otros"
+    const otherCheckbox7 = group.querySelector('input[name="travelStyle[]"][value="Otros"]');
+    if (otherCheckbox7) {
+      const toggleOther7 = () => {
+        const on = otherCheckbox7.checked;
+        otherField7.style.display = on ? 'block' : 'none';
+        if (!on) otherInput7.value = '';
+      };
+      otherCheckbox7.addEventListener('change', toggleOther7);
+      toggleOther7();
+    }
+
     form.appendChild(fields);
     s7c.appendChild(hr);
     s7c.appendChild(form);
@@ -1503,15 +1637,33 @@
         
         // Pantalla 3 - Deportes
         sports: Array.from(document.querySelectorAll('[name="sports[]"]:checked')).map(inp => inp.value),
+        sportsOther: document.querySelector('[name="sports[]"][value="Otros"]:checked')
+          ? document.getElementById('sportsOther')?.value
+          : '',
         
         // Pantalla 4 - Cultural
         cultural: Array.from(document.querySelectorAll('[name="cultural[]"]:checked')).map(inp => inp.value),
-        
-        // Pantalla 5 - Bebidas (nota: usa mismo name que cultural, necesita ajuste)
-        // Pantalla 6 - Música (nota: usa mismo name que cultural, necesita ajuste)
+        culturalOther: document.querySelector('[name="cultural[]"][value="Otros"]:checked')
+          ? document.getElementById('culturalOther')?.value
+          : '',
+
+        // Pantalla 5 - Bebidas
+        drinks: Array.from(document.querySelectorAll('[name="drinks[]"]:checked')).map(inp => inp.value),
+        drinksOther: document.querySelector('[name="drinks[]"][value="Otros"]:checked')
+          ? document.getElementById('drinksOther')?.value
+          : '',
+
+        // Pantalla 6 - Música
+        music: Array.from(document.querySelectorAll('[name="music[]"]:checked')).map(inp => inp.value),
+        musicOther: document.querySelector('[name="music[]"][value="Otros"]:checked')
+          ? document.getElementById('musicOther')?.value
+          : '',
         
         // Pantalla 7 - Viajes
         travelStyle: Array.from(document.querySelectorAll('[name="travelStyle[]"]:checked')).map(inp => inp.value),
+        travelStyleOther: document.querySelector('[name="travelStyle[]"][value="Otros"]:checked')
+          ? document.getElementById('travelStyleOther')?.value
+          : '',
         
         // Pantalla 8 - Fechas
         birthday: document.getElementById('birthday')?.value,

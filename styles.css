@@ -214,6 +214,11 @@
   --screen-max: 800px;
   --screen-max-md: 680px;
   --screen-max-lg: 720px;
+  /* Tamaños fluidos de campos */
+  --field-font: clamp(15px, 3.6vw, 17px);
+  --field-pad-y: clamp(10px, 2.8vw, 14px);
+  --field-pad-x: clamp(12px, 4vw, 16px);
+  --field-radius: clamp(12px, 5vw, 16px);
 }
 
 /* Light-blue divider used between intro text and form */
@@ -752,11 +757,12 @@ select::-ms-expand { display: none; }
 .field input[type="date"],
 .field textarea,
 .field select {
-  padding: 14px 16px;
-  border-radius: 16px;
+  padding: var(--field-pad-y) var(--field-pad-x);
+  border-radius: var(--field-radius);
   background: rgba(255,255,255,0.12);
   border-color: rgba(255,255,255,0.28);
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.12);
+  font-size: var(--field-font);
 }
 .field input:focus, .field textarea:focus, .field select:focus { box-shadow: 0 0 0 2px rgba(3,154,162,0.40), inset 0 1px 0 rgba(255,255,255,0.12); }
 .field input:focus-visible, .field textarea:focus-visible, .field select:focus-visible { box-shadow: 0 0 0 3px rgba(3,154,162,0.50), inset 0 1px 0 rgba(255,255,255,0.12); }
@@ -855,8 +861,9 @@ select::-ms-expand { display: none; }
   /* Distribuir horizontalmente sin comprimir el grid */
   justify-content: stretch;
   justify-items: stretch;
+  overflow-y: auto;
   padding: clamp(16px, 5vw, 48px);
-  row-gap: 18px;
+  row-gap: clamp(12px, 2.4vh, 18px);
 }
 
 /* Screen 2 fondo */
@@ -931,7 +938,7 @@ select::-ms-expand { display: none; }
 /* Centra todos los screens y fija un ancho coherente en cada breakpoint */
 .fade-screen .screen {
   display: grid;
-  row-gap: 18px;
+  row-gap: clamp(12px, 2.4vh, 18px);
   width: min(100%, var(--screen-max));
   margin-inline: auto;
   justify-self: center;
@@ -1378,9 +1385,10 @@ select::-ms-expand { display: none; }
 .blank-form .field textarea {
   color: var(--ink);
   background: #fff;
-  border: 1px solid rgba(37,54,69,0.40); /* más visible sobre blanco */
-  border-radius: 16px;
-  padding: 12px 14px;
+  border: 1px solid rgba(37,54,69,0.40); /* mas visible sobre blanco */
+  border-radius: var(--field-radius);
+  padding: var(--field-pad-y) var(--field-pad-x);
+  font-size: var(--field-font);
   box-shadow: none; /* evitar sombras heredadas */
 }
 .blank-form .field input::placeholder,
@@ -1391,7 +1399,7 @@ select::-ms-expand { display: none; }
     background-color: #fff;
     background-image: none; /* chevron se renderiza como elemento */
     padding-right: 42px; /* espacio para el chevron */
-    min-height: 44px; /* altura consistente como los inputs */
+    min-height: calc(var(--field-font) + (var(--field-pad-y) * 2) + 4px);
     line-height: 1.2;
     cursor: pointer;
 }
@@ -2060,6 +2068,13 @@ select::-ms-expand { display: none; }
 
 /* ===== Mejoras responsive generales para todas las pantallas ===== */
 @media (max-width: 600px) {
+  :root {
+    --field-font: clamp(15px, 4vw, 17px);
+    --field-pad-y: clamp(10px, 3.4vw, 13px);
+    --field-pad-x: clamp(12px, 5vw, 16px);
+    --field-radius: clamp(12px, 6vw, 16px);
+  }
+
   .fade-screen {
     padding: clamp(16px, 3vw, 20px);
     padding-top: clamp(20px, 5vh, 32px);
@@ -2074,8 +2089,8 @@ select::-ms-expand { display: none; }
   .blank-form .field input,
   .blank-form .field select,
   .blank-form .field textarea {
-    font-size: 16px; /* Evita zoom automático en iOS */
-    padding: 12px 14px;
+    font-size: var(--field-font); /* evita zoom brusco y escala con tipografia */
+    padding: var(--field-pad-y) var(--field-pad-x);
   }
   
   .finish-btn {
@@ -2094,4 +2109,64 @@ select::-ms-expand { display: none; }
     max-width: 100% !important;
     justify-self: center;
   }
+}
+
+/* Compact mode para viewports con poca altura */
+@media (max-height: 780px) {
+  :root {
+    --field-font: clamp(14px, 2.8vh, 16px);
+    --field-pad-y: clamp(9px, 2.4vh, 12px);
+    --field-pad-x: clamp(11px, 3vh, 14px);
+    --field-radius: clamp(10px, 4.5vw, 14px);
+  }
+
+  .fade-screen {
+    align-content: center;
+    padding-top: clamp(14px, 4vh, 26px);
+    padding-bottom: clamp(14px, 4vh, 26px);
+  }
+  .fade-screen .screen {
+    row-gap: clamp(10px, 2vh, 14px);
+  }
+  .light-blue-divider {
+    margin: 8px 0 10px;
+  }
+  .blank-message {
+    font-size: clamp(18px, 2.6vh, 20px);
+    line-height: 1.28;
+  }
+  .blank-form .fields { gap: 6px; }
+  .blank-form .field { gap: 4px; }
+  .blank-form label { font-size: clamp(13px, 2.3vh, 14px); }
+  .blank-form .field input,
+  .blank-form .field select,
+  .blank-form .field textarea {
+    padding: var(--field-pad-y) var(--field-pad-x);
+  }
+  .blank-form .field select { min-height: calc(var(--field-font) + (var(--field-pad-y) * 2) + 2px); }
+  .fade-screen .blank-form .check span { padding: 7px 11px; }
+  .back-btn, .close-btn, .next-btn { width: 36px; height: 36px; }
+}
+
+/* Ultra compacto para alturas muy cortas */
+@media (max-height: 640px) {
+  :root {
+    --field-font: clamp(13px, 2.6vh, 15px);
+    --field-pad-y: clamp(8px, 2vh, 11px);
+    --field-pad-x: clamp(10px, 2.6vh, 13px);
+    --field-radius: clamp(9px, 4vw, 13px);
+  }
+
+  .fade-screen {
+    padding-top: clamp(12px, 3vh, 20px);
+    padding-bottom: clamp(12px, 3vh, 20px);
+  }
+  .blank-message { font-size: clamp(17px, 2.2vh, 18px); }
+  .blank-form .field input,
+  .blank-form .field select,
+  .blank-form .field textarea {
+    padding: var(--field-pad-y) var(--field-pad-x);
+  }
+  .blank-form .field select { min-height: calc(var(--field-font) + (var(--field-pad-y) * 2) + 2px); }
+  .fade-screen .screen { row-gap: clamp(8px, 1.8vh, 12px); }
 }
